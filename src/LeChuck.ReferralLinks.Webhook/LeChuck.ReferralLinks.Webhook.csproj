@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <AWSProjectType>Lambda</AWSProjectType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.3.110.58" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.100.1" />
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="5.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Packages\LeChuck.Telegram.Bot.Framework.Abstractions\LeChuck.Telegram.Bot.Framework.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Packages\LeChuck.Telegram.Bot.FrameWork\LeChuck.Telegram.Bot.FrameWork.csproj" />
+    <ProjectReference Include="..\LeChuck.ReferralLinks.Application\LeChuck.ReferralLinks.Application.csproj" />
+    <ProjectReference Include="..\LeChuck.ReferralLinks.DataAccess\LeChuck.ReferralLinks.DataAccess.csproj" />
+    <ProjectReference Include="..\LeChuck.ReferralLinks.Domain\LeChuck.ReferralLinks.Domain.csproj" />
+  </ItemGroup>
+</Project>

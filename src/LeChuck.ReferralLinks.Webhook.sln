@@ -1,0 +1,100 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.ReferralLinks.Webhook", "LeChuck.ReferralLinks.Webhook\LeChuck.ReferralLinks.Webhook.csproj", "{312C9D56-59C5-40D7-9409-512B28B29241}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.ReferralLinks.Application", "LeChuck.ReferralLinks.Application\LeChuck.ReferralLinks.Application.csproj", "{5BB1A824-CA9A-4AFF-85DD-BE406B911533}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.ReferralLinks.Console", "LeChuck.ReferralLinks.Console\LeChuck.ReferralLinks.Console.csproj", "{FDB91BD8-0752-4F2E-8238-4BEF506B1D73}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 - Clients", "00 - Clients", "{E92A04D2-F14C-4BB9-885C-586BCA09AB87}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - Presentation", "01 - Presentation", "{CE7A2D0F-F5F1-448A-A421-1460D037421E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 - Application", "02 - Application", "{E8ED07FF-0271-4F24-B51F-9D1886540769}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 - Domain", "03 - Domain", "{8273A6A6-A5A7-43C2-8402-FDDB5F990A1E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 - DataAccess", "04 - DataAccess", "{E37ED5B4-15EE-4CD0-8389-D21DBD75DF3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "80 - Infra", "80 - Infra", "{7BDD0624-66EE-4A03-85FA-CB5D2D16CF0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "90 - UnitTests", "90 - UnitTests", "{19438A8E-F7D3-4EF9-8291-DFBBFAA15862}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "99 - Libraries", "99 - Libraries", "{C013DE1F-D452-4429-918C-D4D9B8C1ED98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.ReferralLinks.Domain", "LeChuck.ReferralLinks.Domain\LeChuck.ReferralLinks.Domain.csproj", "{30201E30-091D-46C3-8F02-B3112A961B64}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.ReferralLinks.Domain.Abstractions", "LeChuck.ReferralLinks.Domain.Abstractions\LeChuck.ReferralLinks.Domain.Abstractions.csproj", "{E2AC45C0-99A9-46BE-9E36-58FF81D10232}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.ReferralLinks.DataAccess", "LeChuck.ReferralLinks.DataAccess\LeChuck.ReferralLinks.DataAccess.csproj", "{2896DF5E-F044-44EB-B48C-9494AE555CF2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.DependencyInjection.Extensions", "..\..\Packages\LeChuck.DependencyInjection.Extensions\LeChuck.DependencyInjection.Extensions.csproj", "{39ABA773-A5FF-4398-9B40-F36F56E471BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.Telegram.Bot.FrameWork", "..\..\Packages\LeChuck.Telegram.Bot.FrameWork\LeChuck.Telegram.Bot.FrameWork.csproj", "{36DC493C-1735-4317-9487-181B390A8427}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.Telegram.Bot.Framework.Abstractions", "..\..\Packages\LeChuck.Telegram.Bot.Framework.Abstractions\LeChuck.Telegram.Bot.Framework.Abstractions.csproj", "{316D1E2D-E07B-4A39-8CD7-D285D443F0E0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{312C9D56-59C5-40D7-9409-512B28B29241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{312C9D56-59C5-40D7-9409-512B28B29241}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{312C9D56-59C5-40D7-9409-512B28B29241}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{312C9D56-59C5-40D7-9409-512B28B29241}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BB1A824-CA9A-4AFF-85DD-BE406B911533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BB1A824-CA9A-4AFF-85DD-BE406B911533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BB1A824-CA9A-4AFF-85DD-BE406B911533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BB1A824-CA9A-4AFF-85DD-BE406B911533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDB91BD8-0752-4F2E-8238-4BEF506B1D73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDB91BD8-0752-4F2E-8238-4BEF506B1D73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDB91BD8-0752-4F2E-8238-4BEF506B1D73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDB91BD8-0752-4F2E-8238-4BEF506B1D73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30201E30-091D-46C3-8F02-B3112A961B64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30201E30-091D-46C3-8F02-B3112A961B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30201E30-091D-46C3-8F02-B3112A961B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30201E30-091D-46C3-8F02-B3112A961B64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2AC45C0-99A9-46BE-9E36-58FF81D10232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2AC45C0-99A9-46BE-9E36-58FF81D10232}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2AC45C0-99A9-46BE-9E36-58FF81D10232}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2AC45C0-99A9-46BE-9E36-58FF81D10232}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2896DF5E-F044-44EB-B48C-9494AE555CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2896DF5E-F044-44EB-B48C-9494AE555CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2896DF5E-F044-44EB-B48C-9494AE555CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2896DF5E-F044-44EB-B48C-9494AE555CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39ABA773-A5FF-4398-9B40-F36F56E471BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39ABA773-A5FF-4398-9B40-F36F56E471BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39ABA773-A5FF-4398-9B40-F36F56E471BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39ABA773-A5FF-4398-9B40-F36F56E471BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36DC493C-1735-4317-9487-181B390A8427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36DC493C-1735-4317-9487-181B390A8427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36DC493C-1735-4317-9487-181B390A8427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36DC493C-1735-4317-9487-181B390A8427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{316D1E2D-E07B-4A39-8CD7-D285D443F0E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{316D1E2D-E07B-4A39-8CD7-D285D443F0E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{316D1E2D-E07B-4A39-8CD7-D285D443F0E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{316D1E2D-E07B-4A39-8CD7-D285D443F0E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{312C9D56-59C5-40D7-9409-512B28B29241} = {CE7A2D0F-F5F1-448A-A421-1460D037421E}
+		{5BB1A824-CA9A-4AFF-85DD-BE406B911533} = {E8ED07FF-0271-4F24-B51F-9D1886540769}
+		{FDB91BD8-0752-4F2E-8238-4BEF506B1D73} = {CE7A2D0F-F5F1-448A-A421-1460D037421E}
+		{30201E30-091D-46C3-8F02-B3112A961B64} = {8273A6A6-A5A7-43C2-8402-FDDB5F990A1E}
+		{E2AC45C0-99A9-46BE-9E36-58FF81D10232} = {8273A6A6-A5A7-43C2-8402-FDDB5F990A1E}
+		{2896DF5E-F044-44EB-B48C-9494AE555CF2} = {E37ED5B4-15EE-4CD0-8389-D21DBD75DF3A}
+		{39ABA773-A5FF-4398-9B40-F36F56E471BE} = {C013DE1F-D452-4429-918C-D4D9B8C1ED98}
+		{36DC493C-1735-4317-9487-181B390A8427} = {C013DE1F-D452-4429-918C-D4D9B8C1ED98}
+		{316D1E2D-E07B-4A39-8CD7-D285D443F0E0} = {C013DE1F-D452-4429-918C-D4D9B8C1ED98}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A89B1A26-2D2F-49D6-9764-3A155612C4E0}
+	EndGlobalSection
+EndGlobal
