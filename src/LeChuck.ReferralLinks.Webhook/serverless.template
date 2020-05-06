@@ -3,36 +3,9 @@
   "Transform": "AWS::Serverless-2016-10-31",
   "Description": "An AWS Serverless Application that uses the ASP.NET Core framework running in Amazon Lambda.",
   "Parameters": {
-    "ShouldCreateBucket": {
-      "Type": "String",
-      "AllowedValues": [
-        "true",
-        "false"
-      ],
-      "Description": "If true then the S3 bucket that will be proxied will be created with the CloudFormation stack."
-    },
-    "BucketName": {
-      "Type": "String",
-      "Description": "Name of S3 bucket that will be proxied. If left blank a name will be generated.",
-      "MinLength": "0"
-    }
-  },
-  "Conditions": {
-    "CreateS3Bucket": {
-      "Fn::Equals": [
-        {
-          "Ref": "ShouldCreateBucket"
-        },
-        "true"
-      ]
-    },
-    "BucketNameGenerated": {
-      "Fn::Equals": [
-        {
-          "Ref": "BucketName"
-        },
-        ""
-      ]
+    "BotKey": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/ReferralLinks/BotKey"
     }
   },
   "Resources": {
@@ -46,21 +19,15 @@
         "Timeout": 30,
         "Role": null,
         "Policies": [
-          "AWSLambdaFullAccess"
+          "AWSLambdaFullAccess",
+          {
+            "Ref": "DynamoDbReadWritePolicy"
+          }
         ],
         "Environment": {
           "Variables": {
-            "AppS3Bucket": {
-              "Fn::If": [
-                "CreateS3Bucket",
-                {
-                  "Ref": "Bucket"
-                },
-                {
-                  "Ref": "BucketName"
-                }
-              ]
-            }
+            "CONFIG_TABLE": { "Ref" : "ConfigTable"},
+            "BOT_KEY": { "Ref": "BotKey" }
           }
         },
         "Events": {
@@ -81,21 +48,45 @@
         }
       }
     },
-    "Bucket": {
-      "Type": "AWS::S3::Bucket",
-      "Condition": "CreateS3Bucket",
+    "DynamoDbReadWritePolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
       "Properties": {
-        "BucketName": {
-          "Fn::If": [
-            "BucketNameGenerated",
+        "Description": "Allow read/write in Cups table",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
             {
-              "Ref": "AWS::NoValue"
-            },
-            {
-              "Ref": "BucketName"
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:*"
+              ],
+              "Resource": {
+                "Fn::GetAtt": [
+                  "ConfigTable",
+                  "Arn"
+                ]
+              }
             }
           ]
         }
+      }
+    },
+    "ConfigTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "ConfigId",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "KeySchema": [
+          {
+            "AttributeName": "ConfigId",
+            "KeyType": "HASH"
+          }
+        ]
       }
     }
   },
@@ -106,18 +97,9 @@
         "Fn::Sub": "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
       }
     },
-    "S3ProxyBucket": {
-      "Value": {
-        "Fn::If": [
-          "CreateS3Bucket",
-          {
-            "Ref": "Bucket"
-          },
-          {
-            "Ref": "BucketName"
-          }
-        ]
+    "ConfigTableName": {
+      "Description": "Config Table name",
+      "Value": { "Fn::Sub": "${ConfigTable}" }
       }
     }
-  }
 }

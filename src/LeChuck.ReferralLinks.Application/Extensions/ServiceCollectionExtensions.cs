@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using LeChuck.DependencyInjection.Extensions;
+using LeChuck.ReferralLinks.Application.Services;
+using LeChuck.ReferralLinks.Domain.Interfaces;
+using LeChuck.ReferralLinks.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LeChuck.ReferralLinks.Application.Extensions
@@ -7,7 +11,6 @@ namespace LeChuck.ReferralLinks.Application.Extensions
     {
         public static IServiceCollection AddApplicationModule(this IServiceCollection services)
         {
-            services.AddAutoMapper(assemblies: typeof(ServiceCollectionExtensions).Assembly);
             return services;
         }
     }

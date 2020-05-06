@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LeChuck.ReferralLinks.Application;
-using LeChuck.ReferralLinks.Application.Extensions;
-using LeChuck.ReferralLinks.DataAccess.Extensions;
-using LeChuck.ReferralLinks.Domain.Extensions;
-using LeChuck.Rifas.Application;
-using LeChuck.Telegram.Bot.FrameWork.Extensions;
-using LeChuck.Telegram.Bot.Framework.Models;
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using LeChuck.ReferralLinks.Crosscutting.Extensions;
 using LeChuck.Telegram.Bot.Framework.Processors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Exceptions;
@@ -25,8 +20,6 @@ namespace LeChuck.ReferralLinks.Console
 
         private IWebhookProcessor _processor;
         private ITelegramBotClient _botClient;
-        private IServiceProvider _serviceProvider;
-        private ILogger<StartUp> _logger;
 
         public StartUp(ProcessTimer stopwatch)
         {
@@ -34,7 +27,6 @@ namespace LeChuck.ReferralLinks.Console
         }
 
         private IConfiguration Configuration { get; set; }
-        private AppConfiguration AppConfiguration { get; } = new AppConfiguration();
         private IServiceCollection Services { get; } = new ServiceCollection();
 
         public StartUp ConfigureApplication()
@@ -43,16 +35,13 @@ namespace LeChuck.ReferralLinks.Console
             {
                 Configuration = _configurationBuilder
                     .AddJsonFile("appsettings.json", false)
+                    .AddSystemsManager($"/ReferralLink",
+                        new AWSOptions { Region = RegionEndpoint.EUWest1 }, 
+                        reloadAfter: TimeSpan.FromMinutes(1))
                     .Build();
-                Configuration.Bind("AppConfiguration", AppConfiguration);
-
-                JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    Formatting = Formatting.Indented,
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                };
             });
+
+            ApplicationExtensions.ConfigureApplication();
 
             return this;
         }
@@ -62,20 +51,7 @@ namespace LeChuck.ReferralLinks.Console
             _timer.Mark("Register services", () =>
             {
                 Services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddProvider(new OneLineLoggerProvider()).AddDebug());
-
-                Services
-                    .AddTelegramBotFramework(new TelegramBotFrameworkConfiguration
-                    {
-                        BotKey = Environment.GetEnvironmentVariable("BOT_KEY"),
-                        CommandPrefix = AppConfiguration.CommandPrefix
-                    }, Commands.CommandModels)
-                    .AddApplicationModule()
-                    .AddDomainModule()
-                    .AddDataAccessModule(Configuration);
-
-                _serviceProvider = Services.BuildServiceProvider();
-                _logger = _serviceProvider.GetService<ILogger<StartUp>>();
-                Services.AddSingleton(_serviceProvider);
+                Services.AddApplication(Configuration);
             });
 
             return this;
@@ -85,8 +61,8 @@ namespace LeChuck.ReferralLinks.Console
         {
             _timer.Mark("Load Services", () =>
             {
-                _processor = _serviceProvider.GetRequiredService<IWebhookProcessor>();
-                _botClient = _serviceProvider.GetRequiredService<ITelegramBotClient>();
+                _processor = ApplicationExtensions.ServiceProvider.GetRequiredService<IWebhookProcessor>();
+                _botClient = ApplicationExtensions.ServiceProvider.GetRequiredService<ITelegramBotClient>();
                 _botClient.OnUpdate += OnUpdate;
             });
             return this;

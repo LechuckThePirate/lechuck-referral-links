@@ -1,0 +1,529 @@
+{
+  "actionModule": {
+    "addToCartUrl": "//shoppingcart.aliexpress.com/addToShopcart4Js.htm",
+    "aeOrderFrom": "main_detail",
+    "allowVisitorAddCart": true,
+    "cartDetailUrl": "//shoppingcart.aliexpress.com/shopcart/shopcartDetail.htm",
+    "categoryId": 200002107,
+    "companyId": 243887842,
+    "confirmOrderUrl": "//shoppingcart.aliexpress.com/order/confirm_order.htm",
+    "features": {},
+    "i18nMap": {
+      "WISH_MAX_NOTICE": "Has alcanzado el final de la lista "
+    },
+    "id": 0,
+    "itemStatus": 0,
+    "itemWished": false,
+    "itemWishedCount": 3122,
+    "localSeller": false,
+    "name": "ActionModule",
+    "preSale": false,
+    "productId": 4000358638669,
+    "showCoinAnim": false,
+    "storeNum": 4475025,
+    "totalAvailQuantity": 385716
+  },
+  "aePlusModule": {
+    "features": {},
+    "i18nMap": {},
+    "id": 0,
+    "name": "AePlusModule"
+  },
+  "buyerProtectionModule": {
+    "buyerProtection": {
+      "brief": "Garantía de reembolso",
+      "detailDescription": "",
+      "id": 2,
+      "name": "Protección al Comprador de {day} días",
+      "redirectUrl": "https://sale.aliexpress.com/v8Yr8f629D.htm",
+      "type": 1
+    },
+    "features": {},
+    "i18nMap": {
+      "PLAZA_BUYER_PROTECTION_TITLE": "Devoluciones nacionales"
+    },
+    "id": 0,
+    "name": "BuyerProtectionModule"
+  },
+  "commonModule": {
+    "activity": true,
+    "categoryId": 200002107,
+    "currencyCode": "EUR",
+    "features": {},
+    "gagaDataSite": "es",
+    "i18nMap": {},
+    "id": 0,
+    "name": "CommonModule",
+    "plaza": false,
+    "preSale": false,
+    "productId": 4000358638669,
+    "productTags": {},
+    "sellerAdminSeq": 234566374,
+    "tradeCurrencyCode": "EUR",
+    "userCountryCode": "ES",
+    "userCountryName": "Spain"
+  },
+  "couponModule": {
+    "currencyCode": "EUR",
+    "features": {},
+    "i18nMap": {
+      "GET_COUPONS": "Conseguir cupones"
+    },
+    "id": 0,
+    "name": "CouponModule"
+  },
+  "crossLinkModule": {
+    "breadCrumbPathList": [
+      {
+        "cateId": 0,
+        "name": "Inicio",
+        "remark": "",
+        "url": "//es.aliexpress.com/"
+      }
+    ],
+    "crossLinkGroupList": [
+      {
+        "channel": "w",
+        "crossLinkList": [
+          {
+            "displayName": "sunglass",
+            "name": "sunglass",
+            "url": "https://es.aliexpress.com/w/wholesale-sunglass.html"
+          }
+        ],
+        "name": "Al por mayor"
+      }
+    ],
+    "features": {},
+    "i18nMap": {
+      "BREADCRUMB_PART2": "puedes ver artículos similares en",
+      "BREADCRUMB_PART1": "Este artículo está dentro de la categoría ",
+      "CROSSLINK_RELATED_SEARCHES": "Búsquedas relacionadas"
+    },
+    "id": 0,
+    "name": "CrossLinkModule",
+    "productId": 4000358638669
+  },
+  "descriptionModule": {
+    "descriptionUrl": "https://aeproductsourcesite.alicdn.com/product/description/pc/v2/es_ES/desc.htm?productId=4000358638669&key=He53bfc6c2a1c42589e1e95e73148f549B.zip&token=dac8a9f12174b81fce16636d2670a3db",
+    "features": {},
+    "i18nMap": {},
+    "id": 0,
+    "name": "DescriptionModule",
+    "productId": 4000358638669,
+    "sellerAdminSeq": 234566374
+  },
+  "features": {},
+  "feedbackModule": {
+    "companyId": 243887842,
+    "features": {},
+    "feedbackServer": "//feedback.aliexpress.com",
+    "i18nMap": {},
+    "id": 0,
+    "name": "FeedbackModule",
+    "productId": 4000358638669,
+    "sellerAdminSeq": 234566374,
+    "trialReviewNum": 0
+  },
+  "groupShareModule": {
+    "features": {},
+    "i18nMap": {},
+    "id": 0,
+    "name": "GroupShareModule"
+  },
+  "i18nMap": {
+    "VIEW_MORE": "Ver más",
+    "ASK_BUYERS": "Preguntas de compradores como tú",
+    "PAGE_NOT_FOUND_NOTICE": "¡Vaya! Parece que la página que estás buscando ha sido eliminada o no es accesible temporalmente.",
+    "VIEW_5_MORE_ANSWERS": "Ver más",
+    "openTrace": "true",
+    "PAGE_NOT_FOUND_RCMD_TITLE": "Esta página no existe :("
+  },
+  "imageModule": {
+    "features": {},
+    "i18nMap": {},
+    "id": 0,
+    "imagePathList": [
+      "https://ae01.alicdn.com/kf/Hecec4e143dd9458089ba8184f094e5baG/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg",
+      "https://ae01.alicdn.com/kf/Haef8436d12ab41a18f7fd36a831db80dp/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg",
+      "https://ae01.alicdn.com/kf/H5743e294de90405eb43c42c5d5383df8M/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg",
+      "https://ae01.alicdn.com/kf/H8cd8330f208f403eb6142b63d8382bded/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg",
+      "https://ae01.alicdn.com/kf/Ha6fcd8796cf74e61915af01dde0488c8I/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg",
+      "https://ae01.alicdn.com/kf/Hbdf4db2c53ea491890141d2282450d048/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg"
+    ],
+    "name": "ImageModule",
+    "summImagePathList": [
+      "https://ae01.alicdn.com/kf/Hecec4e143dd9458089ba8184f094e5baG/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg_50x50.jpg",
+      "https://ae01.alicdn.com/kf/Haef8436d12ab41a18f7fd36a831db80dp/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg_50x50.jpg",
+      "https://ae01.alicdn.com/kf/H5743e294de90405eb43c42c5d5383df8M/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg_50x50.jpg",
+      "https://ae01.alicdn.com/kf/H8cd8330f208f403eb6142b63d8382bded/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg_50x50.jpg",
+      "https://ae01.alicdn.com/kf/Ha6fcd8796cf74e61915af01dde0488c8I/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg_50x50.jpg",
+      "https://ae01.alicdn.com/kf/Hbdf4db2c53ea491890141d2282450d048/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg_50x50.jpg"
+    ]
+  },
+  "installmentModule": {
+    "features": {},
+    "i18nMap": {},
+    "id": 0,
+    "name": "InstallmentModule"
+  },
+  "middleBannerModule": {
+    "features": {},
+    "i18nMap": {
+      "END_IN": "Acaba en",
+      "DAYS": "{number} días",
+      "DAY": "{number} día",
+      "STARTS_IN": "Empieza en"
+    },
+    "id": 0,
+    "name": "MiddleBannerModule"
+  },
+  "name": "ItemDetailResp",
+  "otherServiceModule": {
+    "features": {},
+    "hasWarrantyInfo": false,
+    "i18nMap": {
+      "TAB_SPECS": "Detalles"
+    },
+    "id": 0,
+    "name": "OtherServiceModule"
+  },
+  "pageModule": {
+    "aeOrderFrom": "main_detail",
+    "aerSelfOperation": false,
+    "boutiqueSeller": false,
+    "complaintUrl": "//report.aliexpress.com/health/reportIndex.htm?product_id=4000358638669&b_login_id=cn1524454382fhpz",
+    "description": "Cheap Protectores de pantalla de teléfono, Buy Quality Teléfonos y telecomunicaciones Directly from China Suppliers:2 uds de vidrio de 9H HD vidrio templado para Samsung A50 A40 A30 A10E A20E Protector de pantalla para Samsung Galaxy A90 A80 A70 A60 A2 Core\nDisfruta de las siguientes ventajas: ✓ Envío gratuito a todo el mundo ✓ Oferta disponible durante un tiempo limitado ✓ Devolución sencilla\n",
+    "features": {},
+    "i18nMap": {},
+    "id": 0,
+    "imagePath": "https://ae01.alicdn.com/kf/Hecec4e143dd9458089ba8184f094e5baG/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E.jpg",
+    "itemDetailUrl": "https://es.aliexpress.com/item/4000358638669.html",
+    "keywords": "Protectores de pantalla de teléfono,Teléfonos y telecomunicaciones, Cheap Protectores de pantalla de teléfono,High Quality Teléfonos y telecomunicaciones",
+    "kidBaby": false,
+    "mSiteUrl": "https://m.es.aliexpress.com/item/4000358638669.html",
+    "multiLanguageUrlList": [
+      {
+        "language": "msite",
+        "languageUrl": "https://m.aliexpress.com/item/4000358638669.html"
+      }
+    ],
+    "name": "PageModule",
+    "ogDescription": "¡Compra fácil, vive mejor!  Aliexpress.com",
+    "ogTitle": "€0.62 30% de DESCUENTO|2 uds de vidrio de 9H HD vidrio templado para Samsung A50 A40 A30 A10E A20E Protector de pantalla para Samsung Galaxy A90 A80 A70 A60 A2 Core|Protectores de pantalla de teléfono|   - AliExpress",
+    "ogurl": "//es.aliexpress.com/item/4000358638669.html",
+    "oldItemDetailUrl": "https://es.aliexpress.com/item/2-uds-de-vidrio-de-9H-HD-vidrio-templado-para-Samsung-A50-A40-A30-A10E-A20E/4000358638669.html",
+    "plazaElectronicSeller": false,
+    "productId": 4000358638669,
+    "ruSelfOperation": false,
+    "showPlazaHeader": true,
+    "siteType": "esp",
+    "spanishPlaza": false,
+    "title": "2 uds de vidrio de 9H HD vidrio templado para Samsung A50 A40 A30 A10E A20E Protector de pantalla para Samsung Galaxy A90 A80 A70 A60 A2 Core|Protectores de pantalla de teléfono|   - AliExpress"
+  },
+  "preSaleModule": {
+    "features": {},
+    "i18nMap": {},
+    "id": 0,
+    "name": "PreSaleModule",
+    "preSale": false
+  },
+  "priceModule": {
+    "activity": true,
+    "bigPreview": false,
+    "bigSellProduct": false,
+    "discount": 30,
+    "discountPromotion": true,
+    "features": {},
+    "formatedActivityPrice": "€ 0,62 - 1,48",
+    "formatedPrice": "€ 0,89 - 2,11",
+    "hiddenBigSalePrice": false,
+    "i18nMap": {
+      "LOT": "lote",
+      "INSTALLMENT": "Installment",
+      "DEPOSIT": "Depósito",
+      "PRE_ORDER_PRICE": "Precio si reservas"
+    },
+    "id": 0,
+    "installment": false,
+    "lot": false,
+    "maxActivityAmount": {
+      "currency": "EUR",
+      "formatedAmount": "€ 1,48",
+      "value": 1.48
+    },
+    "maxAmount": {
+      "currency": "EUR",
+      "formatedAmount": "€ 2,11",
+      "value": 2.11
+    },
+    "minActivityAmount": {
+      "currency": "EUR",
+      "formatedAmount": "€ 0,62",
+      "value": 0.62
+    },
+    "minAmount": {
+      "currency": "EUR",
+      "formatedAmount": "€ 0,89",
+      "value": 0.89
+    },
+    "multiUnitName": "unidades",
+    "name": "PriceModule",
+    "numberPerLot": 1,
+    "oddUnitName": "unidad",
+    "preSale": false,
+    "regularPriceActivity": false,
+    "showActivityMessage": false
+  },
+  "quantityModule": {
+    "activity": true,
+    "displayBulkInfo": true,
+    "features": {},
+    "i18nMap": {
+      "LOT": "lote",
+      "LOTS": "lots",
+      "BUY_LIMIT": "Límite de {limit} {unit} por usuario",
+      "QUANTITY": "Cantidad",
+      "OFF_OR_MORE": "{discount}% dto. ({number} {unit} o más)",
+      "ONLY_QUANTITY_LEFT": "¡Solo quedan {availQuantity}!",
+      "ADDTIONAL": "Adicional",
+      "QUANTITY_AVAILABLE": "{availQuantity} {unit} disponibles"
+    },
+    "id": 0,
+    "lot": false,
+    "multiUnitName": "unidades",
+    "name": "QuantityModule",
+    "oddUnitName": "unidad",
+    "purchaseLimitNumMax": 0,
+    "skuBulkDiscount": 3,
+    "skuBulkOrder": 2,
+    "totalAvailQuantity": 385716
+  },
+  "recommendModule": {
+    "categoryId": 200002107,
+    "companyId": 243887842,
+    "features": {
+      "recommendGpsScenarioOtherSellerProducts": "pcDetailBottomMoreOtherSeller",
+      "showSubTitle": "true",
+      "recommendGpsScenarioTopSelling": "pcDetailLeftTopSell",
+      "recommendGpsScenarioSellerOtherProducts": "pcDetailBottomMoreThisSeller"
+    },
+    "i18nMap": {
+      "MORE_FROM_THIS_SELLER": "Recomendados por el vendedor",
+      "YOU_MAY_LIKE": "Otras recomendaciones ",
+      "TOP_SELLING": "Los más vendidos",
+      "FROM_OTHER_SELLER": "Seguro que te gusta",
+      "VIEW_MORE_LINK": "Ver más",
+      "PRODUCT_SOLD": "vendidos"
+    },
+    "id": 0,
+    "name": "RecommendModule",
+    "productId": 4000358638669,
+    "storeNum": 4475025
+  },
+  "redirectModule": {
+    "bigBossBan": false,
+    "code": "OK",
+    "features": {},
+    "i18nMap": {},
+    "id": 0,
+    "name": "RedirectModule",
+    "redirectUrl": ""
+  },
+  "shippingModule": {
+    "currencyCode": "EUR",
+    "features": {},
+    "hbaFreeShipping": false,
+    "hbaFreight": false,
+    "i18nMap": {
+      "FAST_SHIPPING": "Envío rápido"
+    },
+    "id": 0,
+    "name": "ShippingModule",
+    "productId": 4000358638669,
+    "regionCountryName": "Spain",
+    "userCountryCode": "ES",
+    "userCountryName": "Spain"
+  },
+  "skuModule": {
+    "categoryId": 200002107,
+    "features": {},
+    "forcePromiseWarrantyJson": "{}",
+    "hasSizeInfo": false,
+    "hasSkuProperty": true,
+    "i18nMap": {
+      "SIZING_INFO": "Información sobre tallas"
+    },
+    "id": 0,
+    "name": "SKUModule",
+    "productSKUPropertyList": [
+      {
+        "isShowTypeColor": false,
+        "order": 2,
+        "showType": "none",
+        "showTypeColor": false,
+        "skuPropertyId": 14,
+        "skuPropertyName": "Color",
+        "skuPropertyValues": [
+          {
+            "propertyValueDefinitionName": "For A10",
+            "propertyValueDisplayName": "For A10",
+            "propertyValueId": 201446402,
+            "propertyValueIdLong": 201446402,
+            "propertyValueName": "Lucent",
+            "skuPropertyTips": "For A10",
+            "skuPropertyValueShowOrder": 2,
+            "skuPropertyValueTips": "For A10"
+          }
+        ]
+      }
+    ],
+    "skuPriceList": [
+      {
+        "skuAttr": "14:201446402#For A10;10:1878546893#1 Piece",
+        "skuId": 10000001477426148,
+        "skuPropIds": "201446402,1878546893",
+        "skuVal": {
+          "actSkuBulkCalPrice": "0.97",
+          "actSkuCalPrice": "0.99",
+          "actSkuDisplayBulkPrice": "€ 0,90",
+          "actSkuMultiCurrencyBulkPrice": "0.9",
+          "actSkuMultiCurrencyCalPrice": "0.92",
+          "actSkuMultiCurrencyDisplayPrice": "0,92",
+          "availQuantity": 14862,
+          "bulkOrder": 2,
+          "inventory": 14862,
+          "isActivity": true,
+          "optionalWarrantyPrice": [],
+          "skuActivityAmount": {
+            "currency": "EUR",
+            "formatedAmount": "€ 0,92",
+            "value": 0.92
+          },
+          "skuAmount": {
+            "currency": "EUR",
+            "formatedAmount": "€ 1,32",
+            "value": 1.32
+          },
+          "skuBulkCalPrice": "1.38",
+          "skuCalPrice": "1.42",
+          "skuDisplayBulkPrice": "€ 1,28",
+          "skuMultiCurrencyBulkPrice": "1,28",
+          "skuMultiCurrencyCalPrice": "1.32",
+          "skuMultiCurrencyDisplayPrice": "1,32"
+        }
+      }
+    ],
+    "warrantyDetailJson": "[]"
+  },
+  "specsModule": {
+    "features": {},
+    "i18nMap": {},
+    "id": 0,
+    "name": "SpecsModule",
+    "props": [
+      {
+        "attrName": "Nombre de la marca",
+        "attrNameId": 2,
+        "attrValue": "AICSRAD",
+        "attrValueId": "203167823"
+      }
+    ]
+  },
+  "storeModule": {
+    "companyId": 243887842,
+    "countryCompleteName": "China",
+    "detailPageUrl": "//es.aliexpress.com/item/4000358638669.html",
+    "esRetailOrConsignment": false,
+    "features": {},
+    "feedbackMessageServer": "//message.aliexpress.com",
+    "feedbackServer": "//feedback.aliexpress.com",
+    "followed": false,
+    "followingNumber": 345,
+    "hasStore": true,
+    "hasStoreHeader": true,
+    "hideCustomerService": false,
+    "i18nMap": {
+      "COUSTOMER_SERVICE": "Atención al cliente"
+    },
+    "id": 0,
+    "name": "StoreModule",
+    "openTime": "Aug 28, 2018",
+    "openedYear": 1,
+    "positiveNum": 22073,
+    "positiveRate": "95.3%",
+    "productId": 4000358638669,
+    "sellerAdminSeq": 234566374,
+    "sessionId": "fe0e780a793945fab7f8e6a904e174e2",
+    "siteType": "esp",
+    "storeName": "Shop4475025 Store",
+    "storeNum": 4475025,
+    "storeURL": "//es.aliexpress.com/store/4475025",
+    "topBrandDescURL": "https://sale.aliexpress.com/topbrand.htm",
+    "topRatedSeller": false
+  },
+  "titleModule": {
+    "features": {},
+    "feedbackRating": {
+      "averageStar": "4.8",
+      "averageStarRage": "95.0",
+      "display": true,
+      "evarageStar": "4.8",
+      "evarageStarRage": "95.0",
+      "fiveStarNum": 2757,
+      "fiveStarRate": "71",
+      "fourStarNum": 346,
+      "fourStarRate": "9",
+      "oneStarNum": 560,
+      "oneStarRate": "14",
+      "positiveRate": "71.2",
+      "threeStarNum": 145,
+      "threeStarRate": "4",
+      "totalValidNum": 3878,
+      "trialReviewNum": 0,
+      "twoStarNum": 70,
+      "twoStarRate": "2"
+    },
+    "formatTradeCount": "25746",
+    "i18nMap": {
+      "REVIEWS": "Valoraciones"
+    },
+    "id": 0,
+    "name": "TitleModule",
+    "orig": false,
+    "origTitle": false,
+    "subject": "2 uds de vidrio de 9H HD vidrio templado para Samsung A50 A40 A30 A10E A20E Protector de pantalla para Samsung Galaxy A90 A80 A70 A60 A2 Core",
+    "tradeCount": 25746,
+    "tradeCountUnit": "vendidos",
+    "trans": false,
+    "transTitle": false
+  },
+  "webEnv": {
+    "country": "ES",
+    "currency": "EUR",
+    "env": {
+      "valMap": {
+        "g11n:locale": "es_ES",
+        "g11n:timezone": "",
+        "user:id": "",
+        "g11n:country": "ES",
+        "page:name": "",
+        "g11n:site": "esp",
+        "page:app": "",
+        "user:type": "",
+        "page:id": "item_html",
+        "user:member": "",
+        "g11n:currency": "EUR"
+      },
+      "zone": "global_env"
+    },
+    "host": "es.aliexpress.com",
+    "hostname": "ae-glodetail-web010176211126.us.ot7",
+    "ip": "37.133.11.190",
+    "lang": "es_ES",
+    "language": "es",
+    "locale": "es_ES",
+    "reqHost": "https://es.aliexpress.com",
+    "site": "esp"
+  }
+}
