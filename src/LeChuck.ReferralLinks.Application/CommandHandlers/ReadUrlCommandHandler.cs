@@ -7,11 +7,11 @@ using LeChuck.Telegram.Bot.Framework.Services;
 
 namespace LeChuck.ReferralLinks.Application.CommandHandlers
 {
-    public class ReadUrlCommand : ICommandHandler
+    public class ReadUrlCommandHandler : ICommandHandler
     {
         private readonly IBotService _bot;
 
-        public ReadUrlCommand(IBotService bot)
+        public ReadUrlCommandHandler(IBotService bot)
         {
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         }

@@ -1,15 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using LeChuck.ReferralLinks.Domain.Models;
-using LeChuck.Telegram.Bot.Framework.Interfaces;
 
 namespace LeChuck.ReferralLinks.Domain.Services
 {
-    public interface IAuthorizationService : IBotAuthorizer
-    {
-        bool IsRootUser(long userId);
-    }
-
     public class AuthorizationService : IAuthorizationService
     {
         private readonly AppConfiguration _config;
@@ -29,4 +25,5 @@ namespace LeChuck.ReferralLinks.Domain.Services
             return IsRootUser(userId) || (_config.Users?.Any(u => u.UserId == userId.ToString()) ?? false);
         }
     }
+
 }

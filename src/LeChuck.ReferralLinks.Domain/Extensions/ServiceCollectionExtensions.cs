@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using LeChuck.DependencyInjection.Extensions;
+﻿using LeChuck.DependencyInjection.Extensions;
 using LeChuck.ReferralLinks.Application.Services;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 using LeChuck.ReferralLinks.Domain.Services;
@@ -13,12 +12,14 @@ namespace LeChuck.ReferralLinks.Domain.Extensions
         public static IServiceCollection AddDomainModule(this IServiceCollection services)
         {
             var assembly = typeof(ServiceCollectionExtensions).Assembly;
+            services.AddScoped<ILinkService, LinkService>();
             services.AddSingleton<IAuthorizationService, AuthorizationService>();
             services.AddSingleton<IBotAuthorizer, AuthorizationService>();
+            services.AddScoped<IChannelService, ChannelService>();
             services.AddInterface<IHtmlParserStrategy>(assembly);
             services.AddInterface<IUrlShortenerStrategy>(assembly);
-            services.AddSingleton<IHtmlParserProvider, HtmlHtmlParserProvider>();
-            services.AddSingleton<IUrlShortenerProvider, UrlShortenerProvider>();
+            services.AddTransient<IHtmlParserProvider, HtmlHtmlParserProvider>();
+            services.AddTransient<IUrlShortenerProvider, UrlShortenerProvider>();
             services.AddHttpClient();
             return services;
         }
