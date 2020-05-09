@@ -5,4 +5,12 @@
     <RootNamespace>LeChuck.ReferralLinks.Domain</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Models\Channel.cs~RF428b044b.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Packages\LeChuck.Telegram.Bot.Framework.Abstractions\LeChuck.Telegram.Bot.Framework.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

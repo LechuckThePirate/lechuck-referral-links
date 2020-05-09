@@ -1,5 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using Amazon.DynamoDBv2;
+﻿using Amazon.DynamoDBv2;
+using AutoMapper;
 using LeChuck.DataAccess.DynamoDb;
 using LeChuck.DependencyInjection.Extensions;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +11,8 @@ namespace LeChuck.ReferralLinks.DataAccess.Extensions
     {
         public static IServiceCollection AddDataAccessModule(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddAutoMapper(configAction: cfg => { }
+                , typeof(ServiceCollectionExtensions).Assembly);
             services.AddAWSService<IAmazonDynamoDB>();
             services.AddInherited<IDynamoDbRepository>(typeof(ServiceCollectionExtensions).Assembly);
             services.AddInherited<IUnitOfWork>(typeof(ServiceCollectionExtensions).Assembly);

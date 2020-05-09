@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
 using LeChuck.ReferralLinks.Crosscutting.Extensions;
+using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.Telegram.Bot.Framework.Processors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ namespace LeChuck.ReferralLinks.Console
 
         private IWebhookProcessor _processor;
         private ITelegramBotClient _botClient;
+        private AppConfiguration _config = null;
 
         public StartUp(ProcessTimer stopwatch)
         {
@@ -63,6 +65,7 @@ namespace LeChuck.ReferralLinks.Console
             {
                 _processor = ApplicationExtensions.ServiceProvider.GetRequiredService<IWebhookProcessor>();
                 _botClient = ApplicationExtensions.ServiceProvider.GetRequiredService<ITelegramBotClient>();
+                _config = ApplicationExtensions.ServiceProvider.GetRequiredService<AppConfiguration>();
                 _botClient.OnUpdate += OnUpdate;
             });
             return this;
@@ -81,6 +84,9 @@ namespace LeChuck.ReferralLinks.Console
         {
             try
             {
+                if (_config.MeId == 0)
+                    _config.MeId = _botClient.GetMeAsync().GetAwaiter().GetResult().Id;
+
                 _processor.HandleUpdateAsync(e.Update).Wait();
             }
             catch (Exception ex) when (ex.InnerException != null && ex.InnerException is ChatNotInitiatedException)

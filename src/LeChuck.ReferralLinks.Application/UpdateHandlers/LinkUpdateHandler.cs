@@ -46,7 +46,7 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
 
             // Run calls in parallel
             var message = parser.ParseUrl(url);
-            var shortener = _urlShortenerProvider.GetServiceOrDefault(UrlShortenersEnum.BitLy);
+            var shortener = _urlShortenerProvider.GetServiceOrDefault(UrlShortenersEnum.None);
             var shortUrl = shortener.ShortenUrl(url);
 
             Task.WaitAll(message, shortUrl);
@@ -60,7 +60,9 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
             await _bot.SendPhotoAsync(updateContext.ChatId, message.Result.PictureUrl, 
                 $"\n{Event.Ribbon} <b>{message.Result.Title}</b>\n" +
                 $"\n" +
-                $"{Money.Euro} <b>PRECIO:</b> {message.Result.Price}\n" +
+                $"{OtherSymbols.CrossMark} PVP: {message.Result.OriginalPrice}\n" +
+                $"{Money.Euro} <b>PRECIO FINAL: {message.Result.FinalPrice}</b>\n" +
+                $"{Clothing.Purse} Ahorras {message.Result.SavedPrice}\n" +
                 $"\n" +
                 $"{HouseHold.ShoppingCart} {message.Result.ShortenedUrl}", TextModeEnum.Html);
         }

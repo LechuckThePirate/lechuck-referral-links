@@ -22,12 +22,14 @@ namespace LeChuck.ReferralLinks.DataAccess.UnitsOfWork
 
         public async Task SaveConfig(AppConfiguration config)
         {
-            await _repository.SaveItemAsync(_mapper.Map<AppConfigDbEntity>(config));
+            var entity = _mapper.Map<AppConfigDbEntity>(config);
+            await _repository.SaveItemAsync(entity);
         }
 
         public async Task<AppConfiguration> LoadConfig()
         {
-            return _mapper.Map<AppConfiguration>(await _repository.LoadItemAsync(Constants.ConfigKey));
+            var entity = await _repository.LoadItemAsync(Constants.ConfigKey);
+            return _mapper.Map<AppConfiguration>(entity);
         }
     }
 }

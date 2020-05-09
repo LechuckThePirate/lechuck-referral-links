@@ -52,7 +52,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             return await Task.FromResult(new LinkData
             {
                 Title = title,
-                Price = price,
+                FinalPrice = price,
                 PictureUrl = pictureUrl,
                 LongUrl = url
             });

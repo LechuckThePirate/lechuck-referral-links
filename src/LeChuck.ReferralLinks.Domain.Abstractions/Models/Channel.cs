@@ -3,6 +3,6 @@
     public class Channel
     {
         public string ChannelId { get; set; }
-        public string ChannelKey { get; set; }
+        public string ChannelName { get; set; }
     }
 }
