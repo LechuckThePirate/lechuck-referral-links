@@ -13,7 +13,7 @@ namespace LeChuck.ReferralLinks.DataAccess.Entities
         public Guid TaskId { get; set; }
 
         public DateTime NextRun { get; set; }
-        public string CronPattern { get; set; }
+        public TimeSpan RunSpan { get; set; }
         public LinkData Message { get; set; }
         public List<Channel> Channels { get; set; }
         public long TimeToLive { get; set; }
