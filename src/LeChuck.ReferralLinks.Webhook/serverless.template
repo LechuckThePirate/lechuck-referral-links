@@ -27,6 +27,7 @@
         "Environment": {
           "Variables": {
             "CONFIG_TABLE": { "Ref" : "ConfigTable"},
+            "TIMED_TASKS_TABLE": { "Ref": "TimedTasksTable" },
             "BOT_KEY": { "Ref": "BotKey" }
           }
         },
@@ -48,6 +49,30 @@
         }
       }
     },
+    "SweepLambda": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "LeChuck.ReferralLinks.Lambda.Timer::LeChuck.ReferralLinks.Lambda.Timer.Function::FunctionHandler",
+        "Runtime": "dotnetcore3.1",
+        "CodeUri": "",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Role": null,
+        "Policies": [
+          "AWSLambdaFullAccess",
+          {
+            "Ref": "DynamoDbReadWritePolicy"
+          }
+        ],
+        "Environment": {
+          "Variables": {
+            "CONFIG_TABLE": { "Ref" : "ConfigTable"},
+            "TIMED_TASKS_TABLE": { "Ref": "TimedTasksTable" },
+            "BOT_KEY": { "Ref": "BotKey" }
+          }
+        }
+      }
+    },
     "DynamoDbReadWritePolicy": {
       "Type": "AWS::IAM::ManagedPolicy",
       "Properties": {
@@ -63,6 +88,18 @@
               "Resource": {
                 "Fn::GetAtt": [
                   "ConfigTable",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:*"
+              ],
+              "Resource": {
+                "Fn::GetAtt": [
+                  "TimedTasksTable",
                   "Arn"
                 ]
               }
@@ -87,6 +124,28 @@
             "KeyType": "HASH"
           }
         ]
+      }
+    },
+    "TimedTasksTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "TaskId",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "KeySchema": [
+          {
+            "AttributeName": "TaskId",
+            "KeyType": "HASH"
+          }
+        ],
+        "TimeToLiveSpecification": {
+          "AttributeName": "TimeToLive",
+          "Enabled": true
+        }
       }
     }
   },

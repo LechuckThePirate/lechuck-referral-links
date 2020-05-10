@@ -18,6 +18,7 @@ namespace LeChuck.ReferralLinks.Domain
         public class EnvVarNames
         {
             public const string ConfigTable = "CONFIG_TABLE";
+            public const string TimedTasksTableName = "TIMED_TASKS_TABLE";
         }
 
         public const string ConfigKey = "ConfigRow";

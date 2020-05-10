@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Application;
 using LeChuck.ReferralLinks.Application.Extensions;
 using LeChuck.ReferralLinks.Application.UpdateHandlers;

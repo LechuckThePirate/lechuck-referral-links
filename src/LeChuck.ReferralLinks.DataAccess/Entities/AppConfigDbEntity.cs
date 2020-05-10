@@ -16,8 +16,9 @@ namespace LeChuck.ReferralLinks.DataAccess.Entities
         public string RootUserId { get; set; }
         public List<User> Users { get; set; }
         public List<Channel> Channels { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
         public DateTime? LastUpdatedAt { get; set; }
+        public string CreatedBy { get; set; }
         public long TimeToLive { get; set; }
 
     }

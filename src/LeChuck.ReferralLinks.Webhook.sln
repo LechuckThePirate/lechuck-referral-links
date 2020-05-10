@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 - Crosscutting", "05 - C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.ReferralLinks.Crosscutting", "LeChuck.ReferralLinks.Crosscutting\LeChuck.ReferralLinks.Crosscutting.csproj", "{7BB7627B-2B98-4373-B97E-2914C7FCBB84}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeChuck.ReferralLinks.Lambda.Timer", "LeChuck.ReferralLinks.Lambda.Timer\LeChuck.ReferralLinks.Lambda.Timer.csproj", "{802E4744-EA31-463B-A0A2-2AB450678A2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{7BB7627B-2B98-4373-B97E-2914C7FCBB84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BB7627B-2B98-4373-B97E-2914C7FCBB84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BB7627B-2B98-4373-B97E-2914C7FCBB84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{802E4744-EA31-463B-A0A2-2AB450678A2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{802E4744-EA31-463B-A0A2-2AB450678A2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{802E4744-EA31-463B-A0A2-2AB450678A2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{802E4744-EA31-463B-A0A2-2AB450678A2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +122,7 @@ Global
 		{9F05CAFF-6FB3-49B4-B8F8-2713EB90BABE} = {C013DE1F-D452-4429-918C-D4D9B8C1ED98}
 		{B931A923-7352-4832-8B60-DE44402C597F} = {C013DE1F-D452-4429-918C-D4D9B8C1ED98}
 		{7BB7627B-2B98-4373-B97E-2914C7FCBB84} = {412555EF-FF44-489D-9BA1-1919479F7FDC}
+		{802E4744-EA31-463B-A0A2-2AB450678A2E} = {CE7A2D0F-F5F1-448A-A421-1460D037421E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A89B1A26-2D2F-49D6-9764-3A155612C4E0}

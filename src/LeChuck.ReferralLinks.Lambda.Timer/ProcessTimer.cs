@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace LeChuck.ReferralLinks.Console
+namespace LeChuck.ReferralLinks.Lambda.Timer
 {
     public class ProcessTimer
     {
@@ -23,12 +23,20 @@ namespace LeChuck.ReferralLinks.Console
 
         public void Start()
         {
-            _stopWatch.Start();
+            Marks = new List<(TimeSpan Elapsed, string Label)>();
+            _stopWatch.Restart();
         }
 
         public TimeSpan Total()
         {
             return _stopWatch.Elapsed;
+        }
+
+        public void LogMarks()
+        {
+            Console.WriteLine("Initialization times");
+            Marks.ForEach(m => System.Console.WriteLine($" - {m.Label}: {m.Elapsed}"));
+            Console.WriteLine($"Total time: {Total()}");
         }
     }
 }

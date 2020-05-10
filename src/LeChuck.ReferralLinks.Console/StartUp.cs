@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
+using LeChuck.ReferralLinks.Crosscutting.Classes;
 using LeChuck.ReferralLinks.Crosscutting.Extensions;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.Telegram.Bot.Framework.Processors;
