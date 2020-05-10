@@ -18,7 +18,7 @@ namespace LeChuck.ReferralLinks.DataAccess.Repositories
 
     public class TimedTasksRepository : DynamoDbRepository<TimedTaskDbEntity>, ITimedTasksRepository
     {
-        public TimedTasksRepository(IAmazonDynamoDB amazonDynamoDb, ILogger logger) 
+        public TimedTasksRepository(IAmazonDynamoDB amazonDynamoDb, ILogger<TimedTasksRepository> logger) 
             : base(Environment.GetEnvironmentVariable(Constants.EnvVarNames.TimedTasksTableName), amazonDynamoDb, logger)
         {
         }

@@ -16,7 +16,7 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         }
 
-        public bool CanHandle(string command) => command == Commands.ReadUrl;
+        public bool CanHandle(string command) => false;
 
         public async Task HandleCommand(IUpdateContext updateContext)
         {

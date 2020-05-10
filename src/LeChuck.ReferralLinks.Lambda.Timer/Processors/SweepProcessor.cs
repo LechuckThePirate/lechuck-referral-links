@@ -76,7 +76,7 @@ namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
 
         List<Task> ProcessMessage(TimedTaskDbEntity data)
         {
-            var tasks = data.Channels.Select(channel => SendMessage(channel, data.Message)).ToList();
+            var tasks = data.Message.Channels.Select(channel => SendMessage(channel, data.Message)).ToList();
             data.NextRun = DateTime.Now.AddMinutes(data.RunSpan.Minutes);
             tasks.Add(_repository.SaveItemAsync(data));
             return tasks;

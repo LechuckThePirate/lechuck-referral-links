@@ -19,6 +19,8 @@ namespace LeChuck.ReferralLinks.Domain
         {
             public const string ConfigTable = "CONFIG_TABLE";
             public const string TimedTasksTableName = "TIMED_TASKS_TABLE";
+            public const string LinkDataTableName = "LINK_DATA_TABLE";
+            public const string StateMachineTableName = "STATE_MACHINE_TABLE";
         }
 
         public const string ConfigKey = "ConfigRow";

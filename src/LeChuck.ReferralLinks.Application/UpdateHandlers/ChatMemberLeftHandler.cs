@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LeChuck.ReferralLinks.Domain.Contracts.UnitsOfWork;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Domain.Services;
 using LeChuck.Telegram.Bot.Framework.Enums;

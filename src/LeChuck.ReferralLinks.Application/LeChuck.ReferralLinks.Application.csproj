@@ -15,8 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\lechuck-stateless-statemachine\src\LeChuck.Stateless.StateMachine\LeChuck.Stateless.StateMachine.csproj" />
     <ProjectReference Include="..\..\..\Packages\LeChuck.DependencyInjection.Extensions\LeChuck.DependencyInjection.Extensions.csproj" />
     <ProjectReference Include="..\..\..\Packages\LeChuck.Telegram.Bot.Framework.Abstractions\LeChuck.Telegram.Bot.Framework.Abstractions.csproj" />
+    <ProjectReference Include="..\LeChuck.ReferralLinks.DataAccess\LeChuck.ReferralLinks.DataAccess.csproj" />
     <ProjectReference Include="..\LeChuck.ReferralLinks.Domain.Abstractions\LeChuck.ReferralLinks.Domain.Abstractions.csproj" />
     <ProjectReference Include="..\LeChuck.ReferralLinks.Domain\LeChuck.ReferralLinks.Domain.csproj" />
   </ItemGroup>

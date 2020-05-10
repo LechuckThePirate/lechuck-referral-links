@@ -18,6 +18,7 @@ namespace LeChuck.ReferralLinks.Application
         public static string Help = "ayuda";
         public static string Broadcast = "enviar";
         public static string RegisterChannel = "añadircanal";
+        public static string ProgramLink = "programar";
 
         public static CommandModel[] CommandModels =
         {
@@ -36,6 +37,11 @@ namespace LeChuck.ReferralLinks.Application
                 CommandName = RegisterChannel, Enabled = true, AdminOnly = false, AvailableFor = ChannelOnly,
                 HelpString = "Registrar al bot en un canal"
             },
+            new CommandModel
+            {
+                CommandName = ProgramLink, Enabled = true, AdminOnly = true, AvailableFor = PrivateOnly,
+                HelpString = "Programar un link"
+            },
 #if DEBUG
             new CommandModel
             {
@@ -45,6 +51,7 @@ namespace LeChuck.ReferralLinks.Application
 
 #endif
         };
+
 
     }
 

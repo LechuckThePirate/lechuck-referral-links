@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using AutoMapper;
 using LeChuck.ReferralLinks.Application;
 using LeChuck.ReferralLinks.Application.Extensions;
 using LeChuck.ReferralLinks.Crosscutting.Extensions;
@@ -28,6 +30,9 @@ namespace LeChuck.ReferralLinks.Webhook
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => a.FullName.Contains("LeChuck."));
+            services.AddAutoMapper(configAction: cfg => { }, assemblies);
             services.AddControllers();
             services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddConsole());
             services.AddApplication(Configuration);

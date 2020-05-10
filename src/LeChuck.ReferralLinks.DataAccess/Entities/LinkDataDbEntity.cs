@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Amazon.DynamoDBv2.DataModel;
 using LeChuck.DataAccess.DynamoDb.Interfaces;
 using LeChuck.ReferralLinks.Domain.Models;
 
 namespace LeChuck.ReferralLinks.DataAccess.Entities
 {
-    public class TimedTaskDbEntity : IExpirableEntity, IAuditableEntity
+    public class LinkDataDbEntity : IExpirableEntity, IAuditableEntity
     {
-        [DynamoDBHashKey]
-        public Guid TaskId { get; set; }
-
-        public DateTime NextRun { get; set; }
-        public TimeSpan RunSpan { get; set; }
-        public LinkData Message { get; set; }
+        public Guid Id { get; set; }
+        public string PictureUrl { get; set; }
+        public string Title { get; set; }
+        public string FinalPrice { get; set; }
+        public string OriginalPrice { get; set; }
+        public string SavedPrice { get; set; }
+        public string LongUrl { get; set; }
+        public string ShortenedUrl { get; set; }
+        public List<Channel> Channels { get; set; }
         [DynamoDBProperty(StoreAsEpoch = true)]
         public DateTime? TimeToLive { get; set; }
         public DateTime? CreatedAt { get; set; }

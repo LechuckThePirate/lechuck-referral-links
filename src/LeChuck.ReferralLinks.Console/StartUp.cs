@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
+using AutoMapper;
 using LeChuck.ReferralLinks.Crosscutting.Classes;
 using LeChuck.ReferralLinks.Crosscutting.Extensions;
 using LeChuck.ReferralLinks.Domain.Models;
@@ -12,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Exceptions;
+using ServiceCollectionExtensions = LeChuck.ReferralLinks.DataAccess.Extensions.ServiceCollectionExtensions;
 
 namespace LeChuck.ReferralLinks.Console
 {
@@ -53,6 +57,8 @@ namespace LeChuck.ReferralLinks.Console
         {
             _timer.Mark("Register services", () =>
             {
+                Services.AddAutoMapper(configAction: cfg => { }, 
+                    typeof(LeChuck.ReferralLinks.DataAccess.Entities.LinkDataDbEntity).Assembly);
                 Services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddProvider(new OneLineLoggerProvider()).AddDebug());
                 Services.AddApplication(Configuration);
             });

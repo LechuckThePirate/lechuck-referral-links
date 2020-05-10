@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using LeChuck.DataAccess.DynamoDb;
 using LeChuck.ReferralLinks.Domain.Models;
 
-namespace LeChuck.ReferralLinks.Domain.Contracts.UnitsOfWork
+namespace LeChuck.ReferralLinks.Domain.UnitsOfWork
 {
     public interface IConfigUnitOfWork : IUnitOfWork
     {

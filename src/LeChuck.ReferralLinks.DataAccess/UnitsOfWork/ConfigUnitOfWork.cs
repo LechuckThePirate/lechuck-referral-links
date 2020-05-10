@@ -4,8 +4,8 @@ using AutoMapper;
 using LeChuck.ReferralLinks.DataAccess.Entities;
 using LeChuck.ReferralLinks.DataAccess.Repositories;
 using LeChuck.ReferralLinks.Domain;
-using LeChuck.ReferralLinks.Domain.Contracts.UnitsOfWork;
 using LeChuck.ReferralLinks.Domain.Models;
+using LeChuck.ReferralLinks.Domain.UnitsOfWork;
 
 namespace LeChuck.ReferralLinks.DataAccess.UnitsOfWork
 {

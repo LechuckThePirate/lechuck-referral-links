@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LeChuck.ReferralLinks.Domain.Models
 {
@@ -12,6 +13,7 @@ namespace LeChuck.ReferralLinks.Domain.Models
         public string SavedPrice { get; set; }
         public string LongUrl { get; set; }
         public string ShortenedUrl { get; set; }
+        public List<Channel> Channels { get; set; } = new List<Channel>();
 
         public LinkData()
         {

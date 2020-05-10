@@ -32,11 +32,19 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
 
         public bool CanParse(string url)
         {
-            var host = new Uri(url).Host?.ToLower();
-            if (string.IsNullOrEmpty(host))
+            try
+            {
+                var host = new Uri(url).Host?.ToLower();
+                if (string.IsNullOrEmpty(host))
+                    return false;
+                var result = AmazonHostRegex.IsMatch(url);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{ex.Message}\n{ex.StackTrace}");
                 return false;
-            var result = AmazonHostRegex.IsMatch(url);
-            return result;
+            }
         }
 
         public async Task<LinkData> ParseUrl(string url)

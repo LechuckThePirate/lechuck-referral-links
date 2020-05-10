@@ -25,11 +25,19 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
 
         public bool CanParse(string url)
         {
-            var host = new Uri(url).Host?.ToLower();
-            if (string.IsNullOrEmpty(host))
-                return false;
+            try
+            {
+                var host = new Uri(url).Host?.ToLower();
+                if (string.IsNullOrEmpty(host))
+                    return false;
 
-            return host.EndsWith(".aliexpress.com") || host.EndsWith("ali.ski");
+                return host.EndsWith(".aliexpress.com") || host.EndsWith("ali.ski");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{ex.Message}\n{ex.StackTrace}");
+                return false;
+            }
         }
 
         public async Task<LinkData> ParseUrl(string url)
