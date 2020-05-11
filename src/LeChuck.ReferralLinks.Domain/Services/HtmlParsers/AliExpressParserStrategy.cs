@@ -40,7 +40,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             }
         }
 
-        public async Task<LinkData> ParseUrl(string url)
+        public async Task<Link> ParseUrl(string url)
         {
             var content = await _httpClient.GetStringAsync(url);
 
@@ -57,7 +57,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             var title = pageModule.title;
             var price = priceModule.formatedActivityPrice;
 
-            return await Task.FromResult(new LinkData
+            return await Task.FromResult(new Link
             {
                 Title = title,
                 FinalPrice = price,

@@ -8,6 +8,11 @@ namespace LeChuck.ReferralLinks.Domain.Models
     {
         public string UserId { get; set; }
         public string Alias { get; set; }
-        public string Fullname { get; set; }
+        public string Name { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Alias ?? Name} ({UserId})";
+        }
     }
 }

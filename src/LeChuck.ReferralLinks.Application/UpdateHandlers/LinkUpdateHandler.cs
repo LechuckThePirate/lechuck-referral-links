@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Centvrio.Emoji;
+using Amazon.DynamoDBv2.Model.Internal.MarshallTransformations;
+using LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMachine;
 using LeChuck.ReferralLinks.Application.Views;
 using LeChuck.ReferralLinks.Domain;
-using LeChuck.ReferralLinks.Domain.Enums;
-using LeChuck.ReferralLinks.Domain.Interfaces;
+using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Domain.Services;
-using LeChuck.Telegram.Bot.Framework.Enums;
+using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Services;
 using Microsoft.Extensions.Logging;
@@ -19,34 +20,66 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
         private readonly ILogger<LinkUpdateHandler> _logger;
         private readonly IBotService _bot;
         private readonly ILinkService _linkService;
-        private readonly ILinkView _linkView;
+        private readonly IStateMachineFactory _stateMachineFactory;
 
         public LinkUpdateHandler(
-            ILogger<LinkUpdateHandler> logger, 
-            IBotService bot, 
+            ILogger<LinkUpdateHandler> logger,
+            IBotService bot,
             ILinkService linkService,
-            ILinkView linkView)
+            IStateMachineFactory stateMachineFactory
+            )
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
             _linkService = linkService ?? throw new ArgumentNullException(nameof(linkService));
-            _linkView = linkView ?? throw new ArgumentNullException(nameof(linkView));
+            _stateMachineFactory = stateMachineFactory ?? throw new ArgumentNullException(nameof(stateMachineFactory));
         }
 
-        public bool CanHandle(IUpdateContext update) => false; // update.Content.Any(c => c.Type == Constants.MessageContentType.Url);
+        public int Order { get; } = int.MaxValue;
 
-        public async Task HandleUpdate(IUpdateContext updateContext)
+        public bool CanHandle(IUpdateContext update) => update.Content.Any(c => c.Type == Constants.MessageContentType.Url);
+
+        public async Task<bool> HandleUpdate(IUpdateContext updateContext)
         {
             _logger.LogTrace($"Handling update: {updateContext}");
+            await _bot.DeleteMessageAsync(updateContext.ChatId, updateContext.MessageId ?? 0);
 
-            var url = updateContext.Content.FirstOrDefault(c => c.Type == Constants.MessageContentType.Url)?.Value;
-            if (string.IsNullOrEmpty(url))
-                return;
+            var processingMsgId = await _bot.SendTextMessageAsync(updateContext.ChatId, "Procesando enlace...");
 
-            var message = await _linkService.BuildMessage(url);
+            var urls = updateContext.Content
+                .Where(c => c.Type == Constants.MessageContentType.Url)
+                .Select(c => c.Value);
+
+            if (!urls.Any())
+            {
+                await _bot.DeleteMessageAsync(updateContext.ChatId, processingMsgId ?? 0);
+                return false;
+            }
+
+            var multiLink = new MultiLink();
+            Parallel.ForEach(urls,
+                url => { multiLink.Links.Add(_linkService.BuildMessage(url).GetAwaiter().GetResult()); });
+            multiLink.Links = multiLink.Links
+                .Select((m, i) =>
+                {
+                    m.Number = i + 1;
+                    return m;
+                }).ToList();
+
+            _logger.LogDebug($"Generated object:\n{JsonSerializer.Serialize(multiLink, new JsonSerializerOptions{WriteIndented = true})}");
+
+            await _bot.DeleteMessageAsync(updateContext.ChatId, processingMsgId ?? 0);
+
+            if (!multiLink.Links.Any())
+            {
+                return false;
+            }
 
             await _bot.DeleteMessageAsync(updateContext.ChatId, updateContext.MessageId ?? 0);
-            await _linkView.SendView(updateContext.ChatId, message);
+            var machine = await _stateMachineFactory.Create<IUpdateContext, MultiLink>(updateContext.User.UserId.ToString());
+            await machine.Run(ProgramLinkStateMachineWorkflow.StatesEnum.MenuState.ToString(), updateContext, multiLink);
+            return true;
+
         }
     }
 }

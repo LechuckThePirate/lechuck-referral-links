@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.DataAccess.Entities;
 using LeChuck.ReferralLinks.DataAccess.Repositories;
@@ -18,7 +15,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines
             _repository = repository;
         }
 
-        public async Task<(Type type, string data)> Retrieve(string machineId)
+        public async Task<(Type type, string data)> RetrieveMachine(string machineId)
         {
             var entity = await _repository.LoadItemAsync(machineId);
             if (entity != null)
@@ -37,9 +34,14 @@ namespace LeChuck.ReferralLinks.Application.StateMachines
                 MachineId = machineId,
                 Type = type.AssemblyQualifiedName,
                 Data = machineData,
-                TimeToLive = DateTime.Now.AddMinutes(5)
+                TimeToLive = DateTime.Now.AddHours(1) // Todo : set by config
             };
             await _repository.SaveItemAsync(entity);
+        }
+
+        public async Task DeleteMachine(string machineId)
+        {
+            await _repository.DeleteItemByIdAsync(machineId);
         }
     }
 }

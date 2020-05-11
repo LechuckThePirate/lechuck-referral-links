@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LeChuck.ReferralLinks.Application.StateMachines.ProgramLink;
+using LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMachine;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Models;
 using LeChuck.Telegram.Bot.Framework.Services;
 
-namespace LeChuck.ReferralLinks.Application.StateMachines.Strategies.Views
+namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Views
 {
-    public class SelectChannelsStateView : ILinkDataStrategy
+    public class SelectChannelsStateView : IMultiLinkStrategy
     {
         private readonly IBotService _bot;
         private readonly AppConfiguration _configuration;
@@ -25,7 +25,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Strategies.Views
 
         public bool CanHandle(string key) => key == ProgramLinkStateMachineWorkflow.StatesEnum.SelectChannelsState.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, LinkData entity)
+        public async Task<bool> Handle(IUpdateContext context, Domain.Models.MultiLink entity)
         {
             if (context.CallbackMessageId.HasValue)
                 await _bot.DeleteMessageAsync(context.ChatId, context.CallbackMessageId.Value);
@@ -62,7 +62,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Strategies.Views
 
             buttons.Add(new BotButton("Volver", ProgramLinkStateMachineWorkflow.CommandsEnum.BackCmd.ToString()));
 
-            await _bot.SendTextMessageAsync(context.UserId, message.ToString(), TextModeEnum.Html,
+            await _bot.SendTextMessageAsync(context.User.UserId, message.ToString(), TextModeEnum.Html,
                 buttons);
 
             return true;

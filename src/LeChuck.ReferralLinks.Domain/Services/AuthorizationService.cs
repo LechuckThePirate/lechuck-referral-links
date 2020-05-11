@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using LeChuck.ReferralLinks.Domain.Models;
+using LeChuck.Telegram.Bot.Framework.Enums;
 
 namespace LeChuck.ReferralLinks.Domain.Services
 {
@@ -15,14 +16,21 @@ namespace LeChuck.ReferralLinks.Domain.Services
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
-        public bool IsRootUser(long userId)
+        public bool IsRoot(long userId)
         {
             return userId.ToString() == _config.RootUserId;
         }
 
+        public UserTypeEnum GetUserType(long userId)
+        {
+            if (IsRoot(userId)) return UserTypeEnum.Root;
+            if (IsAdmin(userId)) return UserTypeEnum.Admin;
+            return UserTypeEnum.RegularUser;
+        }
+
         public bool IsAdmin(long userId)
         {
-            return IsRootUser(userId) || (_config.Users?.Any(u => u.UserId == userId.ToString()) ?? false);
+            return IsRoot(userId) || (_config.Users?.Any(u => u.UserId == userId.ToString()) ?? false);
         }
     }
 

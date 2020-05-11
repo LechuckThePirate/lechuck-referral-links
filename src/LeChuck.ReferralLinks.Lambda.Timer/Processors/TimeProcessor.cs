@@ -8,12 +8,12 @@ namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
 {
     public interface ITimeProcessor
     {
-        Task SetNextRun(TimedTaskDbEntity data);
+        Task SetNextRun(MultiLinkDbEntity data);
     }
 
     public class TimeProcessor : ITimeProcessor
     {
-        public Task SetNextRun(TimedTaskDbEntity data)
+        public Task SetNextRun(MultiLinkDbEntity data)
         {
             var nextRun = DateTime.Now.AddMinutes(data.RunSpan.Minutes);
             throw new NotImplementedException();

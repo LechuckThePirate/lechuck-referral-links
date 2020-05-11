@@ -15,7 +15,7 @@ namespace LeChuck.ReferralLinks.Lambda.Timer.Extensions
                 .Where(a => a.FullName.Contains("LeChuck."));
             services.AddAutoMapper(configAction: cfg => { }, assemblies);
             services.AddTransient<ISweepProcessor, SweepProcessor>();
-            services.AddTransient<ITimedTasksRepository, TimedTasksRepository>();
+            services.AddTransient<IMultiLinkRepository, IMultiLinkRepository>();
             return services;
         }
     }

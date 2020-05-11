@@ -47,7 +47,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             }
         }
 
-        public async Task<LinkData> ParseUrl(string url)
+        public async Task<Link> ParseUrl(string url)
         {
             var content = await _httpClient.GetStringAsync(url);
 
@@ -57,7 +57,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             var saved = PriceSavesRegex.GetMatch(content);
             var originalPrice = OriginalPriceRegex.GetMatch(content);
 
-            return new LinkData
+            return new Link
             {
                 Title = title,
                 PictureUrl = pictureUrl,

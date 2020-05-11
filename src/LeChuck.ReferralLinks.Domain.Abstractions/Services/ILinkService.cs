@@ -5,6 +5,6 @@ namespace LeChuck.ReferralLinks.Domain.Services
 {
     public interface ILinkService
     {
-        Task<LinkData> BuildMessage(string url);
+        Task<Link> BuildMessage(string url);
     }
 }

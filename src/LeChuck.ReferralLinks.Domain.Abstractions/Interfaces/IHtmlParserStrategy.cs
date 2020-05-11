@@ -6,6 +6,6 @@ namespace LeChuck.ReferralLinks.Domain.Interfaces
     public interface IHtmlParserStrategy
     {
         bool CanParse(string url);
-        Task<LinkData> ParseUrl(string url);
+        Task<Link> ParseUrl(string url);
     }
 }

@@ -58,7 +58,7 @@ namespace LeChuck.ReferralLinks.Console
             _timer.Mark("Register services", () =>
             {
                 Services.AddAutoMapper(configAction: cfg => { }, 
-                    typeof(LeChuck.ReferralLinks.DataAccess.Entities.LinkDataDbEntity).Assembly);
+                    typeof(LeChuck.ReferralLinks.DataAccess.Entities.MultiLinkDbEntity).Assembly);
                 Services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddProvider(new OneLineLoggerProvider()).AddDebug());
                 Services.AddApplication(Configuration);
             });

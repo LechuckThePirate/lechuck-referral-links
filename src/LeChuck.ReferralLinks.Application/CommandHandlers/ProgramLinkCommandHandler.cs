@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -21,8 +22,8 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
 
         public async Task HandleCommand(IUpdateContext updateContext)
         {
-            var machine = await _machineFactory.Create<IUpdateContext>(updateContext.UserId.ToString());
-            await machine.Run(updateContext);
+            var machine = await _machineFactory.Create<IUpdateContext, MultiLink>(updateContext.User.UserId.ToString());
+            await machine.Run(null, updateContext);
         }
     }
 }

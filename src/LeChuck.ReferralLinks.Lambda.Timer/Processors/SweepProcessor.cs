@@ -23,11 +23,14 @@ namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
     public class SweepProcessor : ISweepProcessor
     {
         private readonly ILogger<SweepProcessor> _logger;
-        private readonly ITimedTasksRepository _repository;
+        private readonly IMultiLinkRepository _repository;
         private readonly IBotService _bot;
         private readonly AppConfiguration _config;
 
-        public SweepProcessor(ILogger<SweepProcessor> logger, ITimedTasksRepository repository, IBotService bot, AppConfiguration config)
+        public SweepProcessor(ILogger<SweepProcessor> logger,
+            IMultiLinkRepository repository,
+            IBotService bot,
+            AppConfiguration config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -39,17 +42,17 @@ namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
         {
             var sweepDatetime = DateTime.Now;
             _logger.LogInformation($"Initiating sweep at {sweepDatetime:u}");
-            
+
             var pending = (await _repository.GetPendingTasks(sweepDatetime)).ToList();
             _logger.LogInformation($"Processing {pending.Count()} messages ...");
-            
+
             var tasks = pending.SelectMany(ProcessMessage).ToList();
             await Task.WhenAll(tasks);
-            
+
             _logger.LogInformation($"Done! ... {tasks.Count()} messages sent.");
         }
 
-        async Task SendMessage(Channel channel, LinkData data)
+        async Task SendMessage(Channel channel, Link data)
         {
             try
             {
@@ -74,12 +77,23 @@ namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
             }
         }
 
-        List<Task> ProcessMessage(TimedTaskDbEntity data)
+        List<Task> ProcessMessage(MultiLinkDbEntity data)
         {
-            var tasks = data.Message.Channels.Select(channel => SendMessage(channel, data.Message)).ToList();
-            data.NextRun = DateTime.Now.AddMinutes(data.RunSpan.Minutes);
-            tasks.Add(_repository.SaveItemAsync(data));
-            return tasks;
+            // If no channels were specified, use them all
+            var channels = data.Channels.Any()
+                ? data.Channels
+                : _config.Channels;
+
+            var message = data.Links.FirstOrDefault(l => l.Number == ++data.LastMessageSent);
+            if (message != null)
+            {
+                var tasks = channels.Select(channel => SendMessage(channel, message)).ToList();
+                data.NextRun = DateTime.Now.AddMinutes(data.RunSpan.Minutes);
+                tasks.Add(_repository.SaveItemAsync(data));
+                return tasks;
+            }
+
+            return new List<Task> { };
         }
     }
 }

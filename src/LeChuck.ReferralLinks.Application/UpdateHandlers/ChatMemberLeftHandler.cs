@@ -23,15 +23,18 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        public int Order { get; } = int.MaxValue;
+
         public bool CanHandle(IUpdateContext update) =>
             update.MessageType == MessageTypeEnum.ChatMemberLeft
             && update.AffectedUserIds.Any(u => u == _config.MeId);
 
-        public async Task HandleUpdate(IUpdateContext updateContext)
+        public async Task<bool> HandleUpdate(IUpdateContext updateContext)
         {
             var channel = new Channel(updateContext.ChatId, updateContext.ChatName);
             _logger.LogInformation($"The bot left channel {channel}");
             await _channelService.RemoveBotFromChannel(channel);
+            return true;
         }
 
     }

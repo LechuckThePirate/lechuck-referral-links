@@ -7,7 +7,6 @@ namespace LeChuck.ReferralLinks.Domain.Services
 {
     public interface IAuthorizationService : IBotAuthorizer
     {
-        bool IsRootUser(long userId);
     }
 
 }

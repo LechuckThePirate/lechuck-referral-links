@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LeChuck.ReferralLinks.Application.StateMachines.ProgramLink;
+using LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMachine;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Services;
 using Microsoft.Extensions.Logging;
 
-namespace LeChuck.ReferralLinks.Application.StateMachines.Strategies.Commands
+namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Commands
 {
-    public class AddChannelCommandStrategy : ILinkDataStrategy
+    public class AddChannelCommandStrategy : IMultiLinkStrategy
     {
         private readonly IBotService _bot;
         private readonly ILogger<AddChannelCommandStrategy> _logger;
@@ -25,7 +25,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Strategies.Commands
         public bool CanHandle(string key) =>
             key == ProgramLinkStateMachineWorkflow.CommandsEnum.AddChannelCmd.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, LinkData entity)
+        public async Task<bool> Handle(IUpdateContext context, Domain.Models.MultiLink entity)
         {
             if (!long.TryParse(context.CallbackButtonData[1], out long channelId))
             {

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LeChuck.ReferralLinks.Application.StateMachines.ProgramLink;
+using LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMachine;
 using LeChuck.ReferralLinks.Domain.Interfaces;
-using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Domain.Services;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Services;
 
-namespace LeChuck.ReferralLinks.Application.StateMachines.Strategies.Commands
+namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Commands
 {
-    public class SetUrlCommandStrategy : ILinkDataStrategy
+    public class SetUrlCommandStrategy : IMultiLinkStrategy
     {
         private readonly IBotService _bot;
         private readonly IHtmlParserProvider _htmlParserProvider;
@@ -25,12 +24,12 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Strategies.Commands
 
         public bool CanHandle(string key) => key == ProgramLinkStateMachineWorkflow.CommandsEnum.SetUrlCmd.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, LinkData entity)
+        public async Task<bool> Handle(IUpdateContext context, Domain.Models.MultiLink entity)
         {
             var content = context.Content.FirstOrDefault(c => c.Type == "Url");
             if (content == null)
             {
-                await _bot.SendTextMessageAsync(context.ChatId, "No has introducido un enlace");
+                await _bot.SendTextMessageAsync(context.ChatId, "No has introducido un enlace. Introduce un enlace soportado o /cancelar");
                 return false;
             }
 
@@ -45,13 +44,14 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Strategies.Commands
             }
 
             var message = await _linkService.BuildMessage(url);
-            entity.Title = message.Title;
-            entity.FinalPrice = message.FinalPrice;
-            entity.LongUrl = message.LongUrl;
-            entity.ShortenedUrl = message.ShortenedUrl;
-            entity.OriginalPrice = message.OriginalPrice;
-            entity.SavedPrice = message.SavedPrice;
-            entity.PictureUrl = message.PictureUrl;
+            // TODO: Refactor
+            //entity.Title = message.Title;
+            //entity.FinalPrice = message.FinalPrice;
+            //entity.LongUrl = message.LongUrl;
+            //entity.ShortenedUrl = message.ShortenedUrl;
+            //entity.OriginalPrice = message.OriginalPrice;
+            //entity.SavedPrice = message.SavedPrice;
+            //entity.PictureUrl = message.PictureUrl;
             
             return true;
         }

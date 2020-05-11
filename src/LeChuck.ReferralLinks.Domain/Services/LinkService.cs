@@ -22,7 +22,7 @@ namespace LeChuck.ReferralLinks.Domain.Services
             _urlShortenerProvider = urlShortenerProvider ?? throw new ArgumentNullException(nameof(urlShortenerProvider));
         }
 
-        public async Task<LinkData> BuildMessage(string url)
+        public async Task<Link> BuildMessage(string url)
         {
             var shortener = _urlShortenerProvider.GetServiceOrDefault(UrlShortenersEnum.None);
             var parser = _htmlParserProvider.GetParserFor(url);

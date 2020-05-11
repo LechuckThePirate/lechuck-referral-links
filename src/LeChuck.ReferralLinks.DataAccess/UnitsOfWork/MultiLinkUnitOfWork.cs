@@ -9,20 +9,20 @@ using LeChuck.ReferralLinks.Domain.UnitsOfWork;
 
 namespace LeChuck.ReferralLinks.DataAccess.UnitsOfWork
 {
-    public class LinkDataUnitOfWork : ILinkDataUnitOfWork
+    public class MultiLinkUnitOfWork : IMultiLinkUnitOfWork
     {
         private readonly IMapper _mapper;
-        private readonly ILinkDataRepository _repository;
+        private readonly IMultiLinkRepository _repository;
 
-        public LinkDataUnitOfWork(IMapper mapper, ILinkDataRepository repository)
+        public MultiLinkUnitOfWork(IMapper mapper, IMultiLinkRepository repository)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task AddLinkData(LinkData entity, DateTime? expires = null)
+        public async Task AddLinkData(MultiLink entity, DateTime? expires = null)
         {
-            var dbEntity = _mapper.Map<LinkDataDbEntity>(entity);
+            var dbEntity = _mapper.Map<MultiLinkDbEntity>(entity);
             if (expires.HasValue)
                 dbEntity.TimeToLive = expires.Value;
 

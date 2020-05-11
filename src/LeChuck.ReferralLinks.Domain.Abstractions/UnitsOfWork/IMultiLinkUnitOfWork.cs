@@ -4,8 +4,8 @@ using LeChuck.ReferralLinks.Domain.Models;
 
 namespace LeChuck.ReferralLinks.Domain.UnitsOfWork
 {
-    public interface ILinkDataUnitOfWork : IUnitOfWork
+    public interface IMultiLinkUnitOfWork : IUnitOfWork
     {
-        Task AddLinkData(LinkData entity, DateTime? expires = null);
+        Task AddLinkData(MultiLink entity, DateTime? expires = null);
     }
 }
