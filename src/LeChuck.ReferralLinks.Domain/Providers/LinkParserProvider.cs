@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 
-namespace LeChuck.ReferralLinks.Domain.Services
+namespace LeChuck.ReferralLinks.Domain.Providers
 {
-    public class HtmlHtmlParserProvider : IHtmlParserProvider
+    public class LinkParserProvider : ILinkParserProvider
     {
-        private readonly IEnumerable<IHtmlParserStrategy> _parsers;
+        private readonly IEnumerable<ILinkParserStrategy> _parsers;
 
-        public HtmlHtmlParserProvider(IEnumerable<IHtmlParserStrategy> parsers)
+        public LinkParserProvider(IEnumerable<ILinkParserStrategy> parsers)
         {
             _parsers = parsers ?? throw new ArgumentNullException(nameof(parsers));
         }
 
-        public IHtmlParserStrategy GetParserFor(string url)
+        public ILinkParserStrategy GetParserFor(string url)
         {
             return _parsers.FirstOrDefault(p => p.CanParse(url));
         }

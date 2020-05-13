@@ -7,11 +7,11 @@ using LeChuck.Telegram.Bot.Framework.Enums;
 
 namespace LeChuck.ReferralLinks.Domain.Services
 {
-    public class AuthorizationService : IAuthorizationService
+    public class BotAuthorizationService : IAuthorizationService
     {
         private readonly AppConfiguration _config;
 
-        public AuthorizationService(AppConfiguration config)
+        public BotAuthorizationService(AppConfiguration config)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }

@@ -6,9 +6,32 @@ namespace LeChuck.ReferralLinks.Domain
     public class Constants
     {
         public const string TelegramTokenValueName = "Config:TelegramToken";
+        
         public const string TelegramRootUserId = "Config:RootUserId";
         public const string BitLyTokenValueName = "Config:BitLyToken";
         public static string BitLyEndpointValueName = "Config:BitLyEndpoint";
+
+        public class Providers
+        {
+            public class Affiliates
+            {
+                public const string Admitad = nameof(Admitad);
+                public const string Amazon = nameof(Amazon);
+            }
+
+            public class Shorteners
+            {
+                public const string BitLy = nameof(BitLy);
+            }
+
+            public class Vendors
+            {
+                public const string AliExpress = nameof(AliExpress);
+                public const string Amazon = nameof(Amazon);
+                public const string BangGood = nameof(BangGood);
+                public const string PatPat = nameof(PatPat);
+            }
+        }
 
         public class MessageContentType
         {

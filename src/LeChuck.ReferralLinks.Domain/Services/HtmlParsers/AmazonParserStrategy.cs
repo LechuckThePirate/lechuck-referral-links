@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
 {
-    public class AmazonParserStrategy : IHtmlParserStrategy
+    public class AmazonParserStrategy : ILinkParserStrategy
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<AmazonParserStrategy> _logger;

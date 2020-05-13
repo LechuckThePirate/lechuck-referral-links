@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
 {
-    public class AliExpressParserStrategy : IHtmlParserStrategy
+    public class AliExpressParserStrategy : ILinkParserStrategy
     {
         private readonly ILogger<AliExpressParserStrategy> _logger;
         private readonly HttpClient _httpClient;
@@ -23,7 +23,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             _httpClient = httpClientFactory.CreateClient();
         }
 
-        public bool CanParse(string url)
+        public bool CanParse(string url) 
         {
             try
             {
@@ -31,7 +31,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
                 if (string.IsNullOrEmpty(host))
                     return false;
 
-                return host.EndsWith(".aliexpress.com") || host.EndsWith("ali.ski");
+                return host.EndsWith(".aliexpress.com") || host.EndsWith("ali.ski") || host.EndsWith("alitems.com");
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
 
         public async Task<Link> ParseUrl(string url)
         {
-            var content = await _httpClient.GetStringAsync(url);
+            var content = await GetContent(url);
 
             var pageModule = GetObjectFromResponse("pageModule", PageModuleRegex, content);
             var priceModule = GetObjectFromResponse("priceModule", PriceModuleRegex, content);
@@ -90,6 +90,13 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
                 _logger.LogWarning($"Could not deserialize the content of {objname}!\nContent:\n{stringToParse}");
                 return null;
             }
+        }
+
+        private async Task<string> GetContent(string url)
+        {
+            var response = await _httpClient.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            return content;
         }
 
     }
