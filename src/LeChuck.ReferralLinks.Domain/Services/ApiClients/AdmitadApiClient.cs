@@ -33,20 +33,6 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
             IConfigUnitOfWork configUnitOfWork, ILogger<AdmitadApiClient> logger)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
-            // TODO: Save this in config
-            _config.AffiliateServices.Add(new AffiliateServiceConfig
-            {
-                Service = Constants.Providers.Affiliates.Admitad,
-                ApiEndpoint = "https://api.admitad.com/",
-                AuthEndpoint = "https://api.admitad.com/token/",
-                Credentials = new ApiCredentials
-                {
-                    AuthType = "Basic",
-                    ClientId = "e1SesygdtGivbKnbFZNjejWuUOMH76",
-                    ClientSecret = "zuO92jNjVjVSAcxj7PAwOn3ypy5S7q"
-                }
-            });
-
             _clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
             _configUnitOfWork = configUnitOfWork ?? throw new ArgumentNullException(nameof(configUnitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
