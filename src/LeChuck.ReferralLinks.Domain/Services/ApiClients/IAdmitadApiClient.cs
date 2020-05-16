@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿#region using directives
+
+using System.Threading.Tasks;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
 {

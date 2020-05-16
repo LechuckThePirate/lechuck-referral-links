@@ -1,13 +1,14 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+#region using directives
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Webhook
 {
     /// <summary>
-    /// The Main function can be used to run the ASP.NET Core application locally using the Kestrel webserver.
+    ///     The Main function can be used to run the ASP.NET Core application locally using the Kestrel webserver.
     /// </summary>
     public class LocalEntryPoint
     {
@@ -18,9 +19,6 @@ namespace LeChuck.ReferralLinks.Webhook
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

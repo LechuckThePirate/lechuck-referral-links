@@ -1,10 +1,15 @@
-﻿using System;
+﻿#region using directives
+
+using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Enums;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Domain.Providers;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Services
 {
@@ -14,49 +19,64 @@ namespace LeChuck.ReferralLinks.Domain.Services
         private readonly IAffiliateProvider _affiliateProvider;
         private readonly ILinkParserProvider _linkParserProvider;
         private readonly IUrlShortenerProvider _urlShortenerProvider;
+        private readonly IHttpClientFactory _clientFactory;
 
         public LinkService(ILogger<LinkService> logger,
             IAffiliateProvider affiliateProvider,
             ILinkParserProvider linkParserProvider,
-            IUrlShortenerProvider urlShortenerProvider)
+            IUrlShortenerProvider urlShortenerProvider,
+            IHttpClientFactory clientFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _affiliateProvider = affiliateProvider ?? throw new ArgumentNullException(nameof(affiliateProvider));
             _linkParserProvider = linkParserProvider ?? throw new ArgumentNullException(nameof(linkParserProvider));
-            _urlShortenerProvider = urlShortenerProvider ?? throw new ArgumentNullException(nameof(urlShortenerProvider));
+            _urlShortenerProvider =
+                urlShortenerProvider ?? throw new ArgumentNullException(nameof(urlShortenerProvider));
+            _clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
         }
 
         public async Task<Link> BuildMessage(string url)
         {
-            var affiliate = _affiliateProvider.GetAffiliateFor(url);
-            if (affiliate != null)
+            try
             {
-                url = await affiliate.GetCommisionedDeepLink(url);
+                using var client = _clientFactory.CreateClient();
+                var content = await client.GetStringAsync(url);
+
+                var affiliate = _affiliateProvider.GetAffiliateFor(url);
+                if (affiliate != null)
+                {
+                    url = await affiliate.GetCommisionedDeepLink(url);
+                }
+                else
+                {
+                    _logger.LogWarning($"No affiliate for url: {url}");
+                }
+
+                var parser = _linkParserProvider.GetParserFor(content);
+                if (parser == null)
+                {
+                    _logger.LogWarning($"No parser for url: {url}");
+                    return null;
+                }
+
+                var message = parser.ParseContent(content);
+                var shortener = _urlShortenerProvider.GetServiceOrDefault(UrlShortenersEnum.None);
+                var shortUrl = shortener.ShortenUrl(url);
+
+                Task.WaitAll(message, shortUrl);
+
+                if (await message == null || await shortUrl == null)
+                    return null;
+
+                message.Result.ShortenedUrl = shortUrl.Result;
+
+                return await message;
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogWarning($"No affiliate for url: {url}");
+                _logger.LogError($"Error {ex.Message}\n{ex.StackTrace}");
+                throw;
             }
-
-            var parser = _linkParserProvider.GetParserFor(url);
-            if (parser == null)
-            {
-                _logger.LogWarning($"No parser for url: {url}");
-                return null;
-            }
-
-            var message = parser.ParseUrl(url);
-            var shortener = _urlShortenerProvider.GetServiceOrDefault(UrlShortenersEnum.BitLy);
-            var shortUrl = shortener.ShortenUrl(url);
-
-            Task.WaitAll(message, shortUrl);
-
-            if (await message == null || await shortUrl == null)
-                return null;
-
-            message.Result.ShortenedUrl = shortUrl.Result;
-
-            return await message;
         }
     }
 }

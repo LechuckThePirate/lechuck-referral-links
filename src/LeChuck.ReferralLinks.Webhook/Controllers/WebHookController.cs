@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Threading.Tasks;
 using LeChuck.Telegram.Bot.Framework.Processors;
 using LeChuck.Telegram.Bot.Framework.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Webhook.Controllers
 {
@@ -47,7 +51,7 @@ namespace LeChuck.ReferralLinks.Webhook.Controllers
             var apiEndpoint = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/webhook/message";
             _logger.LogInformation($"Registering '{apiEndpoint}'");
             await _bot.SetWebhookAsync(apiEndpoint);
-            _logger.LogInformation($"Registered in Telegram!");
+            _logger.LogInformation("Registered in Telegram!");
             return Ok($"Webhook registered to {apiEndpoint}");
         }
 
@@ -60,5 +64,4 @@ namespace LeChuck.ReferralLinks.Webhook.Controllers
             return Ok("Webhook deleted successfully");
         }
     }
-
 }

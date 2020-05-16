@@ -1,20 +1,17 @@
+#region using directives
+
 using System;
 using System.Linq;
 using AutoMapper;
-using LeChuck.ReferralLinks.Application;
-using LeChuck.ReferralLinks.Application.Extensions;
 using LeChuck.ReferralLinks.Crosscutting.Extensions;
-using LeChuck.ReferralLinks.DataAccess.Extensions;
-using LeChuck.ReferralLinks.Domain.Extensions;
-using LeChuck.ReferralLinks.Domain.Models;
-using LeChuck.Telegram.Bot.FrameWork.Extensions;
-using LeChuck.Telegram.Bot.Framework.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Webhook
 {
@@ -52,10 +49,7 @@ namespace LeChuck.ReferralLinks.Webhook
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,6 +12,8 @@ using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Domain.UnitsOfWork;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
 {
@@ -29,7 +33,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
             public string refresh_token { get; set; }
         }
 
-        public AdmitadApiClient(AppConfiguration config, IHttpClientFactory clientFactory, 
+        public AdmitadApiClient(AppConfiguration config, IHttpClientFactory clientFactory,
             IConfigUnitOfWork configUnitOfWork, ILogger<AdmitadApiClient> logger)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
@@ -37,7 +41,6 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
             _configUnitOfWork = configUnitOfWork ?? throw new ArgumentNullException(nameof(configUnitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _admitad = _config.GetAffiliateConfig(Constants.Providers.Affiliates.Admitad);
-
         }
 
         public async Task<bool> Authenticate()
@@ -58,6 +61,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
                 await UpdateConfig(authResponse, credentials);
                 return true;
             }
+
             _logger.LogError($"Failed to authenticate to Admitad: {response.StatusCode.ToString()}\n" +
                              $"{JsonSerializer.Serialize(response)}");
             return false;
@@ -69,7 +73,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
             {
                 throw new AuthenticationException();
             }
-                
+
             var credentials = _admitad.Credentials;
 
             string endpoint =
@@ -93,7 +97,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
         {
             var headerValue = $"{credentials.ClientId}:{credentials.ClientSecret}";
             var base64String = Convert.ToBase64String(Encoding.ASCII.GetBytes(headerValue));
-            return new AuthenticationHeaderValue(credentials.AuthType,base64String);
+            return new AuthenticationHeaderValue(credentials.AuthType, base64String);
         }
 
         private HttpRequestMessage GetAuthRequest(string url, ApiCredentials credentials)
@@ -120,6 +124,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
                     .AddSeconds(authResponse.expires_in ?? 0)
                     .AddHours(-1); // let's give an hour margin for the token to expire
             }
+
             credentials.RefreshToken = authResponse.refresh_token;
 
             await _configUnitOfWork.SaveConfig(_config);

@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region using directives
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Models;
@@ -7,6 +8,8 @@ using LeChuck.ReferralLinks.Domain.Services;
 using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.UpdateHandlers
 {
@@ -16,7 +19,8 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
         private readonly IChannelService _channelService;
         private readonly ILogger<ChatMemberLeftHandler> _logger;
 
-        public ChatMemberLeftHandler(AppConfiguration config, IChannelService channelService, ILogger<ChatMemberLeftHandler> logger)
+        public ChatMemberLeftHandler(AppConfiguration config, IChannelService channelService,
+            ILogger<ChatMemberLeftHandler> logger)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
             _channelService = channelService ?? throw new ArgumentNullException(nameof(channelService));
@@ -36,6 +40,5 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
             await _channelService.RemoveBotFromChannel(channel);
             return true;
         }
-
     }
 }

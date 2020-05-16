@@ -1,11 +1,17 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMachine;
 using LeChuck.ReferralLinks.Domain.Interfaces;
+using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Domain.Services;
+using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Services;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Commands
 {
@@ -24,12 +30,14 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
 
         public bool CanHandle(string key) => key == ProgramLinkStateMachineWorkflow.CommandsEnum.SetUrlCmd.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, Domain.Models.MultiLink entity)
+        public async Task<bool> Handle(IUpdateContext context, MultiLink entity,
+            IStateMachine<IUpdateContext, MultiLink> stateMachine)
         {
             var content = context.Content.FirstOrDefault(c => c.Type == "Url");
             if (content == null)
             {
-                await _bot.SendTextMessageAsync(context.ChatId, "No has introducido un enlace. Introduce un enlace soportado o /cancelar");
+                await _bot.SendTextMessageAsync(context.ChatId,
+                    "No has introducido un enlace. Introduce un enlace soportado o /cancelar");
                 return false;
             }
 
@@ -52,7 +60,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
             //entity.OriginalPrice = message.OriginalPrice;
             //entity.SavedPrice = message.SavedPrice;
             //entity.PictureUrl = message.PictureUrl;
-            
+
             return true;
         }
     }

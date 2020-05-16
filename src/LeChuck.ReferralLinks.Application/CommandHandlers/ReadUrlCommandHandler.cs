@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Services;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.CommandHandlers
 {
@@ -16,14 +20,14 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         }
 
-        public bool CanHandle(string command) => false;
+        public bool CanHandle(string command) => command == Commands.ReadUrl;
 
         public async Task HandleCommand(IUpdateContext updateContext)
         {
             var url = updateContext.MessageText.Split(" ");
             if (url.Length == 2)
             {
-                var content = await new HttpClient().GetStringAsync(url[1].Trim());
+                var content = await GetContent(url[1].Trim());
                 await using (var stream = new MemoryStream())
                 await using (var writer = new StreamWriter(stream))
                 {
@@ -32,11 +36,16 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
                     stream.Position = 0;
                     await _bot.SendFileAsync(updateContext.ChatId, stream, $"{DateTime.Now:yyyy-MM-dd-hhmmss}.txt");
                 }
-                       
+
                 return;
             }
 
             await _bot.SendTextMessageAsync(updateContext.ChatId, "No url was provided");
+        }
+
+        private async Task<string> GetContent(string url)
+        {
+            return await new HttpClient().GetStringAsync(url);
         }
     }
 }

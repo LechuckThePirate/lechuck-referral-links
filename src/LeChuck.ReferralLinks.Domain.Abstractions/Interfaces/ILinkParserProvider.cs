@@ -2,6 +2,6 @@
 {
     public interface ILinkParserProvider
     {
-        ILinkParserStrategy GetParserFor(string url);
+        ILinkParserStrategy GetParserFor(string content);
     }
 }

@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 using LeChuck.ReferralLinks.Domain.Services.ApiClients;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Services.Affiliates
 {

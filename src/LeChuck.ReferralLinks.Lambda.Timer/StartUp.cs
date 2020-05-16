@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿#region using directives
+
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
 using LeChuck.ReferralLinks.Domain;
-using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Lambda.Timer.Extensions;
 using LeChuck.ReferralLinks.Lambda.Timer.Processors;
 using LeChuck.Telegram.Bot.FrameWork.Extensions;
@@ -11,6 +10,8 @@ using LeChuck.Telegram.Bot.Framework.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Lambda.Timer
 {
@@ -34,8 +35,8 @@ namespace LeChuck.ReferralLinks.Lambda.Timer
             {
                 Configuration = _configurationBuilder
                     .AddJsonFile("appsettings.json", false)
-                    .AddSystemsManager($"/ReferralLink",
-                        new AWSOptions { Region = RegionEndpoint.EUWest1 })
+                    .AddSystemsManager("/ReferralLink",
+                        new AWSOptions {Region = RegionEndpoint.EUWest1})
                     .Build();
             });
 
@@ -50,7 +51,7 @@ namespace LeChuck.ReferralLinks.Lambda.Timer
                 Services.AddTelegramBotFramework(new TelegramBotFrameworkConfiguration
                 {
                     BotKey = Configuration.GetSection(Constants.TelegramTokenValueName).Value
-                }, commandModels: new CommandModel[]{} );
+                }, commandModels: new CommandModel[] { });
                 Services.AddTimerLambda();
             });
 
@@ -59,10 +60,8 @@ namespace LeChuck.ReferralLinks.Lambda.Timer
 
         public StartUp LoadServices()
         {
-            _timer.Mark("Load Services", () =>
-                {
-                    _sweepProcessor = Services.BuildServiceProvider().GetRequiredService<ISweepProcessor>();
-                });
+            _timer.Mark("Load Services",
+                () => { _sweepProcessor = Services.BuildServiceProvider().GetRequiredService<ISweepProcessor>(); });
             return this;
         }
 

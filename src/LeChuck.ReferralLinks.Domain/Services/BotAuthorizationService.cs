@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region using directives
+
+using System;
 using System.Linq;
-using System.Text;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.Telegram.Bot.Framework.Enums;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Services
 {
@@ -33,5 +35,4 @@ namespace LeChuck.ReferralLinks.Domain.Services
             return IsRoot(userId) || (_config.Users?.Any(u => u.UserId == userId.ToString()) ?? false);
         }
     }
-
 }

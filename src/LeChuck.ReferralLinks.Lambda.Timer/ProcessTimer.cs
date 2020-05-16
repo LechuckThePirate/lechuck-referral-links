@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Lambda.Timer
 {
@@ -35,7 +39,7 @@ namespace LeChuck.ReferralLinks.Lambda.Timer
         public void LogMarks()
         {
             Console.WriteLine("Initialization times");
-            Marks.ForEach(m => System.Console.WriteLine($" - {m.Label}: {m.Elapsed}"));
+            Marks.ForEach(m => Console.WriteLine($" - {m.Label}: {m.Elapsed}"));
             Console.WriteLine($"Total time: {Total()}");
         }
     }

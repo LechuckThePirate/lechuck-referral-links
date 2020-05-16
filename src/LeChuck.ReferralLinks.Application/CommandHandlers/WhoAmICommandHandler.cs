@@ -1,10 +1,13 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Models;
-using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Services;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.CommandHandlers
 {
@@ -39,6 +42,7 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
             {
                 message += " - No estas registrado\n";
             }
+
             message += $" - Rol: {role}";
 
             await _botService.SendTextMessageAsync(updateContext.User.UserId, message);

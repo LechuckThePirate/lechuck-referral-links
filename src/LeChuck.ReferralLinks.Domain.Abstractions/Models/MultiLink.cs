@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Collections.Generic;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Models
 {
@@ -9,6 +13,7 @@ namespace LeChuck.ReferralLinks.Domain.Models
         public List<Link> Links { get; set; } = new List<Link>();
         public List<Channel> Channels { get; set; } = new List<Channel>();
         public int LastMessageSent { get; set; }
+
         public MultiLink()
         {
             Id = Guid.NewGuid();

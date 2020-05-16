@@ -1,12 +1,19 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LeChuck.ReferralLinks.Domain.Models;
+using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.Config
 {
-    public interface IConfigStrategySelector : IStateMachineStrategySelector<IUpdateContext, AppConfiguration> { }
+    public interface IConfigStrategySelector : IStateMachineStrategySelector<IUpdateContext, AppConfiguration>
+    {
+    }
 
     public class ConfigStrategySelector : IConfigStrategySelector
     {

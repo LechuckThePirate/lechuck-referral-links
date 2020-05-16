@@ -1,4 +1,6 @@
 ﻿namespace LeChuck.ReferralLinks.Domain.UnitsOfWork
 {
-    public interface IUnitOfWork {}
+    public interface IUnitOfWork
+    {
+    }
 }

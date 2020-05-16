@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#region using directives
+
+using System;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.DataAccess.Entities;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
 {

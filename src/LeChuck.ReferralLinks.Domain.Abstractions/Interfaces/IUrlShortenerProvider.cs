@@ -1,4 +1,8 @@
-﻿using LeChuck.ReferralLinks.Domain.Enums;
+﻿#region using directives
+
+using LeChuck.ReferralLinks.Domain.Enums;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Interfaces
 {

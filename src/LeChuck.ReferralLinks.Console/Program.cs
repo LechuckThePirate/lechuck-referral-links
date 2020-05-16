@@ -1,6 +1,9 @@
-﻿using System;
+﻿#region using directives
+
 using System.Threading;
 using LeChuck.ReferralLinks.Crosscutting.Classes;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Console
 {

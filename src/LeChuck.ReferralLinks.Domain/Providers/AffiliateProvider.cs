@@ -1,8 +1,11 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using LeChuck.ReferralLinks.Domain.Interfaces;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Providers
 {

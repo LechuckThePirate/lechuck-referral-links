@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region using directives
+
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Extensions
 {

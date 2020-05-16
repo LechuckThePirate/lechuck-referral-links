@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Linq;
 using AutoMapper;
 using LeChuck.ReferralLinks.DataAccess.Repositories;
 using LeChuck.ReferralLinks.Lambda.Timer.Processors;
 using Microsoft.Extensions.DependencyInjection;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Lambda.Timer.Extensions
 {

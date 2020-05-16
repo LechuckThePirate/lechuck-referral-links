@@ -1,6 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#region using directives
+
+using System;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Models
 {

@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.DataAccess.Entities;
 using LeChuck.ReferralLinks.DataAccess.Repositories;
 using LeChuck.Stateless.StateMachine;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.StateMachines
 {
@@ -24,7 +28,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines
                 return (type, entity.Data);
             }
 
-            return (null,null);
+            return (null, null);
         }
 
         public async Task StoreMachine(string machineId, Type type, string machineData)

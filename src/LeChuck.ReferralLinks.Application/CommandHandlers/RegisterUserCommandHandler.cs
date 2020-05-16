@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Models;
@@ -6,6 +8,8 @@ using LeChuck.ReferralLinks.Domain.UnitsOfWork;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Services;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.CommandHandlers
 {
@@ -17,8 +21,8 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
         private readonly AppConfiguration _config;
 
         public RegisterUserCommandHandler(
-            IBotService bot, 
-            IConfigUnitOfWork configUnitOfWork, 
+            IBotService bot,
+            IConfigUnitOfWork configUnitOfWork,
             ILogger<RegisterUserCommandHandler> logger,
             AppConfiguration config)
         {
@@ -52,9 +56,10 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
 
                 await _configUnitOfWork.SaveConfig(_config);
                 _logger.LogInformation($"User {newUser} added to bot admins");
-                await _bot.SendTextMessageAsync(updateContext.User.UserId,$"Usuario {newUser} añadido como admin");
+                await _bot.SendTextMessageAsync(updateContext.User.UserId, $"Usuario {newUser} añadido como admin");
                 return;
             }
+
             _logger.LogWarning($"The user {newUser} was already an admin!");
         }
     }

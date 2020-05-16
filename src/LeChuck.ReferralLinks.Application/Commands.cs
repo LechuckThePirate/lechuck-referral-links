@@ -1,20 +1,23 @@
-﻿using LeChuck.Telegram.Bot.Framework.Enums;
+﻿#region using directives
+
+using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Models;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application
 {
     public static class Commands
     {
+        public static CommandSourceEnum[] PrivateOnly = {CommandSourceEnum.Private};
+        public static CommandSourceEnum[] ChatOnly = {CommandSourceEnum.Chat};
+        public static CommandSourceEnum[] PrivateAndChat = {CommandSourceEnum.Private, CommandSourceEnum.Chat};
+        public static CommandSourceEnum[] ChannelOnly = {CommandSourceEnum.Channel};
 
-        public static CommandSourceEnum[] PrivateOnly = new[] { CommandSourceEnum.Private };
-        public static CommandSourceEnum[] ChatOnly = new[] { CommandSourceEnum.Chat };
-        public static CommandSourceEnum[] PrivateAndChat = new[] { CommandSourceEnum.Private, CommandSourceEnum.Chat };
-        public static CommandSourceEnum[] ChannelOnly = new[] {CommandSourceEnum.Channel};
-
-        public static UserTypeEnum[] AllUsers = new[] { UserTypeEnum.Root, UserTypeEnum.Admin, UserTypeEnum.RegularUser };
-        public static UserTypeEnum[] RegularUserOnly = new[] { UserTypeEnum.RegularUser };
-        public static UserTypeEnum[] AdminOnly = new[] { UserTypeEnum.Root, UserTypeEnum.Admin };
-        public static UserTypeEnum[] RootOnly = new[] { UserTypeEnum.Root};
+        public static UserTypeEnum[] AllUsers = {UserTypeEnum.Root, UserTypeEnum.Admin, UserTypeEnum.RegularUser};
+        public static UserTypeEnum[] RegularUserOnly = {UserTypeEnum.RegularUser};
+        public static UserTypeEnum[] AdminOnly = {UserTypeEnum.Root, UserTypeEnum.Admin};
+        public static UserTypeEnum[] RootOnly = {UserTypeEnum.Root};
 
 #if DEBUG
         public static string ReadUrl = "leerurl";
@@ -73,7 +76,5 @@ namespace LeChuck.ReferralLinks.Application
             }
 #endif
         };
-
     }
-
 }

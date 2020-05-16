@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +14,10 @@ using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Services;
 using Microsoft.Extensions.Logging;
 
+#endregion
+
 namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
 {
-
     public interface ISweepProcessor
     {
         Task Sweep();
@@ -70,7 +73,7 @@ namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Cannot send message!:\n" +
+                _logger.LogError("Cannot send message!:\n" +
                                  $"  Channel:{channel}\n" +
                                  $"  Data:{JsonSerializer.Serialize(data)}\n" +
                                  $"  Exception: {ex.Message}\n{ex.StackTrace}");
@@ -93,7 +96,7 @@ namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
                 return tasks;
             }
 
-            return new List<Task> { };
+            return new List<Task>();
         }
     }
 }

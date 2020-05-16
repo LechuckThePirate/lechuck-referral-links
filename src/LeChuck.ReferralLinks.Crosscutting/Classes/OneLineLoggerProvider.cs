@@ -1,11 +1,17 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Crosscutting.Classes
 {
     public class OneLineLoggerProvider : ILoggerProvider
     {
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
 
         public ILogger CreateLogger(string categoryName)
         {
@@ -21,14 +27,15 @@ namespace LeChuck.ReferralLinks.Crosscutting.Classes
                 _categoryName = categoryName;
             }
 
-            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+                Func<TState, Exception, string> formatter)
             {
                 if (!IsEnabled(logLevel))
                 {
                     return;
                 }
 
-                System.Console.WriteLine($"{logLevel}/{DateTime.UtcNow:O}: {formatter(state, exception)}");
+                Console.WriteLine($"{logLevel}/{DateTime.UtcNow:O}: {formatter(state, exception)}");
             }
 
             public bool IsEnabled(LogLevel logLevel)

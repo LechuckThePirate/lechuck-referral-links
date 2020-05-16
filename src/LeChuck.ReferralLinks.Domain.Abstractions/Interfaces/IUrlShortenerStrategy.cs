@@ -1,10 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿#region using directives
+
+using System.Threading.Tasks;
+using LeChuck.ReferralLinks.Domain.Enums;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Interfaces
 {
     public interface IUrlShortenerStrategy
     {
-        Enums.UrlShortenersEnum Key => Enums.UrlShortenersEnum.None;
+        UrlShortenersEnum Key => UrlShortenersEnum.None;
         Task<string> ShortenUrl(string url);
     }
 }

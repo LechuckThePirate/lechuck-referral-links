@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#region using directives
+
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Enums;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 
-namespace LeChuck.ReferralLinks.Application.Services.UrlShorteners
+#endregion
+
+namespace LeChuck.ReferralLinks.Domain.Services.UrlShorteners
 {
     public class DefaultShortenerStrategy : IUrlShortenerStrategy
     {

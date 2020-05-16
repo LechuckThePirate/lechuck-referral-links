@@ -1,7 +1,11 @@
-﻿using LeChuck.ReferralLinks.Domain.Models;
+﻿#region using directives
+
+using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
 {
@@ -10,9 +14,10 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
         public ConfigStateMachine(
             ILogger<ConfigStateMachine> logger,
             IStateMachineStore stateMachineStore,
-            IStateMachineStrategySelector<IUpdateContext,AppConfiguration> strategySelector)
+            IStateMachineStrategySelector<IUpdateContext, AppConfiguration> strategySelector)
             : base(new ConfigStateMachineWorkflow(), stateMachineStore, logger, strategySelector)
-        { }
+        {
+        }
 
         public override void DeserializeData(string data)
         {

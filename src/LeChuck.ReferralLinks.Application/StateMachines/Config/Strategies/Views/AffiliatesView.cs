@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine;
 using LeChuck.ReferralLinks.Domain.Models;
@@ -15,16 +17,16 @@ using LeChuck.Telegram.Bot.Framework.Services;
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Views
 {
-    public class MenuView : IConfigStrategy
+    public class AffiliatesView : IConfigStrategy
     {
         private readonly IBotService _bot;
 
-        public MenuView(IBotService bot)
+        public AffiliatesView(IBotService bot)
         {
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         }
 
-        public bool CanHandle(string key) => key == ConfigStateMachineWorkflow.StatesEnum.HomeState.ToString();
+        public bool CanHandle(string key) => key == ConfigStateMachineWorkflow.StatesEnum.AffiliatesState.ToString();
 
         public async Task<bool> Handle(IUpdateContext context, AppConfiguration entity,
             IStateMachine<IUpdateContext, AppConfiguration> stateMachine)
@@ -32,15 +34,19 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.View
             if (context.CallbackMessageId.HasValue)
                 await _bot.DeleteMessageAsync(context.ChatId, context.CallbackMessageId.Value);
 
-            var message = "<b>CONFIGURACION</b>\n\nSelecciona una opción:";
+            var message = new StringBuilder("<b>AFILIACIONES</b>\n\nAfiliaciones activas:\n\n");
+            message.Append("  - " +
+                           $"{string.Join("\n  - ", entity.AffiliateServices.Select(s => s.Service))}\n");
+            message.Append("\nSelecciona una opción");
             var buttons = new List<BotButton>
             {
-                new BotButton("Afiliados", ConfigStateMachineWorkflow.CommandsEnum.AffiliatesCmd.ToString()),
-                new BotButton("Cancelar", ConfigStateMachineWorkflow.CommandsEnum.CancelConfigCmd.ToString()),
-                new BotButton("Guardar", ConfigStateMachineWorkflow.CommandsEnum.AffiliatesCmd.ToString())
+                new BotButton("Añadir", ConfigStateMachineWorkflow.CommandsEnum.AddAffiliateCmd.ToString()),
+                new BotButton("Borrar", ConfigStateMachineWorkflow.CommandsEnum.RemoveAffiliateCmd.ToString()),
+                new BotButton("Configurar", ConfigStateMachineWorkflow.CommandsEnum.ConfigureAffiliateCmd.ToString()),
+                new BotButton("Atrás", ConfigStateMachineWorkflow.CommandsEnum.BackCmd.ToString())
             };
 
-            await _bot.SendTextMessageAsync(context.User.UserId, message, TextModeEnum.Html,
+            await _bot.SendTextMessageAsync(context.User.UserId, message.ToString(), TextModeEnum.Html,
                 buttons);
             return true;
         }

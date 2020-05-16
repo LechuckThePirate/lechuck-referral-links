@@ -1,6 +1,7 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
@@ -9,6 +10,8 @@ using LeChuck.DataAccess.DynamoDb;
 using LeChuck.ReferralLinks.DataAccess.Entities;
 using LeChuck.ReferralLinks.Domain;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.DataAccess.Repositories
 {
@@ -19,7 +22,7 @@ namespace LeChuck.ReferralLinks.DataAccess.Repositories
 
     public class MultiMultiLinkRepository : DynamoDbRepository<MultiLinkDbEntity>, IMultiLinkRepository
     {
-        public MultiMultiLinkRepository(IAmazonDynamoDB amazonDynamoDb, ILogger<MultiMultiLinkRepository> logger) 
+        public MultiMultiLinkRepository(IAmazonDynamoDB amazonDynamoDb, ILogger<MultiMultiLinkRepository> logger)
             : base(Environment.GetEnvironmentVariable(Constants.EnvVarNames.LinkDataTableName), amazonDynamoDb, logger)
         {
         }
@@ -28,8 +31,7 @@ namespace LeChuck.ReferralLinks.DataAccess.Repositories
         {
             var condition = new ScanCondition(nameof(MultiLinkDbEntity.NextRun), ScanOperator.LessThanOrEqual,
                 DateTime.UtcNow);
-            return await ScanAsync(new List<ScanCondition> { condition });
+            return await ScanAsync(new List<ScanCondition> {condition});
         }
-
     }
 }

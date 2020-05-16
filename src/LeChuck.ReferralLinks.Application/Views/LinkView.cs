@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#region using directives
+
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Centvrio.Emoji;
@@ -8,6 +10,8 @@ using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Models;
 using LeChuck.Telegram.Bot.Framework.Services;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.Views
 {
@@ -30,7 +34,8 @@ namespace LeChuck.ReferralLinks.Application.Views
         public async Task SendView(long chatId, Link data)
         {
             var viewData = GetView(chatId, data);
-            await _bot.SendPhotoAsync(chatId, data.PictureUrl, viewData.Message, viewData.ParseMode);;
+            await _bot.SendPhotoAsync(chatId, data.PictureUrl, viewData.Message, viewData.ParseMode);
+            ;
         }
 
         public ViewResult GetView(long chatId, Link data)

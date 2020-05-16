@@ -1,12 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿#region using directives
+
+using System;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
 using AutoMapper;
 using LeChuck.ReferralLinks.Crosscutting.Classes;
 using LeChuck.ReferralLinks.Crosscutting.Extensions;
+using LeChuck.ReferralLinks.DataAccess.Entities;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.Telegram.Bot.Framework.Processors;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +16,8 @@ using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Exceptions;
-using ServiceCollectionExtensions = LeChuck.ReferralLinks.DataAccess.Extensions.ServiceCollectionExtensions;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Console
 {
@@ -26,7 +28,7 @@ namespace LeChuck.ReferralLinks.Console
 
         private IWebhookProcessor _processor;
         private ITelegramBotClient _botClient;
-        private AppConfiguration _config = null;
+        private AppConfiguration _config;
 
         public StartUp(ProcessTimer stopwatch)
         {
@@ -42,8 +44,8 @@ namespace LeChuck.ReferralLinks.Console
             {
                 Configuration = _configurationBuilder
                     .AddJsonFile("appsettings.json", false)
-                    .AddSystemsManager($"/ReferralLink",
-                        new AWSOptions { Region = RegionEndpoint.EUWest1 }, 
+                    .AddSystemsManager("/ReferralLink",
+                        new AWSOptions {Region = RegionEndpoint.EUWest1},
                         reloadAfter: TimeSpan.FromMinutes(1))
                     .Build();
             });
@@ -57,9 +59,10 @@ namespace LeChuck.ReferralLinks.Console
         {
             _timer.Mark("Register services", () =>
             {
-                Services.AddAutoMapper(configAction: cfg => { }, 
-                    typeof(LeChuck.ReferralLinks.DataAccess.Entities.MultiLinkDbEntity).Assembly);
-                Services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddProvider(new OneLineLoggerProvider()).AddDebug());
+                Services.AddAutoMapper(configAction: cfg => { },
+                    typeof(MultiLinkDbEntity).Assembly);
+                Services.AddLogging(configure =>
+                    configure.SetMinimumLevel(LogLevel.Debug).AddProvider(new OneLineLoggerProvider()).AddDebug());
                 Services.AddApplication(Configuration);
             });
 
@@ -80,10 +83,7 @@ namespace LeChuck.ReferralLinks.Console
 
         public async Task Run()
         {
-            _timer.Mark("Init Bot", () =>
-            {
-                _botClient.StartReceiving();
-            });
+            _timer.Mark("Init Bot", () => { _botClient.StartReceiving(); });
             await Task.CompletedTask;
         }
 
@@ -103,9 +103,8 @@ namespace LeChuck.ReferralLinks.Console
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine($"Unhandled exception!", ex);
+                System.Console.WriteLine("Unhandled exception!", ex);
             }
         }
-
     }
 }

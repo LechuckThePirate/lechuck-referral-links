@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Domain.UnitsOfWork;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Domain.Services
 {
@@ -27,7 +31,7 @@ namespace LeChuck.ReferralLinks.Domain.Services
             if (_config.Channels.All(c => c.ChannelId != channel.ChannelId))
             {
                 _config.Channels.Add(channel);
-                _logger.LogInformation($"Added new channel to list");
+                _logger.LogInformation("Added new channel to list");
                 await _unitOfWork.SaveConfig(_config);
             }
         }
@@ -40,7 +44,7 @@ namespace LeChuck.ReferralLinks.Domain.Services
 
             _config.Channels.RemoveAll(c => c.ChannelId == channel.ChannelId);
 
-            _logger.LogInformation($"Removed channel from list");
+            _logger.LogInformation("Removed channel from list");
             await _unitOfWork.SaveConfig(_config);
         }
     }

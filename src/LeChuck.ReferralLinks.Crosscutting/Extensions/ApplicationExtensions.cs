@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using LeChuck.ReferralLinks.Application;
 using LeChuck.ReferralLinks.Application.Extensions;
 using LeChuck.ReferralLinks.Application.UpdateHandlers;
@@ -12,6 +14,8 @@ using LeChuck.Telegram.Bot.Framework.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Crosscutting.Extensions
 {
@@ -30,7 +34,7 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
                 .AddDataAccessModule(configuration);
 
             services.AddSingleton(configuration);
-            
+
             var appConfig = GetConfiguration(services, () => GetDefaultConfig(configuration));
             services.AddSingleton(appConfig);
 
@@ -45,7 +49,8 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
             ServiceProvider = services.BuildServiceProvider();
         }
 
-        private static AppConfiguration GetConfiguration(IServiceCollection services, Func<AppConfiguration> defaultConfig)
+        private static AppConfiguration GetConfiguration(IServiceCollection services,
+            Func<AppConfiguration> defaultConfig)
         {
             var repo = services.BuildServiceProvider().GetService<IConfigUnitOfWork>();
             var config = repo.LoadConfig().GetAwaiter().GetResult();
@@ -54,6 +59,7 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
                 config = defaultConfig.Invoke();
                 repo.SaveConfig(config).GetAwaiter();
             }
+
             return config;
         }
 
@@ -63,7 +69,7 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 Formatting = Formatting.Indented,
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
         }
 
@@ -73,6 +79,5 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
             var result = new AppConfiguration {RootUserId = rootUserId};
             return result;
         }
-
     }
 }

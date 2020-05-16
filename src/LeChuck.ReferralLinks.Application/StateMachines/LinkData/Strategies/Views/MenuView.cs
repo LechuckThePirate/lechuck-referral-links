@@ -1,20 +1,25 @@
-﻿using System.Collections.Generic;
+﻿#region using directives
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper.Configuration.Conventions;
 using LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMachine;
 using LeChuck.ReferralLinks.Domain.Models;
+using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Models;
 using LeChuck.Telegram.Bot.Framework.Services;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Views
 {
     public class MenuView : IMultiLinkStrategy
     {
         private readonly IBotService _bot;
+
         public MenuView(IBotService bot)
         {
             _bot = bot;
@@ -22,7 +27,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
 
         public bool CanHandle(string key) => key == ProgramLinkStateMachineWorkflow.StatesEnum.MenuState.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, MultiLink entity)
+        public async Task<bool> Handle(IUpdateContext context, MultiLink entity,
+            IStateMachine<IUpdateContext, MultiLink> stateMachine)
         {
             if (context.CallbackMessageId.HasValue)
                 await _bot.DeleteMessageAsync(context.ChatId, context.CallbackMessageId.Value);
@@ -36,7 +42,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
             message.Append($"\n  <b>Enviar a{numChannels}</b>\n");
 
             if (entity.Channels.Any())
-                message.Append($"  - {string.Join("\n  - ", entity.Channels.Select(c =>c.ChannelName))}\n");
+                message.Append($"  - {string.Join("\n  - ", entity.Channels.Select(c => c.ChannelName))}\n");
 
             var channelCount = entity.Channels.Any()
                 ? entity.Channels.Count.ToString()
@@ -45,7 +51,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
             var buttons = new List<BotButton>
             {
                 new BotButton("Cambiar Enlace", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SetUrlCmd}"),
-                new BotButton($"Canales ({channelCount})", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SelectChannelsCmd}"),
+                new BotButton($"Canales ({channelCount})",
+                    $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SelectChannelsCmd}"),
                 new BotButton("Programar", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SelectTimeSpanCmd}"),
                 new BotButton("Ver/Revisar", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.ReviewMessagesCmd}"),
                 new BotButton("Enviar", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SendCmd}"),

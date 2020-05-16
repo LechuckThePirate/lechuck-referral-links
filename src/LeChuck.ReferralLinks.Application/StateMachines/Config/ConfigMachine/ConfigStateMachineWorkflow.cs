@@ -1,7 +1,9 @@
-﻿using System;
+﻿#region using directives
+
 using System.Collections.Generic;
-using System.Text;
 using LeChuck.Stateless.StateMachine.Models;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
 {
@@ -9,78 +11,102 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
     {
         public enum StatesEnum
         {
-            MenuState,
-            ChannelsState,
-            RemoveChannelsState,
-            InputChannelState,
-            DefaultShortenerState,
+            HomeState,
+            AffiliatesState,
+            AddAffiliateState,
+            RemoveAffiliateState,
+            ConfigureAffiliateState,
+            InputClientIdState,
+            InputClientSecretState,
             DoneState,
-            CancelledState
+            CancelState
         }
 
         public enum CommandsEnum
         {
-            SaveCmd,
+            AffiliatesCmd,
+            AddAffiliateCmd,
+            RemoveAffiliateCmd,
+            SelectAffiliateCmd,
+            ConfigureAffiliateCmd,
+            ClientIdCmd,
+            ClientSecretCmd,
+            SetClientIdCmd,
+            SetClientSecretCmd,
             BackCmd,
-            CancelCmd,
-            ChannelsCmd,
-            AddChannelsCmd,
-            SetChannelCmd,
-            RemoveChannelsCmd,
-            RemoveOneChannelCmd,
-            DefaultShortenerCmd,
-            SetDefaultShortenerCmd
+            SaveConfigCmd,
+            CancelConfigCmd
         }
 
-        public override string InitialState => $"{StatesEnum.MenuState}";
+        public override string InitialState => $"{StatesEnum.HomeState}";
 
-        private static List<StepMachineState> _stateList = new List<StepMachineState>
+        private static readonly List<StepMachineState> _stateList = new List<StepMachineState>
         {
-            new StepMachineState($"{StatesEnum.MenuState}")
+            new StepMachineState($"{StatesEnum.HomeState}")
             {
                 AvailableCommands = new Dictionary<string, string>
                 {
-                    {$"{CommandsEnum.SaveCmd}", $"{StatesEnum.DoneState}"},
-                    {$"{CommandsEnum.CancelCmd}", $"{StatesEnum.CancelledState}"},
-                    {$"{CommandsEnum.ChannelsCmd}", $"{StatesEnum.ChannelsState}"},
-                    {$"{CommandsEnum.DefaultShortenerCmd}", $"{StatesEnum.DefaultShortenerState}"}
+                    {$"{CommandsEnum.AffiliatesCmd}", $"{StatesEnum.AffiliatesState}"},
+
+                    {$"{CommandsEnum.SaveConfigCmd}", $"{StatesEnum.DoneState}"},
+                    {$"{CommandsEnum.CancelConfigCmd}", $"{StatesEnum.CancelState}"}
                 }
             },
-            new StepMachineState($"{StatesEnum.ChannelsState}")
+            new StepMachineState($"{StatesEnum.AffiliatesState}")
             {
                 AvailableCommands = new Dictionary<string, string>
                 {
-                    {$"{CommandsEnum.AddChannelsCmd}", $"{StatesEnum.InputChannelState}"},
-                    {$"{CommandsEnum.RemoveChannelsCmd}", $"{StatesEnum.RemoveChannelsState}"},
-                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.MenuState}"}
+                    {$"{CommandsEnum.AddAffiliateCmd}", $"{StatesEnum.AddAffiliateState}"},
+                    {$"{CommandsEnum.RemoveAffiliateCmd}", $"{StatesEnum.RemoveAffiliateState}"},
+                    {$"{CommandsEnum.ConfigureAffiliateCmd}", $"{StatesEnum.ConfigureAffiliateState}"},
+                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.HomeState}"}
                 }
             },
-            new StepMachineState($"{StatesEnum.RemoveChannelsState}")
+            new StepMachineState($"{StatesEnum.AddAffiliateState}")
             {
                 AvailableCommands = new Dictionary<string, string>
                 {
-                    {$"{CommandsEnum.RemoveOneChannelCmd}", $"{StatesEnum.RemoveChannelsState}"},
-                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.RemoveChannelsState}"}
+                    {$"{CommandsEnum.SelectAffiliateCmd}", $"{StatesEnum.AffiliatesState}"},
+                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
                 }
             },
-            new StepMachineState($"{StatesEnum.InputChannelState}")
-            {
-                OnNext = $"{CommandsEnum.SetChannelCmd}",
-                AvailableCommands = new Dictionary<string, string>
-                {
-                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.ChannelsState}"}
-                }
-            },
-            new StepMachineState($"{StatesEnum.DefaultShortenerState}")
+            new StepMachineState($"{StatesEnum.RemoveAffiliateState}")
             {
                 AvailableCommands = new Dictionary<string, string>
                 {
-                    {$"{CommandsEnum.SetDefaultShortenerCmd}", $"{StatesEnum.DefaultShortenerState}"},
-                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.MenuState}"},
+                    {$"{CommandsEnum.SelectAffiliateCmd}", $"{StatesEnum.AffiliatesState}"},
+                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
                 }
             },
-            new StepMachineState($"{StatesEnum.DoneState}") { EndMachine = true },
-            new StepMachineState($"{StatesEnum.CancelledState}") { EndMachine = true }
+            new StepMachineState($"{StatesEnum.ConfigureAffiliateState}")
+            {
+                AvailableCommands = new Dictionary<string, string>
+                {
+                    {$"{CommandsEnum.ClientIdCmd}", $"{StatesEnum.InputClientIdState}"},
+                    {$"{CommandsEnum.ClientSecretCmd}", $"{StatesEnum.InputClientSecretState}"},
+                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
+                }
+            },
+            new StepMachineState($"{StatesEnum.InputClientIdState}")
+            {
+                OnNext = $"{CommandsEnum.SetClientIdCmd}",
+                AvailableCommands = new Dictionary<string, string>
+                {
+                    {$"{CommandsEnum.SetClientIdCmd}", $"{StatesEnum.ConfigureAffiliateState}"},
+                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
+                }
+            },
+            new StepMachineState($"{StatesEnum.InputClientSecretState}")
+            {
+                OnNext = $"{CommandsEnum.SetClientSecretCmd}",
+                AvailableCommands = new Dictionary<string, string>
+                {
+                    {$"{CommandsEnum.SetClientSecretCmd}", $"{StatesEnum.ConfigureAffiliateState}"},
+                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
+                }
+            },
+            new StepMachineState($"{StatesEnum.DoneState}") {EndMachine = true},
+            new StepMachineState($"{StatesEnum.CancelState}") {EndMachine = true}
         };
 
         public override IEnumerable<StepMachineState> StateList => _stateList;

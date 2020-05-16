@@ -2,7 +2,9 @@
 {
     public class Channel
     {
-        public Channel() { }
+        public Channel()
+        {
+        }
 
         public Channel(long channelId, string channelName)
         {

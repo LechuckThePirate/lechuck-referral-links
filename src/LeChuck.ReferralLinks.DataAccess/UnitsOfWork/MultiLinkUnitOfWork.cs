@@ -1,11 +1,14 @@
-﻿using System;
-using System.Data;
+﻿#region using directives
+
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using LeChuck.ReferralLinks.DataAccess.Entities;
 using LeChuck.ReferralLinks.DataAccess.Repositories;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Domain.UnitsOfWork;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.DataAccess.UnitsOfWork
 {
@@ -28,6 +31,5 @@ namespace LeChuck.ReferralLinks.DataAccess.UnitsOfWork
 
             await _repository.SaveItemAsync(dbEntity);
         }
-
     }
 }

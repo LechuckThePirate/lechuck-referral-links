@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Domain.Services;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Services;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.CommandHandlers
 {
@@ -25,7 +29,7 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
         }
 
         public bool CanHandle(string command) => command == Commands.RegisterChannel;
-        
+
         public async Task HandleCommand(IUpdateContext updateContext)
         {
             await Task.WhenAll(

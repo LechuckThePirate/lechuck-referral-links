@@ -1,15 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region using directives
+
+using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMachine;
 using LeChuck.ReferralLinks.Application.Views;
 using LeChuck.ReferralLinks.Domain.Models;
+using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Models;
 using LeChuck.Telegram.Bot.Framework.Services;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Views
 {
@@ -28,7 +32,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
             key == ProgramLinkStateMachineWorkflow.CommandsEnum.ReviewMessagesCmd.ToString()
             || key == ProgramLinkStateMachineWorkflow.CommandsEnum.ReviewOneMessage.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, MultiLink entity)
+        public async Task<bool> Handle(IUpdateContext context, MultiLink entity,
+            IStateMachine<IUpdateContext, MultiLink> stateMachine)
         {
             if (context.CallbackMessageId.HasValue)
                 await _bot.DeleteMessageAsync(context.ChatId, context.CallbackMessageId.Value);

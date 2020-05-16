@@ -1,4 +1,6 @@
-﻿using LeChuck.DependencyInjection.Extensions;
+﻿#region using directives
+
+using LeChuck.DependencyInjection.Extensions;
 using LeChuck.ReferralLinks.Application.StateMachines;
 using LeChuck.ReferralLinks.Application.StateMachines.Config;
 using LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine;
@@ -10,6 +12,8 @@ using LeChuck.Stateless.StateMachine;
 using LeChuck.Stateless.StateMachine.Extensions;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.Extensions
 {
@@ -23,9 +27,11 @@ namespace LeChuck.ReferralLinks.Application.Extensions
             services.AddTransient<IStateMachineStore, StateMachineStore>();
             services.AddStateMachines();
             services.AddInterface<IMultiLinkStrategy>();
-            services.AddTransient<IStateMachineStrategySelector<IUpdateContext,MultiLink>, LinkDataStrategySelector>();
+            services.AddTransient<IStateMachineStrategySelector<IUpdateContext, MultiLink>, LinkDataStrategySelector>();
             services.AddInterface<IConfigStrategy>();
-            services.AddTransient<IStateMachineStrategySelector<IUpdateContext, AppConfiguration>, ConfigStrategySelector>();
+            services
+                .AddTransient<IStateMachineStrategySelector<IUpdateContext, AppConfiguration>, ConfigStrategySelector
+                >();
             return services;
         }
     }

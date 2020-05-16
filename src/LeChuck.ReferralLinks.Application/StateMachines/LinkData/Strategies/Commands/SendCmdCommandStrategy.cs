@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#region using directives
+
+using System;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMachine;
-using LeChuck.Stateless.StateMachine.Models;
+using LeChuck.ReferralLinks.Domain.Models;
+using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Commands
 {
@@ -12,7 +15,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
     {
         public bool CanHandle(string key) => key == ProgramLinkStateMachineWorkflow.CommandsEnum.SendCmd.ToString();
 
-        public Task<bool> Handle(IUpdateContext context, Domain.Models.MultiLink entity)
+        public Task<bool> Handle(IUpdateContext context, MultiLink entity,
+            IStateMachine<IUpdateContext, MultiLink> stateMachine)
         {
             throw new NotImplementedException();
         }

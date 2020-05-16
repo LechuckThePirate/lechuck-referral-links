@@ -5,12 +5,27 @@ Configuracion:
 			- Credenciales
 				- client_id
 				- client_secret
-			- Seleccionar Espacio
+			(si hay credenciales)
+			- Seleccionar espacio
+			- Acortar enlaces
+				- Activar
+				- Seleccionar proveedor (BitLy, ???)
+					- Api Key
 			- Programas:
 				- Aliexpress
+					- Activar
+					- Seleccionar Espacio
+					- Seleccionar Programa
 				- PatPat
+					- Activar
+					- Seleccionar Espacio
+					- Seleccionar Programa
 				- Banggood 
-
+					- Activar
+					- Seleccionar Espacio
+					- Seleccionar Programa
+		- Amazon?
+		
 Enlaces:
 	- Revisar
 	- Enviar
@@ -19,20 +34,29 @@ Enlaces:
 FASE 2
 
 Configuracion:
-	- Afilicaciones
-		- Admitad:
-			- Credenciales
-				- client_id
-				- client_secret
-			- Seleccionar Espacio
-			- Programas:
-				- Aliexpress
-				- PatPat
-				- Banggood 
+	- Programación
+		- A partir de ... (Hoy, +tiempo (horas, dias))
+		- Cada (rangos de 15 minutos)
+		- Durante (horas, dias)
+		- Exclusion (de hora a hora)
+	- Canales
+		- Añadir canal
+		- Quitar canal
+		- Configurar
+			- Seleccionar canal (lista canales)
+				- Seleccionar espacio (espacios)
+				- Asignar etiqueta
 
 Enlaces:
 	- Editar enlaces
+		- Añadir enlace
+			- Lista + Todos
+		- Quitar Enlace
+			- Lista + Todos
 	- Canales
+		- Añadir canal
+		- Quitar Canal
+		- Lista + Todos
 	- Programar
 	- Revisar
 	- Enviar

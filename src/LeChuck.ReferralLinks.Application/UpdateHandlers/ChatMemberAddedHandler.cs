@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region using directives
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Models;
@@ -7,6 +8,8 @@ using LeChuck.ReferralLinks.Domain.Services;
 using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.UpdateHandlers
 {
@@ -16,7 +19,8 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
         private readonly IChannelService _channelService;
         private readonly ILogger<ChatMemberAddedHandler> _logger;
 
-        public ChatMemberAddedHandler(AppConfiguration config, IChannelService channelService, ILogger<ChatMemberAddedHandler> logger)
+        public ChatMemberAddedHandler(AppConfiguration config, IChannelService channelService,
+            ILogger<ChatMemberAddedHandler> logger)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
             _channelService = channelService ?? throw new ArgumentNullException(nameof(channelService));
@@ -25,8 +29,8 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
 
         public int Order { get; } = int.MaxValue;
 
-        public bool CanHandle(IUpdateContext update) => 
-            update.MessageType == MessageTypeEnum.ChatMemberAdded 
+        public bool CanHandle(IUpdateContext update) =>
+            update.MessageType == MessageTypeEnum.ChatMemberAdded
             && update.AffectedUserIds.Any(u => u == _config.MeId);
 
         public async Task<bool> HandleUpdate(IUpdateContext updateContext)
@@ -36,6 +40,5 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
             await _channelService.AddBotToChannel(channel);
             return true;
         }
-
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LeChuck.ReferralLinks.Domain.Models
+﻿namespace LeChuck.ReferralLinks.Domain.Models
 {
     public class AffiliateServiceConfig
     {

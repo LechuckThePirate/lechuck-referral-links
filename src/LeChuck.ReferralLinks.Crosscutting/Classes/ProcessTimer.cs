@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Crosscutting.Classes
 {

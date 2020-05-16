@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.CommandHandlers
 {
@@ -21,7 +25,8 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
 
         public async Task HandleCommand(IUpdateContext updateContext)
         {
-            var machine = await _machineFactory.Create<IUpdateContext, AppConfiguration>(updateContext.User.UserId.ToString());
+            var machine =
+                await _machineFactory.Create<IUpdateContext, AppConfiguration>(updateContext.User.UserId.ToString());
             await machine.Run(context: updateContext, entity: _config);
         }
     }

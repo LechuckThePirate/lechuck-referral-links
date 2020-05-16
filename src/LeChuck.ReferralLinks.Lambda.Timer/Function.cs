@@ -1,12 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+#region using directives
 
+using System;
 using Amazon.Lambda.Core;
+using Amazon.Lambda.Serialization.SystemTextJson;
+
+#endregion
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+[assembly: LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
 
 namespace LeChuck.ReferralLinks.Lambda.Timer
 {
@@ -20,14 +21,14 @@ namespace LeChuck.ReferralLinks.Lambda.Timer
             Console.WriteLine("Cold start");
             _timer = new ProcessTimer(true);
             _startup = new StartUp(_timer)
-                    .ConfigureApplication()
-                    .ConfigureServices()
-                    .LoadServices();
+                .ConfigureApplication()
+                .ConfigureServices()
+                .LoadServices();
             _timer.LogMarks();
         }
 
         public string FunctionHandler(string input, ILambdaContext context)
-        { 
+        {
             _timer.Start();
 
             _startup

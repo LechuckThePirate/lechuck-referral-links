@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Application.Views;
@@ -7,6 +9,8 @@ using LeChuck.ReferralLinks.Domain.Services;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using LeChuck.Telegram.Bot.Framework.Services;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.CommandHandlers
 {
@@ -19,8 +23,8 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
         private readonly AppConfiguration _configuration;
 
         public BroadcastCommandHandler(
-            ILogger<BroadcastCommandHandler> logger, 
-            IBotService bot, 
+            ILogger<BroadcastCommandHandler> logger,
+            IBotService bot,
             ILinkService linkService,
             ILinkView linkView,
             AppConfiguration configuration)

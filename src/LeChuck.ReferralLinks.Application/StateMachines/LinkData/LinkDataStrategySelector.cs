@@ -1,11 +1,19 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using LeChuck.ReferralLinks.Domain.Models;
+using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData
 {
-    public interface ILinkDataStrategySelector : IStateMachineStrategySelector<IUpdateContext, Domain.Models.MultiLink> { }
+    public interface ILinkDataStrategySelector : IStateMachineStrategySelector<IUpdateContext, MultiLink>
+    {
+    }
 
     public class LinkDataStrategySelector : ILinkDataStrategySelector
     {
@@ -16,7 +24,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData
             _strategies = strategies ?? throw new ArgumentNullException(nameof(strategies));
         }
 
-        public IStateMachineStrategy<IUpdateContext, Domain.Models.MultiLink> GetHandlerFor(string selectKey)
+        public IStateMachineStrategy<IUpdateContext, MultiLink> GetHandlerFor(string selectKey)
         {
             return _strategies.FirstOrDefault(s => s.CanHandle(selectKey));
         }

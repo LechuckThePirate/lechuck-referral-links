@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region using directives
+
+using System;
 using System.Threading.Tasks;
 using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
+
+#endregion
 
 namespace LeChuck.ReferralLinks.Application.UpdateHandlers
 {
@@ -23,7 +27,7 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
         public bool CanHandle(IUpdateContext update) =>
             !update.IsGroup &&
             (update.MessageType == MessageTypeEnum.ButtonCallback
-        || update.MessageType == MessageTypeEnum.Message);
+             || update.MessageType == MessageTypeEnum.Message);
 
         public async Task<bool> HandleUpdate(IUpdateContext updateContext)
         {
