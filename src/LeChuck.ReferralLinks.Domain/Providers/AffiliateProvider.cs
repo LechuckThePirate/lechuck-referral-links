@@ -11,7 +11,7 @@ namespace LeChuck.ReferralLinks.Domain.Providers
 {
     public interface IAffiliateProvider
     {
-        IAffiliateStrategy GetAffiliateFor(string url);
+        IAffiliateStrategy GetAffiliateFor(string vendor);
         IAffiliateStrategy GetAffiliateByName(string selectedAffiliateName);
     }
 
@@ -24,9 +24,10 @@ namespace LeChuck.ReferralLinks.Domain.Providers
             _affiliateStrategies = affiliateStrategies ?? throw new ArgumentNullException(nameof(affiliateStrategies));
         }
 
-        public IAffiliateStrategy GetAffiliateFor(string url)
+        public IAffiliateStrategy GetAffiliateFor(string vendor)
         {
-            return _affiliateStrategies.Where(aff => aff.Enabled).FirstOrDefault(s => s.Handles(url));
+            return _affiliateStrategies
+                .FirstOrDefault(s => s.Handles(vendor));
         }
         
         public IAffiliateStrategy GetAffiliateByName(string selectedAffiliateName)

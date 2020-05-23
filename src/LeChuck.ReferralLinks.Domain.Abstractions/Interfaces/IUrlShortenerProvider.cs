@@ -8,6 +8,6 @@ namespace LeChuck.ReferralLinks.Domain.Interfaces
 {
     public interface IUrlShortenerProvider
     {
-        IUrlShortenerStrategy GetServiceOrDefault(UrlShortenersEnum serviceName);
+        IUrlShortenerStrategy GetShortenerByName(string serviceName);
     }
 }

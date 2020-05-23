@@ -1,9 +1,9 @@
 #region using directives
 
-using System;
-using System.Linq;
+using System.Globalization;
 using AutoMapper;
 using LeChuck.ReferralLinks.Crosscutting.Extensions;
+using LeChuck.ReferralLinks.DataAccess.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,10 +27,10 @@ namespace LeChuck.ReferralLinks.Webhook
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => a.FullName.Contains("LeChuck."));
-            services.AddAutoMapper(configAction: cfg => { }, assemblies);
-            services.AddControllers();
+
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddAutoMapper(configAction: cfg => { },
+                typeof(MultiLinkDbEntity).Assembly);
             services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddConsole());
             services.AddApplication(Configuration);
         }
@@ -43,12 +43,13 @@ namespace LeChuck.ReferralLinks.Webhook
                 app.UseDeveloperExceptionPage();
             }
 
+            var cultureInfo = new CultureInfo("es-ES");
+            cultureInfo.NumberFormat.CurrencySymbol = "€";
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

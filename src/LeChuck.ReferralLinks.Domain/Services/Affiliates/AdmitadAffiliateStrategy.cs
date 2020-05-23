@@ -29,7 +29,9 @@ namespace LeChuck.ReferralLinks.Domain.Services.Affiliates
         public string Name => Constants.Providers.Affiliates.Admitad;
         public bool Enabled { get; private set; }
 
-        public bool Handles(string parser) => true;
+        // TODO: Check if it can handle a vendor
+        public bool Handles(string parser) => parser == Constants.Providers.Vendors.AliExpress;
+
         public async Task<IEnumerable<DeepLink>> GetDeepLinks(string vendor, IEnumerable<string> urls)
         {
             var deepLinks = urls.Select((u, i) => new DeepLink(u,i)).ToArray();

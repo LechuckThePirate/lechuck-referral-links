@@ -7,6 +7,7 @@ using LeChuck.Telegram.Bot.Framework.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Telegram.Bot.Types;
 
 #endregion
 
@@ -29,7 +30,7 @@ namespace LeChuck.ReferralLinks.Webhook.Controllers
 
         [HttpPost]
         [Route("message")]
-        public async Task<IActionResult> Post([FromBody] dynamic value)
+        public async Task<IActionResult> Post([FromBody] Update value)
         {
             try
             {
@@ -48,7 +49,7 @@ namespace LeChuck.ReferralLinks.Webhook.Controllers
         [HttpPost]
         public async Task<IActionResult> InitWebHook()
         {
-            var apiEndpoint = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/webhook/message";
+            var apiEndpoint = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/api/webhook/message";
             _logger.LogInformation($"Registering '{apiEndpoint}'");
             await _bot.SetWebhookAsync(apiEndpoint);
             _logger.LogInformation("Registered in Telegram!");

@@ -10,6 +10,7 @@ namespace LeChuck.ReferralLinks.Domain.Models
         public ApiCredentials Credentials { get; set; }
         public string SpaceId { get; set; }
         public bool Enabled { get; set; }
+        public string ShortenerName { get; set; }
 
         public bool IsValidCredentials()
         {

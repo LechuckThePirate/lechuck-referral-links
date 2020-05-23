@@ -21,6 +21,7 @@
             public class Shorteners
             {
                 public const string BitLy = nameof(BitLy);
+                public const string None = nameof(None);
             }
 
             public class Vendors

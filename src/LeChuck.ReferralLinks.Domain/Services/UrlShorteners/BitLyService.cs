@@ -29,7 +29,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.UrlShorteners
                         throw new ArgumentException(nameof(_endpoint));
         }
 
-        public UrlShortenersEnum Key => UrlShortenersEnum.BitLy;
+        public string Name { get; } = Constants.Providers.Shorteners.BitLy;
 
         public async Task<string> ShortenUrl(string url)
         {
@@ -44,5 +44,6 @@ namespace LeChuck.ReferralLinks.Domain.Services.UrlShorteners
             dynamic result = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
             return result.link;
         }
+
     }
 }

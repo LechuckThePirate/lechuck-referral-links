@@ -30,6 +30,7 @@ namespace LeChuck.ReferralLinks.Application.Services
         private readonly ILinkParserProvider _linkParserProvider;
         private readonly IUrlShortenerProvider _urlShortenerProvider;
         private readonly ILogger<MultiLinkMessageBuilder> _logger;
+        private readonly AppConfiguration _config;
         private MultiUrlContext _context;
 
         public MultiLinkMessageBuilder(
@@ -37,13 +38,15 @@ namespace LeChuck.ReferralLinks.Application.Services
             IAffiliateProvider affiliateProvider,
             ILinkParserProvider linkParserProvider,
             IUrlShortenerProvider urlShortenerProvider,
-            ILogger<MultiLinkMessageBuilder> logger)
+            ILogger<MultiLinkMessageBuilder> logger,
+            AppConfiguration config)
         {
             _clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
             _affiliateProvider = affiliateProvider ?? throw new ArgumentNullException(nameof(affiliateProvider));
             _linkParserProvider = linkParserProvider ?? throw new ArgumentNullException(nameof(linkParserProvider));
             _urlShortenerProvider = urlShortenerProvider ?? throw new ArgumentNullException(nameof(urlShortenerProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public IMultiLinkMessageBuilder AddUrls(IEnumerable<MessageContent> content)
@@ -111,12 +114,18 @@ namespace LeChuck.ReferralLinks.Application.Services
         {
             ctx.Parser = _linkParserProvider.GetParserFor(ctx.Content);
             ctx.Affiliate = _affiliateProvider.GetAffiliateFor(ctx.Parser?.Name);
-            // TODO: Find out which shortener do I need
-            ctx.Shortener = _urlShortenerProvider.GetServiceOrDefault(UrlShortenersEnum.BitLy);
+            if (ctx.Affiliate != null)
+            {
+                var shortenerName = _config.AffiliateServices
+                    .FirstOrDefault(aff => aff.Name == ctx.Affiliate.Name)?
+                    .ShortenerName ?? _config.DefaultShortener;
+                
+                ctx.Shortener = _urlShortenerProvider.GetShortenerByName(shortenerName);
+            }
 
             _logger.LogInformation($"Resolved helpers for link {ctx.Number}:\n" +
                                    $"  Parser: {ctx.Parser?.Name ?? "None"}\n" +
-                                   $"  Affiliate: {ctx.Affiliate?.Name}");
+                                   $"  Affiliate: {ctx.Affiliate?.Name ?? "None"}");
         }
 
         private async Task GetDeepLink(UrlContext ctx)

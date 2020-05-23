@@ -10,14 +10,11 @@ namespace LeChuck.ReferralLinks.Domain.Services.UrlShorteners
 {
     public class DefaultShortenerStrategy : IUrlShortenerStrategy
     {
-        public UrlShortenersEnum Key { get; }
-
+        public string Name { get; } = Constants.Providers.Shorteners.None;
         public Task<string> ShortenUrl(string url)
         {
-            // Placeholder class for No shortening, 
-            // used for fallback as well for non-existing
-            // shorteners
             return Task.FromResult(url);
         }
+
     }
 }

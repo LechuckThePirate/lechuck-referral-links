@@ -42,7 +42,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
 
         public async Task<LinkMessage> ParseContent(string content)
         {
-            var title = TitleRegex.GetMatch(content);
+            var title = System.Net.WebUtility.HtmlDecode(TitleRegex.GetMatch(content));
             var pictureUrl = PictureRegex.GetMatch(content);
             var price = PriceRegex.GetMatch(content);
             var saved = PriceSavesRegex.GetMatch(content);

@@ -9,7 +9,8 @@ namespace LeChuck.ReferralLinks.Domain.Interfaces
 {
     public interface IUrlShortenerStrategy
     {
-        UrlShortenersEnum Key => UrlShortenersEnum.None;
         Task<string> ShortenUrl(string url);
+
+        string Name { get; }
     }
 }

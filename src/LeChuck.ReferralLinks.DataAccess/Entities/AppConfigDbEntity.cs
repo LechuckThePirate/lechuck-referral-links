@@ -25,5 +25,7 @@ namespace LeChuck.ReferralLinks.DataAccess.Entities
         public DateTime? LastUpdatedAt { get; set; }
         public string CreatedBy { get; set; }
         public long TimeToLive { get; set; }
+        public string DefaultShortener { get; set; } = Constants.Providers.Shorteners.None;
+
     }
 }

@@ -23,16 +23,9 @@ namespace LeChuck.ReferralLinks.Domain.Providers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public IUrlShortenerStrategy GetServiceOrDefault(UrlShortenersEnum serviceName)
+        public IUrlShortenerStrategy GetShortenerByName(string serviceName)
         {
-            var result = _shorteners.FirstOrDefault(s => s.Key == serviceName);
-            if (result == null)
-            {
-                _logger.LogError($"No shortener for key '{serviceName}");
-                // Fallback to "No shortener"
-                return _shorteners.First(s => s.Key == UrlShortenersEnum.None);
-            }
-
+            var result = _shorteners.FirstOrDefault(s => s.Name == serviceName);
             return result;
         }
     }
