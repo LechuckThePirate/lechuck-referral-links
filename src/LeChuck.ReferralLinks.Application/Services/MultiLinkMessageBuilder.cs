@@ -113,6 +113,10 @@ namespace LeChuck.ReferralLinks.Application.Services
         private void ResolveHelpers(UrlContext ctx)
         {
             ctx.Parser = _linkParserProvider.GetParserFor(ctx.Content);
+            if (ctx.Parser != null)
+            {
+                ctx.GotoLink = _config.VendorServices.FirstOrDefault(cfg => cfg.Name == ctx.Parser.Name)?.GotoLink;
+            }
             ctx.Affiliate = _affiliateProvider.GetAffiliateFor(ctx.Parser?.Name);
             if (ctx.Affiliate != null)
             {
@@ -130,6 +134,12 @@ namespace LeChuck.ReferralLinks.Application.Services
 
         private async Task GetDeepLink(UrlContext ctx)
         {
+            if (!string.IsNullOrWhiteSpace(ctx.GotoLink))
+            {
+                ctx.DeepLink = $"{ctx.GotoLink}?ulp={ctx.OriginalUrl}";
+                return;
+            }
+
             if (ctx.Affiliate == null || ctx.Parser == null)
             {
                 _logger.LogWarning($"No affiliate for link {ctx.Number}");

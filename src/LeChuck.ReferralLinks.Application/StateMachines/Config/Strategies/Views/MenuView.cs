@@ -35,7 +35,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.View
             var message = "<b>CONFIGURACION</b>\n\nSelecciona una opción:";
             var buttons = new List<BotButton>
             {
-                new BotButton("Afiliados", ConfigStateMachineWorkflow.CommandsEnum.AffiliatesCmd.ToString()),
+                //new BotButton("Afiliados", ConfigStateMachineWorkflow.CommandsEnum.AffiliatesCmd.ToString()),
+                new BotButton("Vendedores", ConfigStateMachineWorkflow.CommandsEnum.VendorsCmd.ToString()),
                 new BotButton("Cancelar", ConfigStateMachineWorkflow.CommandsEnum.CancelConfigCmd.ToString()),
                 new BotButton("Guardar", ConfigStateMachineWorkflow.CommandsEnum.SaveConfigCmd.ToString())
             };

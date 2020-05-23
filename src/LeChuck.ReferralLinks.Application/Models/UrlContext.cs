@@ -16,5 +16,6 @@ namespace LeChuck.ReferralLinks.Application.Models
         public ILinkParserStrategy Parser { get; set; }
         public IUrlShortenerStrategy Shortener { get; set; }
         public int Number { get; set; }
+        public string GotoLink { get; set; }
     }
 }

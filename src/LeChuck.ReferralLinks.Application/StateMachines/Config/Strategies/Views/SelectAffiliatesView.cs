@@ -17,12 +17,12 @@ using LeChuck.Telegram.Bot.Framework.Services;
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Views
 {
-    public class AffiliatesView : IConfigStrategy
+    public class SelectAffiliatesView : IConfigStrategy
     {
         private readonly IBotService _bot;
         private readonly AppConfiguration _config;
 
-        public AffiliatesView(IBotService bot, AppConfiguration config)
+        public SelectAffiliatesView(IBotService bot, AppConfiguration config)
         {
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
             _config = config ?? throw new ArgumentNullException(nameof(config));

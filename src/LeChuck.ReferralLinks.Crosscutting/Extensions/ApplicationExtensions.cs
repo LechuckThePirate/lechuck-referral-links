@@ -88,6 +88,12 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
                         ApiEndpoint = Environment.GetEnvironmentVariable(Constants.AdmitadEndpointValueName),
                         AuthEndpoint = Environment.GetEnvironmentVariable(Constants.AdmitadAuthEndpointValueName)
                     }
+                },
+                VendorServices = new List<VendorConfig>()
+                {
+                    new VendorConfig { Name = Constants.Providers.Vendors.AliExpress },
+                    new VendorConfig { Name = Constants.Providers.Vendors.BangGood },
+                    new VendorConfig { Name = Constants.Providers.Vendors.Amazon }
                 }
             };
             return result;

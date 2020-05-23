@@ -21,6 +21,7 @@ namespace LeChuck.ReferralLinks.DataAccess.Entities
         public List<User> Users { get; set; }
         public List<Channel> Channels { get; set; }
         public List<AffiliateConfig> AffiliateServices { get; set; } = new List<AffiliateConfig>();
+        public List<VendorConfig> VendorServices { get; set; } = new List<VendorConfig>();
         public DateTime? CreatedAt { get; set; }
         public DateTime? LastUpdatedAt { get; set; }
         public string CreatedBy { get; set; }

@@ -13,17 +13,21 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
         {
             HomeState,
             AffiliatesState,
+            VendorsState,
             InputClientIdState,
             InputClientSecretState,
             DoneState,
             CancelledState,
             SelectedtAffiliateState,
-            SelectAffiliateSpaceState
+            SelectAffiliateSpaceState,
+            SelectedVendorState,
+            InputVendorGotoLinkState
         }
 
         public enum CommandsEnum
         {
             AffiliatesCmd,
+            VendorsCmd,
             SelectAffiliateCmd,
             SetClientIdCmd,
             SetClientSecretCmd,
@@ -33,7 +37,10 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
             SetAffiliateCredentialsCmd,
             ToggleActiveAffiliateCmd,
             SelectAffiliateSpaceCmd,
-            SetAffiliateSpaceCmd
+            SetAffiliateSpaceCmd,
+            SelectVendorCmd,
+            InputVendorGotoLinkCmd,
+            SetVendorGotoLinkCmd
         }
 
         public override string InitialState => $"{StatesEnum.HomeState}";
@@ -45,7 +52,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
                 AvailableCommands = new Dictionary<string, string>
                 {
                     {$"{CommandsEnum.AffiliatesCmd}", $"{StatesEnum.AffiliatesState}"},
-
+                    {$"{CommandsEnum.VendorsCmd}", $"{StatesEnum.VendorsState}"},
                     {$"{CommandsEnum.SaveConfigCmd}", $"{StatesEnum.DoneState}"},
                     {$"{CommandsEnum.CancelConfigCmd}", $"{StatesEnum.CancelledState}"}
                 }
@@ -92,6 +99,35 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
                     {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
                 }
             },
+
+            // Vendors
+            new StepMachineState($"{StatesEnum.VendorsState}")
+            {
+                AvailableCommands = new Dictionary<string, string>
+                {
+                    {$"{CommandsEnum.SelectVendorCmd}", $"{StatesEnum.SelectedVendorState}"},
+                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.HomeState}"}
+                }
+            },
+            new StepMachineState($"{StatesEnum.SelectedVendorState}")
+            {
+                AvailableCommands = new Dictionary<string, string>
+                {
+                    {$"{CommandsEnum.InputVendorGotoLinkCmd}", $"{StatesEnum.InputVendorGotoLinkState}"},
+                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.HomeState}"}
+                }
+            },
+            new StepMachineState($"{StatesEnum.InputVendorGotoLinkState}")
+            {
+                OnNext = $"{CommandsEnum.SetVendorGotoLinkCmd}",
+                AvailableCommands = new Dictionary<string, string>
+                {
+                    {$"{CommandsEnum.SetVendorGotoLinkCmd}", $"{StatesEnum.SelectedVendorState}"},
+                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
+                }
+            },
+
+
             new StepMachineState($"{StatesEnum.DoneState}") {EndMachine = true},
             new StepMachineState($"{StatesEnum.CancelledState}") {EndMachine = true}
         };
@@ -101,6 +137,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
         public class Params
         {
             public static string SelectedAffiliate = nameof(SelectedAffiliate);
+            public static string SelectedVendor = nameof(SelectedVendor);
         }
     }
 }
