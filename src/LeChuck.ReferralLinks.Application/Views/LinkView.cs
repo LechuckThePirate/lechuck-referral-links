@@ -1,5 +1,6 @@
 ﻿#region using directives
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,6 @@ using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.Telegram.Bot.Framework.Enums;
 using LeChuck.Telegram.Bot.Framework.Models;
 using LeChuck.Telegram.Bot.Framework.Services;
-using Microsoft.Extensions.Logging;
 
 #endregion
 
@@ -22,13 +22,11 @@ namespace LeChuck.ReferralLinks.Application.Views
 
     public class LinkView : ILinkView
     {
-        private readonly ILogger<LinkView> _logger;
         private readonly IBotService _bot;
 
-        public LinkView(ILogger<LinkView> logger, IBotService bot)
+        public LinkView(IBotService bot)
         {
-            _logger = logger;
-            _bot = bot;
+            _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         }
 
         public async Task SendView(long chatId, LinkMessage data)

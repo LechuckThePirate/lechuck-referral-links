@@ -11,6 +11,7 @@ using LeChuck.Telegram.Bot.Framework.Services;
 
 namespace LeChuck.ReferralLinks.Application.CommandHandlers
 {
+#if DEBUG
     public class ReadUrlCommandHandler : ICommandHandler
     {
         private readonly IBotService _bot;
@@ -28,14 +29,12 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
             if (url.Length == 2)
             {
                 var content = await GetContent(url[1].Trim());
-                await using (var stream = new MemoryStream())
-                await using (var writer = new StreamWriter(stream))
-                {
-                    writer.Write(content);
-                    writer.Flush();
-                    stream.Position = 0;
-                    await _bot.SendFileAsync(updateContext.ChatId, stream, $"{DateTime.Now:yyyy-MM-dd-hhmmss}.txt");
-                }
+                await using var stream = new MemoryStream();
+                await using var writer = new StreamWriter(stream);
+                await writer.WriteAsync(content);
+                await writer.FlushAsync();
+                stream.Position = 0;
+                await _bot.SendFileAsync(updateContext.ChatId, stream, $"{DateTime.Now:yyyy-MM-dd-hhmmss}.txt");
 
                 return;
             }
@@ -48,4 +47,5 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
             return await new HttpClient().GetStringAsync(url);
         }
     }
+#endif
 }

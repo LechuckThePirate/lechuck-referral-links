@@ -27,17 +27,16 @@ namespace LeChuck.ReferralLinks.Lambda.Timer
             _timer = stopwatch ?? new ProcessTimer(true);
         }
 
-        private IConfiguration Configuration { get; set; }
         private IServiceCollection Services { get; } = new ServiceCollection();
 
         public StartUp ConfigureApplication()
         {
             _timer.Mark("Configuration", () =>
             {
-                Configuration = _configurationBuilder
+                _configurationBuilder
                     .AddJsonFile("appsettings.json", false)
-                    .AddSystemsManager("/ReferralLink",
-                        new AWSOptions {Region = RegionEndpoint.EUWest1})
+                    //.AddSystemsManager("/ReferralLink",
+                    //    new AWSOptions {Region = RegionEndpoint.EUWest1})
                     .Build();
             });
 

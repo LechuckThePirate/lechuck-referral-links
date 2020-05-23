@@ -47,7 +47,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Comm
                 }
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
     }
 }

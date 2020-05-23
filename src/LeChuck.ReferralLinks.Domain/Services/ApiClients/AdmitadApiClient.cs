@@ -64,7 +64,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
                 return true;
             }
 
-            _logger.LogError($"Failed to authenticate to Admitad: {response.StatusCode.ToString()}\n" +
+            _logger.LogError($"Failed to authenticate to Admitad: {response.StatusCode}\n" +
                              $"{JsonSerializer.Serialize(response)}");
             return false;
         }
@@ -89,7 +89,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
             var response = await httpClient.GetAsync(endpoint);
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttpRequestException($"HttpResponse error: {response.StatusCode.ToString()}");
+                throw new HttpRequestException($"HttpResponse error: {response.StatusCode}");
             }
 
             var payload = await response.Content.ReadAsStringAsync();
@@ -120,7 +120,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
                 var response = await httpClient.GetAsync(endpoint);
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new HttpRequestException($"HttpResponse error: {response.StatusCode.ToString()}");
+                    throw new HttpRequestException($"HttpResponse error: {response.StatusCode}");
                 }
 
                 var payload = await response.Content.ReadAsStringAsync();

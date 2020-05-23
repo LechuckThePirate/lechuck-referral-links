@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Enums;
 using LeChuck.ReferralLinks.Domain.Interfaces;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 #endregion
@@ -20,7 +19,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.UrlShorteners
         private readonly string _token;
         private readonly string _endpoint;
 
-        public BitLyService(IHttpClientFactory clientFactory, IConfiguration configuration)
+        public BitLyService(IHttpClientFactory clientFactory)
         {
             if (clientFactory == null) throw new ArgumentNullException(nameof(clientFactory));
             _client = clientFactory.CreateClient();

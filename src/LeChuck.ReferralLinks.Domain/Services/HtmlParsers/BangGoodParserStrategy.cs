@@ -77,12 +77,12 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
 
         private string GetCurrency(string currency)
         {
-            switch (currency)
+            return currency switch
             {
-                case "EUR": return "€";
-                case "USD": return "$";
-                default: return string.Empty;
-            }
+                "EUR" => "€",
+                "USD" => "$",
+                _ => string.Empty
+            };
         }
     }
 }

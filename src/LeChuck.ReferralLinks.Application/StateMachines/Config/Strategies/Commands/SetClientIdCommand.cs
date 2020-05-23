@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine;
 using LeChuck.ReferralLinks.Domain.Models;
-using LeChuck.ReferralLinks.Domain.UnitsOfWork;
 using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -15,13 +14,11 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Comm
     public class SetClientIdCommand : IConfigStrategy
     {
         private readonly ILogger<SetClientIdCommand> _logger;
-        private readonly IConfigUnitOfWork _uow;
         private readonly AppConfiguration _config;
 
-        public SetClientIdCommand(ILogger<SetClientIdCommand> logger, IConfigUnitOfWork uow, AppConfiguration config)
+        public SetClientIdCommand(ILogger<SetClientIdCommand> logger, AppConfiguration config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _uow = uow ?? throw new ArgumentNullException(nameof(uow));
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
@@ -46,7 +43,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Comm
                 provider.Credentials = affiliate.Credentials;
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
     }
 }

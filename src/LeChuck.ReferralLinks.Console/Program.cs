@@ -9,7 +9,7 @@ namespace LeChuck.ReferralLinks.Console
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var timer = new ProcessTimer(true);
 

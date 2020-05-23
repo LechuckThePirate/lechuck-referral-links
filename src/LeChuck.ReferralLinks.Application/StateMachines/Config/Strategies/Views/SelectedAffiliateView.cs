@@ -18,13 +18,11 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.View
     public class SelectedAffiliateView : IConfigStrategy
     {
         private readonly ILogger<SelectedAffiliateView> _logger;
-        private readonly AppConfiguration _config;
         private readonly IBotService _bot;
 
-        public SelectedAffiliateView(ILogger<SelectedAffiliateView> logger, AppConfiguration config, IBotService bot)
+        public SelectedAffiliateView(ILogger<SelectedAffiliateView> logger, IBotService bot)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _config = config ?? throw new ArgumentNullException(nameof(config));
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         }
 

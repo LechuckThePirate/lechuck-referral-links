@@ -36,7 +36,7 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
 
             services.AddSingleton(configuration);
 
-            var appConfig = GetConfiguration(services, () => GetDefaultConfig(configuration));
+            var appConfig = GetConfiguration(services, () => GetDefaultConfig());
             services.AddSingleton(appConfig);
 
             services
@@ -74,7 +74,7 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
             };
         }
 
-        static AppConfiguration GetDefaultConfig(IConfiguration configuration)
+        static AppConfiguration GetDefaultConfig()
         {
             var rootUserId = Environment.GetEnvironmentVariable(Constants.TelegramRootUserId);
             var result = new AppConfiguration
