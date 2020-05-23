@@ -50,7 +50,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Comm
 
             affiliate.SpaceId = context.CallbackButtonData[1];
             stateMachine.SetParameter(ConfigStateMachineWorkflow.Params.SelectedAffiliate, affiliate);
-            return true;
+            return await Task.FromResult(true);
         }
     }
 }
