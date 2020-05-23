@@ -15,17 +15,19 @@ namespace LeChuck.ReferralLinks.Domain.Services.Affiliates
     public class AdmitadAffiliateStrategy : IAffiliateStrategy
     {
         private readonly IAdmitadApiClient _admitadApiClient;
-        private AffiliateServiceConfig _affiliateConfig;
+        private readonly AffiliateConfig _affiliateConfig;
 
         public AdmitadAffiliateStrategy(IAdmitadApiClient admitadApiClient, AppConfiguration appConfig)
         {
             _admitadApiClient = admitadApiClient ?? throw new ArgumentNullException(nameof(admitadApiClient));
             _affiliateConfig = appConfig.AffiliateServices
-                                   .FirstOrDefault(af => af.Service == this.Name)
+                                   .FirstOrDefault(af => af.Name == this.Name)
                                ?? throw new ArgumentNullException(nameof(appConfig));
+            Enabled = _affiliateConfig.Enabled;
         }
 
         public string Name => Constants.Providers.Affiliates.Admitad;
+        public bool Enabled { get; private set; }
 
         public bool Handles(string parser) => true;
         public async Task<IEnumerable<DeepLink>> GetDeepLinks(string vendor, IEnumerable<string> urls)
@@ -49,6 +51,11 @@ namespace LeChuck.ReferralLinks.Domain.Services.Affiliates
             return result;
         }
 
+        public async Task<IEnumerable<AffiliateSpace>> GetSpaces()
+        {
+            return await _admitadApiClient.GetSpaces();
+        }
+
         public string GetCampaignId(string vendor)
         {
             // TODO: Get from config
@@ -57,8 +64,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.Affiliates
 
         private string GetSpaceId()
         {
-            // TODO: Get from config
-            return "1440118"; 
+            return _affiliateConfig.SpaceId;
         }
     }
 }

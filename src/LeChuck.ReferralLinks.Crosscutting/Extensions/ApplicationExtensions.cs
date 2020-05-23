@@ -1,6 +1,7 @@
 ﻿#region using directives
 
 using System;
+using System.Collections.Generic;
 using LeChuck.ReferralLinks.Application;
 using LeChuck.ReferralLinks.Application.Extensions;
 using LeChuck.ReferralLinks.Application.UpdateHandlers;
@@ -25,7 +26,7 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
 
         public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            var botKey = configuration.GetSection(Constants.TelegramTokenValueName).Value;
+            var botKey = Environment.GetEnvironmentVariable(Constants.TelegramTokenValueName);
 
             services
                 .AddDefaultAWSOptions(configuration.GetAWSOptions())
@@ -75,8 +76,20 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
 
         static AppConfiguration GetDefaultConfig(IConfiguration configuration)
         {
-            var rootUserId = configuration.GetSection(Constants.TelegramRootUserId).Value;
-            var result = new AppConfiguration {RootUserId = rootUserId};
+            var rootUserId = Environment.GetEnvironmentVariable(Constants.TelegramRootUserId);
+            var result = new AppConfiguration
+            {
+                RootUserId = rootUserId,
+                AffiliateServices = new List<AffiliateConfig>()
+                {
+                    new AffiliateConfig
+                    {
+                        Name = Constants.Providers.Affiliates.Admitad,
+                        ApiEndpoint = Environment.GetEnvironmentVariable(Constants.AdmitadEndpointValueName),
+                        AuthEndpoint = Environment.GetEnvironmentVariable(Constants.AdmitadAuthEndpointValueName)
+                    }
+                }
+            };
             return result;
         }
     }

@@ -13,11 +13,11 @@ using LeChuck.Telegram.Bot.Framework.Services;
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Commands
 {
-    public class NoValidateCommandStrategy : IMultiLinkStrategy
+    public class DefaultCommandStrategy : IMultiLinkStrategy
     {
         private readonly IBotService _bot;
 
-        public NoValidateCommandStrategy(IBotService bot)
+        public DefaultCommandStrategy(IBotService bot)
         {
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
         }

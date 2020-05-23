@@ -50,13 +50,13 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
 
             var buttons = new List<BotButton>
             {
-                new BotButton("Cambiar Enlace", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SetUrlCmd}"),
-                new BotButton($"Canales ({channelCount})",
-                    $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SelectChannelsCmd}"),
-                new BotButton("Programar", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SelectTimeSpanCmd}"),
+                //new BotButton("Cambiar Enlace", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SetUrlCmd}"),
+                //new BotButton($"Canales ({channelCount})",
+                //    $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SelectChannelsCmd}"),
+                //new BotButton("Programar", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SelectTimeSpanCmd}"),
                 new BotButton("Ver/Revisar", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.ReviewMessagesCmd}"),
-                new BotButton("Enviar", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SendCmd}"),
-                new BotButton("Cancelar", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.CancelCmd}")
+                //new BotButton("Enviar", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.SendCmd}"),
+                new BotButton("Salir", $"{ProgramLinkStateMachineWorkflow.CommandsEnum.CancelCmd}")
             };
 
             await _bot.SendTextMessageAsync(context.User.UserId, message.ToString(), TextModeEnum.Html,

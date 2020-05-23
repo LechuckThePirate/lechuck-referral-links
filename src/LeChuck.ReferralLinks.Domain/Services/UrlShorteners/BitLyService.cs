@@ -24,9 +24,9 @@ namespace LeChuck.ReferralLinks.Domain.Services.UrlShorteners
         {
             if (clientFactory == null) throw new ArgumentNullException(nameof(clientFactory));
             _client = clientFactory.CreateClient();
-            _token = configuration.GetSection(Constants.BitLyTokenValueName).Value ??
+            _token = Environment.GetEnvironmentVariable(Constants.BitLyTokenValueName) ??
                      throw new ArgumentException(nameof(_token));
-            _endpoint = configuration.GetSection(Constants.BitLyEndpointValueName).Value ??
+            _endpoint = Environment.GetEnvironmentVariable(Constants.BitLyEndpointValueName) ??
                         throw new ArgumentException(nameof(_endpoint));
         }
 

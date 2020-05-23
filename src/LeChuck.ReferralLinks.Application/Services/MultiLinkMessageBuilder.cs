@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Application.Models;
@@ -29,7 +30,7 @@ namespace LeChuck.ReferralLinks.Application.Services
         private readonly ILinkParserProvider _linkParserProvider;
         private readonly IUrlShortenerProvider _urlShortenerProvider;
         private readonly ILogger<MultiLinkMessageBuilder> _logger;
-        private readonly MultiUrlContext _context = new MultiUrlContext();
+        private MultiUrlContext _context;
 
         public MultiLinkMessageBuilder(
             IHttpClientFactory clientFactory,
@@ -47,47 +48,36 @@ namespace LeChuck.ReferralLinks.Application.Services
 
         public IMultiLinkMessageBuilder AddUrls(IEnumerable<MessageContent> content)
         {
-            _context.UrlContexts.AddRange(content
-                .Where(c => c.Type == Constants.MessageContentType.Url)
-                .Select((c, i) => new UrlContext { OriginalUrl = c.Value, Number = i+1 }));
+            _context = new MultiUrlContext
+            {
+                UrlContexts = content
+                    .Where(c => c.Type == Constants.MessageContentType.Url)
+                    .Select((c, i) => new UrlContext { OriginalUrl = c.Value, Number = i + 1 })
+                    .ToList()
+            };
 
             return this;
         }
 
         public async Task<IMultiLinkMessageBuilder> ProcessUrls()
         {
-            //foreach (var ctx in _context.UrlContexts)
-            //{
-            //    await GetContent(ctx);
-            //    await ResolveHelpers(ctx);
-            //    await GetDeepLink(ctx);
-            //    await ShortenUrl(ctx);
-            //    await BuildMessage(ctx);
-            //    if (ctx.Message != null)
-            //    {
-            //        ctx.Message.Number = ctx.Number;
-            //        ctx.Message.Url = ctx.Url;
-            //    }
-            //}
-
             foreach (var ctx in _context.UrlContexts)
             {
-                await GetContent(ctx)
-                    .ContinueWith(a => ResolveHelpers(ctx))
-                    .ContinueWith(a => GetDeepLink(ctx))
-                    .ContinueWith(a => ShortenUrl(ctx))
-                    .ContinueWith(a => BuildMessage(ctx))
-                    .ContinueWith(a =>
-                    {
-                        if (ctx.Message != null)
-                        {
-                            ctx.Message.Number = ctx.Number;
-                            ctx.Message.Url = ctx.Url;
-                        }
-                    });
+                await GetContent(ctx);
+                ResolveHelpers(ctx);
+                await GetDeepLink(ctx);
+                await ShortenUrl(ctx);
+                await BuildMessage(ctx);
+                if (ctx.Message != null)
+                {
+                    ctx.Message.Number = ctx.Number;
+                    ctx.Message.Url = ctx.Url;
+                }
             }
 
-            return await Task.FromResult(this);
+            _logger.LogTrace($"Generated context:\n{JsonSerializer.Serialize(_context)}");
+
+            return this;
         }
 
         public MultiLinkMessage Build()
@@ -107,7 +97,7 @@ namespace LeChuck.ReferralLinks.Application.Services
                 _logger.LogInformation($"Getting content for link {ctx.Number}");
                 using var client = _clientFactory.CreateClient();
                 ctx.Content = await client.GetStringAsync(ctx.OriginalUrl);
-                _logger.LogInformation($"Got content for link {ctx.Number} ({ctx.Content?.Length} ?? 0 characters)");
+                _logger.LogInformation($"Got content for link {ctx.Number} ({ctx.Content?.Length ?? 0} characters)");
             }
             catch (Exception ex)
             {
@@ -117,7 +107,7 @@ namespace LeChuck.ReferralLinks.Application.Services
             }
         }
 
-        private async Task ResolveHelpers(UrlContext ctx)
+        private void ResolveHelpers(UrlContext ctx)
         {
             ctx.Parser = _linkParserProvider.GetParserFor(ctx.Content);
             ctx.Affiliate = _affiliateProvider.GetAffiliateFor(ctx.Parser?.Name);
@@ -127,7 +117,6 @@ namespace LeChuck.ReferralLinks.Application.Services
             _logger.LogInformation($"Resolved helpers for link {ctx.Number}:\n" +
                                    $"  Parser: {ctx.Parser?.Name ?? "None"}\n" +
                                    $"  Affiliate: {ctx.Affiliate?.Name}");
-            await Task.CompletedTask;
         }
 
         private async Task GetDeepLink(UrlContext ctx)
@@ -153,7 +142,7 @@ namespace LeChuck.ReferralLinks.Application.Services
             if (ctx.Shortener == null)
             {
                 _logger.LogWarning($"No shortener for link {ctx.Number}");
-                return ;
+                return;
             }
 
             try
@@ -198,10 +187,10 @@ namespace LeChuck.ReferralLinks.Application.Services
             // Group urls by Affiliate/Vendor (parser)
             var afililiates =
                 _context.UrlContexts.GroupBy(ctx => new
-                    {
-                        AffiliateName = ctx.Affiliate?.Name,
-                        ParserName = ctx.Parser?.Name
-                    })
+                {
+                    AffiliateName = ctx.Affiliate?.Name,
+                    ParserName = ctx.Parser?.Name
+                })
                     .Where(group => group.Key.AffiliateName != null
                                     && group.Key.ParserName != null)
                     .ToList();

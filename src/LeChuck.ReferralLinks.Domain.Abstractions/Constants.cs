@@ -2,11 +2,13 @@
 {
     public class Constants
     {
-        public const string TelegramTokenValueName = "Config:TelegramToken";
+        public const string TelegramTokenValueName = "BOT_KEY";
 
-        public const string TelegramRootUserId = "Config:RootUserId";
-        public const string BitLyTokenValueName = "Config:BitLyToken";
-        public static string BitLyEndpointValueName = "Config:BitLyEndpoint";
+        public const string TelegramRootUserId = "ROOT_USER_ID";
+        public const string BitLyTokenValueName = "BITLY_TOKEN";
+        public static string BitLyEndpointValueName = "BITLY_ENDPOINT";
+        public static string AdmitadEndpointValueName = "ADMITAD_ENDPOINT";
+        public static string AdmitadAuthEndpointValueName = "ADMITAD_AUTHENDPOINT";
 
         public class Providers
         {

@@ -25,7 +25,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
         private readonly IHttpClientFactory _clientFactory;
         private readonly IConfigUnitOfWork _configUnitOfWork;
         private readonly ILogger<AdmitadApiClient> _logger;
-        private readonly AffiliateServiceConfig _admitad;
+        private readonly AffiliateConfig _admitad;
 
         private class AuthResponse
         {
@@ -101,6 +101,38 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
         {
             var result = await DeepLinks(spaceId, campaignId, new List<string> {url});
             return result.FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<AffiliateSpace>> GetSpaces()
+        {
+            try
+            {
+                if (!HasValidCredentials() && !(await Authenticate()))
+                {
+                    throw new AuthenticationException();
+                }
+
+                var credentials = _admitad.Credentials;
+                string endpoint = $"{_admitad.ApiEndpoint}websites/v2/";
+                using var httpClient = _clientFactory.CreateClient();
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue(credentials.TokenType, credentials.AccessToken);
+                var response = await httpClient.GetAsync(endpoint);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new HttpRequestException($"HttpResponse error: {response.StatusCode.ToString()}");
+                }
+
+                var payload = await response.Content.ReadAsStringAsync();
+                var data = JsonSerializer.Deserialize<List<AffiliateSpace>>(payload,
+                    new JsonSerializerOptions {PropertyNameCaseInsensitive = true});
+                return data;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error getting spaces from admitad: {ex.Message}\n{ex.StackTrace}");
+                return new List<AffiliateSpace>();
+            }
         }
 
         private AuthenticationHeaderValue GetAuthHeaderValue(ApiCredentials credentials)

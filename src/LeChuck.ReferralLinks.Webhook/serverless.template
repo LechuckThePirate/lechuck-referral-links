@@ -3,10 +3,12 @@
   "Transform": "AWS::Serverless-2016-10-31",
   "Description": "An AWS Serverless Application that uses the ASP.NET Core framework running in Amazon Lambda.",
   "Parameters": {
-    "BotKey": {
-      "Type": "AWS::SSM::Parameter::Value<String>",
-      "Default": "/ReferralLink/Config/TelegramToken"
-    }
+    "BotKey": { "Type": "String"},
+    "AdmitadEndpoint": { "Type": "String" },
+    "AdmitadAuthEndpoint": { "Type": "String" },
+    "BitLyToken": { "Type": "String" },
+    "RootUserId": { "Type": "String" },
+    "BitLyEndpoint": {"Type":"String"}
   },
   "Resources": {
     "AspNetCoreFunction": {
@@ -29,7 +31,12 @@
             "CONFIG_TABLE": { "Ref" : "ConfigTable"},
             "TIMED_TASKS_TABLE": { "Ref": "TimedTasksTable" },
             "STATE_MACHINE_TABLE": {"Ref": "StateMachineTable" },
-            "BOT_KEY": { "Ref": "BotKey" }
+            "ADMITAD_ENDPOINT": {"Ref": "AdmitadEndpoint"},
+            "ADMITAD_AUTHENDPOINT": {"Ref":"AdmitadAuthEndpoint"},
+            "ROOT_USER_ID": {"Ref":"RootUserId"},
+            "BOT_KEY": { "Ref": "BotKey" },
+            "BITLY_TOKEN": {"Ref": "BitLyToken"},
+            "BITLY_ENDPOINT": {"Ref": "BitLyEndpoint"}
           }
         },
         "Events": {

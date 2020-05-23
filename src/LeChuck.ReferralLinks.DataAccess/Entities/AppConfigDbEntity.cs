@@ -20,7 +20,7 @@ namespace LeChuck.ReferralLinks.DataAccess.Entities
         public string RootUserId { get; set; }
         public List<User> Users { get; set; }
         public List<Channel> Channels { get; set; }
-        public List<AffiliateServiceConfig> AffiliateServices { get; set; } = new List<AffiliateServiceConfig>();
+        public List<AffiliateConfig> AffiliateServices { get; set; } = new List<AffiliateConfig>();
         public DateTime? CreatedAt { get; set; }
         public DateTime? LastUpdatedAt { get; set; }
         public string CreatedBy { get; set; }

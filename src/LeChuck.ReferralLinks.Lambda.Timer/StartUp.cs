@@ -1,5 +1,6 @@
 ﻿#region using directives
 
+using System;
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
 using LeChuck.ReferralLinks.Domain;
@@ -50,7 +51,7 @@ namespace LeChuck.ReferralLinks.Lambda.Timer
                 Services.AddLogging(configure => configure.SetMinimumLevel(LogLevel.Debug).AddDebug());
                 Services.AddTelegramBotFramework(new TelegramBotFrameworkConfiguration
                 {
-                    BotKey = Configuration.GetSection(Constants.TelegramTokenValueName).Value
+                    BotKey = Environment.GetEnvironmentVariable(Constants.TelegramTokenValueName)
                 }, commandModels: new CommandModel[] { });
                 Services.AddTimerLambda();
             });

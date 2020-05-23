@@ -20,10 +20,12 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.View
     public class AffiliatesView : IConfigStrategy
     {
         private readonly IBotService _bot;
+        private readonly AppConfiguration _config;
 
-        public AffiliatesView(IBotService bot)
+        public AffiliatesView(IBotService bot, AppConfiguration config)
         {
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public bool CanHandle(string key) => key == ConfigStateMachineWorkflow.StatesEnum.AffiliatesState.ToString();
@@ -34,21 +36,33 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.View
             if (context.CallbackMessageId.HasValue)
                 await _bot.DeleteMessageAsync(context.ChatId, context.CallbackMessageId.Value);
 
-            var message = new StringBuilder("<b>AFILIACIONES</b>\n\nAfiliaciones activas:\n\n");
-            message.Append("  - " +
-                           $"{string.Join("\n  - ", entity.AffiliateServices.Select(s => s.Service))}\n");
-            message.Append("\nSelecciona una opción");
-            var buttons = new List<BotButton>
-            {
-                new BotButton("Añadir", ConfigStateMachineWorkflow.CommandsEnum.AddAffiliateCmd.ToString()),
-                new BotButton("Borrar", ConfigStateMachineWorkflow.CommandsEnum.RemoveAffiliateCmd.ToString()),
-                new BotButton("Configurar", ConfigStateMachineWorkflow.CommandsEnum.ConfigureAffiliateCmd.ToString()),
-                new BotButton("Atrás", ConfigStateMachineWorkflow.CommandsEnum.BackCmd.ToString())
-            };
+            var message = GetMessage();
+            var buttons = GetButtons();
 
             await _bot.SendTextMessageAsync(context.User.UserId, message.ToString(), TextModeEnum.Html,
                 buttons);
             return true;
+        }
+
+        private List<BotButton> GetButtons()
+        {
+            var buttons = new List<BotButton>();
+            buttons.AddRange(_config.AffiliateServices.Select(aff =>
+                new BotButton($"{aff.Name} ({(aff.Enabled ? "activo" : "inactivo")})",
+                    ConfigStateMachineWorkflow.CommandsEnum.SelectAffiliateCmd.ToString(),
+                    aff.Name)
+            ));
+            buttons.Add(new BotButton("Atrás", ConfigStateMachineWorkflow.CommandsEnum.BackCmd.ToString()));
+            return buttons;
+        }
+
+        private static StringBuilder GetMessage()
+        {
+            var message = new StringBuilder();
+            message.AppendLine("<b>AFILIACIONES</b>");
+            message.AppendLine();
+            message.Append("Selecciona una afiliación para configurarla");
+            return message;
         }
     }
 }

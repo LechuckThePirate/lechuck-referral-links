@@ -10,8 +10,8 @@ namespace LeChuck.ReferralLinks.Domain.Models
     {
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
-        public string AuthType { get; set; }
-        public string TokenType { get; set; }
+        public string AuthType { get; set; } = "Basic";
+        public string TokenType { get; set; } = "Bearer";
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
         public DateTime? Expires { get; set; }

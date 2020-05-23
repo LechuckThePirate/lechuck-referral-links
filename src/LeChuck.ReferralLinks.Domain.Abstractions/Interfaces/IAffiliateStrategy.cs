@@ -11,8 +11,10 @@ namespace LeChuck.ReferralLinks.Domain.Interfaces
     public interface IAffiliateStrategy
     {
         string Name { get; }
+        bool Enabled { get; }
         bool Handles(string parser);
         Task<IEnumerable<DeepLink>> GetDeepLinks(string vendor, IEnumerable<string> urls);
         Task<string> GetDeepLink(string vendor, string url);
+        Task<IEnumerable<AffiliateSpace>> GetSpaces();
     }
 }

@@ -12,6 +12,7 @@ namespace LeChuck.ReferralLinks.Domain.Providers
     public interface IAffiliateProvider
     {
         IAffiliateStrategy GetAffiliateFor(string url);
+        IAffiliateStrategy GetAffiliateByName(string selectedAffiliateName);
     }
 
     public class AffiliateProvider : IAffiliateProvider
@@ -25,7 +26,12 @@ namespace LeChuck.ReferralLinks.Domain.Providers
 
         public IAffiliateStrategy GetAffiliateFor(string url)
         {
-            return _affiliateStrategies.FirstOrDefault(s => s.Handles(url));
+            return _affiliateStrategies.Where(aff => aff.Enabled).FirstOrDefault(s => s.Handles(url));
+        }
+        
+        public IAffiliateStrategy GetAffiliateByName(string selectedAffiliateName)
+        {
+            return _affiliateStrategies.FirstOrDefault(s => s.Name == selectedAffiliateName);
         }
     }
 }

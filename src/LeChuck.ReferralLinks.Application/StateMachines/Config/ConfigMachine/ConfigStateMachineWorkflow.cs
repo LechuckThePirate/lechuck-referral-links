@@ -13,29 +13,27 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
         {
             HomeState,
             AffiliatesState,
-            AddAffiliateState,
-            RemoveAffiliateState,
-            ConfigureAffiliateState,
             InputClientIdState,
             InputClientSecretState,
             DoneState,
-            CancelState
+            CancelledState,
+            SelectedtAffiliateState,
+            SelectAffiliateSpaceState
         }
 
         public enum CommandsEnum
         {
             AffiliatesCmd,
-            AddAffiliateCmd,
-            RemoveAffiliateCmd,
             SelectAffiliateCmd,
-            ConfigureAffiliateCmd,
-            ClientIdCmd,
-            ClientSecretCmd,
             SetClientIdCmd,
             SetClientSecretCmd,
             BackCmd,
             SaveConfigCmd,
-            CancelConfigCmd
+            CancelConfigCmd,
+            SetAffiliateCredentialsCmd,
+            ToggleActiveAffiliateCmd,
+            SelectAffiliateSpaceCmd,
+            SetAffiliateSpaceCmd
         }
 
         public override string InitialState => $"{StatesEnum.HomeState}";
@@ -49,41 +47,30 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
                     {$"{CommandsEnum.AffiliatesCmd}", $"{StatesEnum.AffiliatesState}"},
 
                     {$"{CommandsEnum.SaveConfigCmd}", $"{StatesEnum.DoneState}"},
-                    {$"{CommandsEnum.CancelConfigCmd}", $"{StatesEnum.CancelState}"}
+                    {$"{CommandsEnum.CancelConfigCmd}", $"{StatesEnum.CancelledState}"}
                 }
             },
             new StepMachineState($"{StatesEnum.AffiliatesState}")
             {
                 AvailableCommands = new Dictionary<string, string>
                 {
-                    {$"{CommandsEnum.AddAffiliateCmd}", $"{StatesEnum.AddAffiliateState}"},
-                    {$"{CommandsEnum.RemoveAffiliateCmd}", $"{StatesEnum.RemoveAffiliateState}"},
-                    {$"{CommandsEnum.ConfigureAffiliateCmd}", $"{StatesEnum.ConfigureAffiliateState}"},
+                    {$"{CommandsEnum.SelectAffiliateCmd}", $"{StatesEnum.SelectedtAffiliateState}"},
                     {$"{CommandsEnum.BackCmd}", $"{StatesEnum.HomeState}"}
                 }
             },
-            new StepMachineState($"{StatesEnum.AddAffiliateState}")
+            new StepMachineState($"{StatesEnum.SelectedtAffiliateState}")
             {
-                AvailableCommands = new Dictionary<string, string>
-                {
-                    {$"{CommandsEnum.SelectAffiliateCmd}", $"{StatesEnum.AffiliatesState}"},
+                AvailableCommands = new Dictionary<string, string> {
+                    {$"{CommandsEnum.SetAffiliateCredentialsCmd}", $"{StatesEnum.InputClientIdState}"},
+                    {$"{CommandsEnum.SelectAffiliateSpaceCmd}", $"{StatesEnum.SelectAffiliateSpaceState}"},
+                    {$"{CommandsEnum.ToggleActiveAffiliateCmd}", $"{StatesEnum.SelectedtAffiliateState}"},
                     {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
                 }
             },
-            new StepMachineState($"{StatesEnum.RemoveAffiliateState}")
+            new StepMachineState($"{StatesEnum.SelectAffiliateSpaceState}")
             {
-                AvailableCommands = new Dictionary<string, string>
-                {
-                    {$"{CommandsEnum.SelectAffiliateCmd}", $"{StatesEnum.AffiliatesState}"},
-                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
-                }
-            },
-            new StepMachineState($"{StatesEnum.ConfigureAffiliateState}")
-            {
-                AvailableCommands = new Dictionary<string, string>
-                {
-                    {$"{CommandsEnum.ClientIdCmd}", $"{StatesEnum.InputClientIdState}"},
-                    {$"{CommandsEnum.ClientSecretCmd}", $"{StatesEnum.InputClientSecretState}"},
+                AvailableCommands = new Dictionary<string, string> {
+                    {$"{CommandsEnum.SetAffiliateSpaceCmd}", $"{StatesEnum.SelectedtAffiliateState}"},
                     {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
                 }
             },
@@ -92,7 +79,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
                 OnNext = $"{CommandsEnum.SetClientIdCmd}",
                 AvailableCommands = new Dictionary<string, string>
                 {
-                    {$"{CommandsEnum.SetClientIdCmd}", $"{StatesEnum.ConfigureAffiliateState}"},
+                    {$"{CommandsEnum.SetClientIdCmd}", $"{StatesEnum.InputClientSecretState}"},
                     {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
                 }
             },
@@ -101,14 +88,19 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
                 OnNext = $"{CommandsEnum.SetClientSecretCmd}",
                 AvailableCommands = new Dictionary<string, string>
                 {
-                    {$"{CommandsEnum.SetClientSecretCmd}", $"{StatesEnum.ConfigureAffiliateState}"},
+                    {$"{CommandsEnum.SetClientSecretCmd}",$"{StatesEnum.SelectedtAffiliateState}"},
                     {$"{CommandsEnum.BackCmd}", $"{StatesEnum.AffiliatesState}"}
                 }
             },
             new StepMachineState($"{StatesEnum.DoneState}") {EndMachine = true},
-            new StepMachineState($"{StatesEnum.CancelState}") {EndMachine = true}
+            new StepMachineState($"{StatesEnum.CancelledState}") {EndMachine = true}
         };
 
         public override IEnumerable<StepMachineState> StateList => _stateList;
+
+        public class Params
+        {
+            public static string SelectedAffiliate = nameof(SelectedAffiliate);
+        }
     }
 }

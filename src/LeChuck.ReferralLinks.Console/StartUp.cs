@@ -44,9 +44,9 @@ namespace LeChuck.ReferralLinks.Console
             {
                 Configuration = _configurationBuilder
                     .AddJsonFile("appsettings.json", false)
-                    .AddSystemsManager("/ReferralLink",
-                        new AWSOptions {Region = RegionEndpoint.EUWest1},
-                        reloadAfter: TimeSpan.FromMinutes(1))
+                    //.AddSystemsManager("/ReferralLink",
+                    //    new AWSOptions {Region = RegionEndpoint.EUWest1},
+                    //    reloadAfter: TimeSpan.FromMinutes(1))
                     .Build();
             });
 

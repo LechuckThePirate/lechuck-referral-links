@@ -37,7 +37,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.View
             {
                 new BotButton("Afiliados", ConfigStateMachineWorkflow.CommandsEnum.AffiliatesCmd.ToString()),
                 new BotButton("Cancelar", ConfigStateMachineWorkflow.CommandsEnum.CancelConfigCmd.ToString()),
-                new BotButton("Guardar", ConfigStateMachineWorkflow.CommandsEnum.AffiliatesCmd.ToString())
+                new BotButton("Guardar", ConfigStateMachineWorkflow.CommandsEnum.SaveConfigCmd.ToString())
             };
 
             await _bot.SendTextMessageAsync(context.User.UserId, message, TextModeEnum.Html,
