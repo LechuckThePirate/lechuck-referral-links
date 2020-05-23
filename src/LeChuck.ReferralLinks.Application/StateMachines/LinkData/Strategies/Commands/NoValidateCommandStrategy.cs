@@ -32,8 +32,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
                 ProgramLinkStateMachineWorkflow.CommandsEnum.CancelCmd.ToString()
             }.Contains(key);
 
-        public async Task<bool> Handle(IUpdateContext context, MultiLink entity,
-            IStateMachine<IUpdateContext, MultiLink> stateMachine)
+        public async Task<bool> Handle(IUpdateContext context, MultiLinkMessage entity,
+            IStateMachine<IUpdateContext, MultiLinkMessage> stateMachine)
         {
             if (context.CallbackMessageId.HasValue)
                 await _bot.DeleteMessageAsync(context.ChatId, context.CallbackMessageId.Value);

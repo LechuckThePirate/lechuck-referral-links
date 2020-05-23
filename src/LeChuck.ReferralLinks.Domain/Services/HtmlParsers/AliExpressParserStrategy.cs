@@ -24,11 +24,11 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public string ParserName => Constants.Providers.Vendors.AliExpress;
+        public string Name => Constants.Providers.Vendors.AliExpress;
 
         public bool CanParse(string content) => PageModuleRegex.IsMatch(content) && PriceModuleRegex.IsMatch(content);
 
-        public async Task<Link> ParseContent(string content)
+        public async Task<LinkMessage> ParseContent(string content)
         {
             var pageModule = GetObjectFromResponse("pageModule", PageModuleRegex, content);
             var priceModule = GetObjectFromResponse("priceModule", PriceModuleRegex, content);
@@ -42,12 +42,16 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             var pictureUrl = pageModule.imagePath;
             var title = pageModule.title;
             var price = priceModule.formatedActivityPrice;
+            var originalPrice = priceModule.formatedPrice;
+            var discount = priceModule.discount;
 
-            return await Task.FromResult(new Link
+            return await Task.FromResult(new LinkMessage
             {
                 Title = title,
                 FinalPrice = price,
-                PictureUrl = pictureUrl
+                PictureUrl = pictureUrl,
+                OriginalPrice = originalPrice,
+                SavedPrice = discount
             });
         }
 

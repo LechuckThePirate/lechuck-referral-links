@@ -31,8 +31,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
         public bool CanHandle(string key) =>
             key == ProgramLinkStateMachineWorkflow.CommandsEnum.AddChannelCmd.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, MultiLink entity,
-            IStateMachine<IUpdateContext, MultiLink> stateMachine)
+        public async Task<bool> Handle(IUpdateContext context, MultiLinkMessage entity,
+            IStateMachine<IUpdateContext, MultiLinkMessage> stateMachine)
         {
             if (!long.TryParse(context.CallbackButtonData[1], out long channelId))
             {

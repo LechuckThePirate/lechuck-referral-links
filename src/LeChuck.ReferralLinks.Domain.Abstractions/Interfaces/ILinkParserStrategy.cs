@@ -9,8 +9,8 @@ namespace LeChuck.ReferralLinks.Domain.Interfaces
 {
     public interface ILinkParserStrategy
     {
-        public string ParserName { get; }
+        public string Name { get; }
         bool CanParse(string content);
-        Task<Link> ParseContent(string content);
+        Task<LinkMessage> ParseContent(string content);
     }
 }

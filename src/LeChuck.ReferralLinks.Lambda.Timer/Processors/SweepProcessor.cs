@@ -55,7 +55,7 @@ namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
             _logger.LogInformation($"Done! ... {tasks.Count()} messages sent.");
         }
 
-        async Task SendMessage(Channel channel, Link data)
+        async Task SendMessage(Channel channel, LinkMessage data)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace LeChuck.ReferralLinks.Lambda.Timer.Processors
                 message.Append($"{Money.Euro} <b>PRECIO FINAL: {data.FinalPrice}</b>\n");
                 if (!string.IsNullOrWhiteSpace(data.SavedPrice))
                     message.Append($"{Clothing.Purse} Ahorras {data.SavedPrice}\n");
-                message.Append($"\n{HouseHold.ShoppingCart} {data.ShortenedUrl}");
+                message.Append($"\n{HouseHold.ShoppingCart} {data.Url}");
 
                 await _bot.SendPhotoAsync(channel.ChannelId, data.PictureUrl, message.ToString(), TextModeEnum.Html);
             }

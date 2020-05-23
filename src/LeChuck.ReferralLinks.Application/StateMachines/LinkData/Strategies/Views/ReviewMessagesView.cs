@@ -32,22 +32,22 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
             key == ProgramLinkStateMachineWorkflow.CommandsEnum.ReviewMessagesCmd.ToString()
             || key == ProgramLinkStateMachineWorkflow.CommandsEnum.ReviewOneMessage.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, MultiLink entity,
-            IStateMachine<IUpdateContext, MultiLink> stateMachine)
+        public async Task<bool> Handle(IUpdateContext context, MultiLinkMessage entity,
+            IStateMachine<IUpdateContext, MultiLinkMessage> stateMachine)
         {
             if (context.CallbackMessageId.HasValue)
                 await _bot.DeleteMessageAsync(context.ChatId, context.CallbackMessageId.Value);
 
             var message = new StringBuilder();
-            Link previewLink = null;
+            LinkMessage previewLinkMessage = null;
             var messageNumber = 0;
 
             var command = context.CallbackButtonData[0];
             if (command == ProgramLinkStateMachineWorkflow.CommandsEnum.ReviewOneMessage.ToString() &&
                 int.TryParse(context.CallbackButtonData[1], out messageNumber))
             {
-                previewLink = entity.Links.FirstOrDefault(l => l.Number == messageNumber);
-                var viewData = _linkView.GetView(context.ChatId, previewLink);
+                previewLinkMessage = entity.Links.FirstOrDefault(l => l.Number == messageNumber);
+                var viewData = _linkView.GetView(context.ChatId, previewLinkMessage);
                 message.Append(viewData.Message);
             }
             else
@@ -62,10 +62,10 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
                     link.Number.ToString())).ToList();
             buttons.Add(new BotButton("Volver", ProgramLinkStateMachineWorkflow.CommandsEnum.BackCmd.ToString()));
 
-            if (previewLink == null)
+            if (previewLinkMessage == null)
                 await _bot.SendTextMessageAsync(context.ChatId, message.ToString(), TextModeEnum.Html, buttons);
             else
-                await _bot.SendPhotoAsync(context.ChatId, previewLink.PictureUrl, message.ToString(), TextModeEnum.Html,
+                await _bot.SendPhotoAsync(context.ChatId, previewLinkMessage.PictureUrl, message.ToString(), TextModeEnum.Html,
                     buttons);
 
             return true;

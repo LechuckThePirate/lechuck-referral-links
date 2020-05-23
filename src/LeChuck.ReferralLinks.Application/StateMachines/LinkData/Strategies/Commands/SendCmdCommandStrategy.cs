@@ -15,8 +15,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
     {
         public bool CanHandle(string key) => key == ProgramLinkStateMachineWorkflow.CommandsEnum.SendCmd.ToString();
 
-        public Task<bool> Handle(IUpdateContext context, MultiLink entity,
-            IStateMachine<IUpdateContext, MultiLink> stateMachine)
+        public Task<bool> Handle(IUpdateContext context, MultiLinkMessage entity,
+            IStateMachine<IUpdateContext, MultiLinkMessage> stateMachine)
         {
             throw new NotImplementedException();
         }

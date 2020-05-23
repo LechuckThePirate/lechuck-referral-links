@@ -18,7 +18,6 @@ namespace LeChuck.ReferralLinks.Domain.Extensions
         {
             var assembly = typeof(ServiceCollectionExtensions).Assembly;
 
-            services.AddScoped<ILinkService, LinkService>();
             services.AddScoped<IChannelService, ChannelService>();
             services.AddScoped<IAdmitadApiClient, AdmitadApiClient>();
 

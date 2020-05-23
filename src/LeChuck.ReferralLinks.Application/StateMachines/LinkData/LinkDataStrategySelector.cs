@@ -11,7 +11,7 @@ using LeChuck.Telegram.Bot.Framework.Interfaces;
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData
 {
-    public interface ILinkDataStrategySelector : IStateMachineStrategySelector<IUpdateContext, MultiLink>
+    public interface ILinkDataStrategySelector : IStateMachineStrategySelector<IUpdateContext, MultiLinkMessage>
     {
     }
 
@@ -24,7 +24,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData
             _strategies = strategies ?? throw new ArgumentNullException(nameof(strategies));
         }
 
-        public IStateMachineStrategy<IUpdateContext, MultiLink> GetHandlerFor(string selectKey)
+        public IStateMachineStrategy<IUpdateContext, MultiLinkMessage> GetHandlerFor(string selectKey)
         {
             return _strategies.FirstOrDefault(s => s.CanHandle(selectKey));
         }

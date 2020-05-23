@@ -23,7 +23,7 @@ namespace LeChuck.ReferralLinks.DataAccess.UnitsOfWork
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task AddLinkData(MultiLink entity, DateTime? expires = null)
+        public async Task AddLinkData(MultiLinkMessage entity, DateTime? expires = null)
         {
             var dbEntity = _mapper.Map<MultiLinkDbEntity>(entity);
             if (expires.HasValue)

@@ -26,7 +26,7 @@ namespace LeChuck.ReferralLinks.Application.CommandHandlers
 
         public async Task HandleCommand(IUpdateContext updateContext)
         {
-            var machine = await _machineFactory.Create<IUpdateContext, MultiLink>(updateContext.User.UserId.ToString());
+            var machine = await _machineFactory.Create<IUpdateContext, MultiLinkMessage>(updateContext.User.UserId.ToString());
             await machine.Run(null, updateContext);
         }
     }

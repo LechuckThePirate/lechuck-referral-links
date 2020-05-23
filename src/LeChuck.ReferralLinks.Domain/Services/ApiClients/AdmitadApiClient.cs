@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
@@ -67,7 +69,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
             return false;
         }
 
-        public async Task<string[]> DeepLink(int spaceId, int campaignId, string url)
+        public async Task<string[]> DeepLinks(string spaceId, string campaignId, IEnumerable<string> urls)
         {
             if (!HasValidCredentials() && !(await Authenticate()))
             {
@@ -76,8 +78,10 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
 
             var credentials = _admitad.Credentials;
 
+            var ulp = string.Join("\n", urls.Select(url => url));
+
             string endpoint =
-                $"{_admitad.ApiEndpoint}deeplink/{spaceId}/advcampaign/{campaignId}/?ulp={UrlEncoder.Default.Encode(url)}";
+                $"{_admitad.ApiEndpoint}deeplink/{spaceId}/advcampaign/{campaignId}/?ulp={UrlEncoder.Default.Encode(ulp)}";
 
             using var httpClient = _clientFactory.CreateClient();
             httpClient.DefaultRequestHeaders.Authorization =
@@ -91,6 +95,12 @@ namespace LeChuck.ReferralLinks.Domain.Services.ApiClients
             var payload = await response.Content.ReadAsStringAsync();
             var data = JsonSerializer.Deserialize<string[]>(payload);
             return data;
+        }
+
+        public async Task<string> DeepLink(string spaceId, string campaignId, string url)
+        {
+            var result = await DeepLinks(spaceId, campaignId, new List<string> {url});
+            return result.FirstOrDefault();
         }
 
         private AuthenticationHeaderValue GetAuthHeaderValue(ApiCredentials credentials)

@@ -31,8 +31,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
         public bool CanHandle(string key) =>
             key == ProgramLinkStateMachineWorkflow.StatesEnum.SelectChannelsState.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, MultiLink entity,
-            IStateMachine<IUpdateContext, MultiLink> stateMachine)
+        public async Task<bool> Handle(IUpdateContext context, MultiLinkMessage entity,
+            IStateMachine<IUpdateContext, MultiLinkMessage> stateMachine)
         {
             if (context.CallbackMessageId.HasValue)
                 await _bot.DeleteMessageAsync(context.ChatId, context.CallbackMessageId.Value);

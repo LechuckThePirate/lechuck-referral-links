@@ -22,8 +22,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
 
         public bool CanHandle(string key) => key == ProgramLinkStateMachineWorkflow.StatesEnum.InputUrlState.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, MultiLink entity,
-            IStateMachine<IUpdateContext, MultiLink> stateMachine)
+        public async Task<bool> Handle(IUpdateContext context, MultiLinkMessage entity,
+            IStateMachine<IUpdateContext, MultiLinkMessage> stateMachine)
         {
             await _bot.SendTextMessageAsync(context.ChatId, "Introduce la url");
             return true;

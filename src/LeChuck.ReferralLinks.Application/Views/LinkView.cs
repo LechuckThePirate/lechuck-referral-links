@@ -15,9 +15,9 @@ using Microsoft.Extensions.Logging;
 
 namespace LeChuck.ReferralLinks.Application.Views
 {
-    public interface ILinkView : IView<Link>
+    public interface ILinkView : IView<LinkMessage>
     {
-        ViewResult GetView(long chatId, Link data);
+        ViewResult GetView(long chatId, LinkMessage data);
     }
 
     public class LinkView : ILinkView
@@ -31,14 +31,14 @@ namespace LeChuck.ReferralLinks.Application.Views
             _bot = bot;
         }
 
-        public async Task SendView(long chatId, Link data)
+        public async Task SendView(long chatId, LinkMessage data)
         {
             var viewData = GetView(chatId, data);
             await _bot.SendPhotoAsync(chatId, data.PictureUrl, viewData.Message, viewData.ParseMode);
             ;
         }
 
-        public ViewResult GetView(long chatId, Link data)
+        public ViewResult GetView(long chatId, LinkMessage data)
         {
             var message = new StringBuilder();
             message.Append($"\n{Event.Ribbon} <b>{data.Title}</b>\n\n");
@@ -46,8 +46,8 @@ namespace LeChuck.ReferralLinks.Application.Views
                 message.Append($"{OtherSymbols.CrossMark} PVP: {data.OriginalPrice}\n");
             message.Append($"{Money.Euro} <b>PRECIO FINAL: {data.FinalPrice}</b>\n");
             if (!string.IsNullOrWhiteSpace(data.SavedPrice))
-                message.Append($"{Clothing.Purse} Ahorras {data.SavedPrice}\n");
-            message.Append($"\n{HouseHold.ShoppingCart} {data.ShortenedUrl}");
+                message.Append($"{Clothing.Purse} Ahorras: {data.SavedPrice}%\n");
+            message.Append($"\n{HouseHold.ShoppingCart} {data.Url}");
 
             return new ViewResult
             {

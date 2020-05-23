@@ -9,10 +9,10 @@ using Microsoft.Extensions.Logging;
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMachine
 {
-    public class ProgramLinkStateMachine : StateMachine<IUpdateContext, MultiLink>
+    public class ProgramLinkStateMachine : StateMachine<IUpdateContext, MultiLinkMessage>
     {
         public ProgramLinkStateMachine(IStateMachineStore stateMachineStore,
-            IStateMachineStrategySelector<IUpdateContext, MultiLink> strategySelector,
+            IStateMachineStrategySelector<IUpdateContext, MultiLinkMessage> strategySelector,
             ILogger<ProgramLinkStateMachine> logger)
             : base(new ProgramLinkStateMachineWorkflow(), stateMachineStore, logger, strategySelector)
         {

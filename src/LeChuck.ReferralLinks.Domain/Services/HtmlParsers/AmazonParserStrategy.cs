@@ -36,11 +36,11 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public string ParserName => Constants.Providers.Vendors.Amazon;
+        public string Name => Constants.Providers.Vendors.Amazon;
 
         public bool CanParse(string content) => AnyMatch(content);
 
-        public async Task<Link> ParseContent(string content)
+        public async Task<LinkMessage> ParseContent(string content)
         {
             var title = TitleRegex.GetMatch(content);
             var pictureUrl = PictureRegex.GetMatch(content);
@@ -48,7 +48,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             var saved = PriceSavesRegex.GetMatch(content);
             var originalPrice = OriginalPriceRegex.GetMatch(content);
 
-            return await Task.FromResult(new Link
+            return await Task.FromResult(new LinkMessage
             {
                 Title = title,
                 PictureUrl = pictureUrl,

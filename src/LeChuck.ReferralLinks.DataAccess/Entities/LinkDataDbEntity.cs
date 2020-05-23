@@ -13,7 +13,7 @@ namespace LeChuck.ReferralLinks.DataAccess.Entities
     public class MultiLinkDbEntity : IExpirableEntity, IAuditableEntity
     {
         public Guid Id { get; set; }
-        public List<Link> Links { get; set; }
+        public List<LinkMessage> Links { get; set; }
         public List<Channel> Channels { get; set; }
         public int LastMessageSent { get; set; }
 

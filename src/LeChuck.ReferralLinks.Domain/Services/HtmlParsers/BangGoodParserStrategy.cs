@@ -23,16 +23,16 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public string ParserName => Constants.Providers.Vendors.BangGood;
+        public string Name => Constants.Providers.Vendors.BangGood;
 
         public bool CanParse(string content) => false; // TODO: Fix for single and array prices ObjectParser.IsMatch(content);
 
-        public async Task<Link> ParseContent(string content)
+        public async Task<LinkMessage> ParseContent(string content)
         {
             var data = GetObjectFromResponse(ObjectParser, content);
 
             // TODO: Find out best price 
-            return await Task.FromResult(new Link
+            return await Task.FromResult(new LinkMessage
             {
                 Title = data.GetProperty("name").GetString(),
                 PictureUrl = data.GetProperty("image").GetString(),
@@ -59,7 +59,6 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
 
             try
             {
-                // stringToParse = stringToParse.Replace("@", string.Empty).Replace("type","gummy");
                 var pageModule = JsonSerializer.Deserialize<JsonElement>(stringToParse, new JsonSerializerOptions
                 {
                     PropertyNamingPolicy = null,
@@ -69,7 +68,9 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"Could not deserialize the content!\nContent:\n{stringToParse}");
+                _logger.LogWarning($"Could not deserialize the content!\nContent:\n{stringToParse}\n" +
+                                   $"Exception: {ex.Message}\n" +
+                                   $"StackTrace: {ex.StackTrace}");
                 return default;
             }
         }

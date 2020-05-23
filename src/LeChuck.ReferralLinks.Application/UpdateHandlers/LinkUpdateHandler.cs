@@ -1,15 +1,20 @@
-﻿#region using directives
+﻿
+#region using directives
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using LeChuck.ReferralLinks.Application.Models;
+using LeChuck.ReferralLinks.Application.Services;
 using LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMachine;
 using LeChuck.ReferralLinks.Domain;
 using LeChuck.ReferralLinks.Domain.Models;
 using LeChuck.ReferralLinks.Domain.Services;
 using LeChuck.Stateless.StateMachine;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
+using LeChuck.Telegram.Bot.Framework.Models;
 using LeChuck.Telegram.Bot.Framework.Services;
 using Microsoft.Extensions.Logging;
 
@@ -21,20 +26,20 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
     {
         private readonly ILogger<LinkUpdateHandler> _logger;
         private readonly IBotService _bot;
-        private readonly ILinkService _linkService;
         private readonly IStateMachineFactory _stateMachineFactory;
+        private readonly IMultiLinkMessageBuilder _multiLinkMessageBuilder;
 
         public LinkUpdateHandler(
             ILogger<LinkUpdateHandler> logger,
             IBotService bot,
-            ILinkService linkService,
-            IStateMachineFactory stateMachineFactory
+            IStateMachineFactory stateMachineFactory,
+            IMultiLinkMessageBuilder multiLinkMessageBuilder
         )
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
-            _linkService = linkService ?? throw new ArgumentNullException(nameof(linkService));
             _stateMachineFactory = stateMachineFactory ?? throw new ArgumentNullException(nameof(stateMachineFactory));
+            _multiLinkMessageBuilder = multiLinkMessageBuilder ?? throw new ArgumentNullException(nameof(multiLinkMessageBuilder));
         }
 
         public int Order { get; } = int.MaxValue;
@@ -47,35 +52,11 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
             _logger.LogTrace($"Handling update: {updateContext}");
             await _bot.DeleteMessageAsync(updateContext.ChatId, updateContext.MessageId ?? 0);
 
-            var processingMsgId = await _bot.SendTextMessageAsync(updateContext.ChatId, "Procesando enlace...");
+            var processingMsgId = await _bot.SendTextMessageAsync(updateContext.ChatId, "Procesando enlaces...");
 
-            var urls = updateContext.Content
-                .Where(c => c.Type == Constants.MessageContentType.Url)
-                .Select(c => c.Value);
-
-            if (!urls.Any())
-            {
-                await _bot.DeleteMessageAsync(updateContext.ChatId, processingMsgId ?? 0);
-                return false;
-            }
-
-            // TODO: Generate affiliate urls here 
-            // urls = GetAffiliateUrls(urls);
-
-            var multiLink = new MultiLink();
-            Parallel.ForEach(urls,
-                url =>
-                {
-                    var row = _linkService.BuildMessage(url).GetAwaiter().GetResult();
-                    multiLink.Links.Add(row);
-                });
-            multiLink.Links = multiLink.Links
-                .Where(m => m != null)
-                .Select((m, i) =>
-                {
-                    m.Number = i + 1;
-                    return m;
-                }).ToList();
+            _multiLinkMessageBuilder.AddUrls(updateContext.Content);
+            await _multiLinkMessageBuilder.ProcessUrls();
+            var multiLink = _multiLinkMessageBuilder.Build();
 
             _logger.LogDebug(
                 $"Generated object:\n{JsonSerializer.Serialize(multiLink, new JsonSerializerOptions {WriteIndented = true})}");
@@ -88,8 +69,9 @@ namespace LeChuck.ReferralLinks.Application.UpdateHandlers
             }
 
             await _bot.DeleteMessageAsync(updateContext.ChatId, updateContext.MessageId ?? 0);
-            var machine =
-                await _stateMachineFactory.Create<IUpdateContext, MultiLink>(updateContext.User.UserId.ToString());
+
+            var machine = await _stateMachineFactory.Create<IUpdateContext, MultiLinkMessage>(
+                    updateContext.User.UserId.ToString());
             await machine.Run(ProgramLinkStateMachineWorkflow.StatesEnum.MenuState.ToString(), updateContext,
                 multiLink);
             return true;

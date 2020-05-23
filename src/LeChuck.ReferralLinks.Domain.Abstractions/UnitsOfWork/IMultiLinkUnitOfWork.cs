@@ -10,6 +10,6 @@ namespace LeChuck.ReferralLinks.Domain.UnitsOfWork
 {
     public interface IMultiLinkUnitOfWork : IUnitOfWork
     {
-        Task AddLinkData(MultiLink entity, DateTime? expires = null);
+        Task AddLinkData(MultiLinkMessage entity, DateTime? expires = null);
     }
 }

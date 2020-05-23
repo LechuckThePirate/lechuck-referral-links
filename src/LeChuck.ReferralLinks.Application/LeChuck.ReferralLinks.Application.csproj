@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\..\Packages\LeChuck.Telegram.Bot.Framework.Abstractions\LeChuck.Telegram.Bot.Framework.Abstractions.csproj" />
     <ProjectReference Include="..\LeChuck.ReferralLinks.DataAccess\LeChuck.ReferralLinks.DataAccess.csproj" />
     <ProjectReference Include="..\LeChuck.ReferralLinks.Domain.Abstractions\LeChuck.ReferralLinks.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\LeChuck.ReferralLinks.Domain\LeChuck.ReferralLinks.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

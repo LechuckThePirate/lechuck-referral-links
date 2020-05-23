@@ -19,19 +19,17 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
     {
         private readonly IBotService _bot;
         private readonly ILinkParserProvider _linkParserProvider;
-        private readonly ILinkService _linkService;
 
-        public SetUrlCommandStrategy(IBotService bot, ILinkParserProvider linkParserProvider, ILinkService linkService)
+        public SetUrlCommandStrategy(IBotService bot, ILinkParserProvider linkParserProvider)
         {
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
             _linkParserProvider = linkParserProvider ?? throw new ArgumentNullException(nameof(linkParserProvider));
-            _linkService = linkService ?? throw new ArgumentNullException(nameof(linkService));
         }
 
         public bool CanHandle(string key) => key == ProgramLinkStateMachineWorkflow.CommandsEnum.SetUrlCmd.ToString();
 
-        public async Task<bool> Handle(IUpdateContext context, MultiLink entity,
-            IStateMachine<IUpdateContext, MultiLink> stateMachine)
+        public async Task<bool> Handle(IUpdateContext context, MultiLinkMessage entity,
+            IStateMachine<IUpdateContext, MultiLinkMessage> stateMachine)
         {
             var content = context.Content.FirstOrDefault(c => c.Type == "Url");
             if (content == null)
@@ -51,7 +49,9 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
                 return false;
             }
 
-            var message = await _linkService.BuildMessage(url);
+            throw new NotImplementedException();
+
+            //var message = await _linkService.BuildMessage(url);
             // TODO: Refactor
             //entity.Title = message.Title;
             //entity.FinalPrice = message.FinalPrice;
@@ -61,7 +61,6 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
             //entity.SavedPrice = message.SavedPrice;
             //entity.PictureUrl = message.PictureUrl;
 
-            return true;
         }
     }
 }

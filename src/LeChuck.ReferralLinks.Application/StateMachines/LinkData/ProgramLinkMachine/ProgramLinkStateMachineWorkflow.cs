@@ -38,7 +38,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.ProgramLinkMa
             ResetChanels
         }
 
-        public override string InitialState => $"{StatesEnum.InputUrlState}";
+        public override string InitialState => $"{StatesEnum.MenuState}";
 
         private static readonly IEnumerable<StepMachineState> _stateList = new List<StepMachineState>
         {

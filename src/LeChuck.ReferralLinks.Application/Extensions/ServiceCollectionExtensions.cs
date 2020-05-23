@@ -1,6 +1,7 @@
 ﻿#region using directives
 
 using LeChuck.DependencyInjection.Extensions;
+using LeChuck.ReferralLinks.Application.Services;
 using LeChuck.ReferralLinks.Application.StateMachines;
 using LeChuck.ReferralLinks.Application.StateMachines.Config;
 using LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine;
@@ -22,12 +23,13 @@ namespace LeChuck.ReferralLinks.Application.Extensions
         public static IServiceCollection AddApplicationModule(this IServiceCollection services)
         {
             services.AddScoped<ILinkView, LinkView>();
-            services.AddTransient<IStateMachine<IUpdateContext, MultiLink>, ProgramLinkStateMachine>();
+            services.AddTransient<IStateMachine<IUpdateContext, MultiLinkMessage>, ProgramLinkStateMachine>();
             services.AddTransient<IStateMachine<IUpdateContext, AppConfiguration>, ConfigStateMachine>();
+            services.AddTransient<IMultiLinkMessageBuilder, MultiLinkMessageBuilder>();
             services.AddTransient<IStateMachineStore, StateMachineStore>();
             services.AddStateMachines();
             services.AddInterface<IMultiLinkStrategy>();
-            services.AddTransient<IStateMachineStrategySelector<IUpdateContext, MultiLink>, LinkDataStrategySelector>();
+            services.AddTransient<IStateMachineStrategySelector<IUpdateContext, MultiLinkMessage>, LinkDataStrategySelector>();
             services.AddInterface<IConfigStrategy>();
             services
                 .AddTransient<IStateMachineStrategySelector<IUpdateContext, AppConfiguration>, ConfigStrategySelector
