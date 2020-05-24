@@ -33,13 +33,19 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
             if (context.CallbackMessageId.HasValue)
                 await _bot.DeleteMessageAsync(context.ChatId, context.CallbackMessageId.Value);
 
-            var numLinks = entity.Links.Count;
+            var links = entity.Links.Where(e => e!= null && !string.IsNullOrWhiteSpace(e.Url)).ToList();
+            var numLinks = links.Count;
             var numChannels = !entity.Channels.Any() ? " todos los canales" : $" {entity.Channels.Count} canales:";
 
-            var message = new StringBuilder("Nuevas publicaciones:\n\n");
-            message.Append($"  <b>{numLinks} enlaces en el paquete:</b>\n");
-            message.Append($"  - {string.Join("\n  - ", entity.Links.Select(e => e.Url))}\n");
-//            message.Append($"\n  <b>Enviar a{numChannels}</b>\n");
+            var message = new StringBuilder();
+            message.AppendLine("Nuevas publicaciones:");
+            message.AppendLine();
+            message.AppendLine($"  <b>{numLinks} enlaces en el paquete:</b>");
+            message.AppendLine(numLinks > 0
+                ? $"  - {string.Join("\n  - ", links.Select(e => e.Url))}"
+                : $"  - No se ha reconocido ningún enlace");
+
+            //            message.Append($"\n  <b>Enviar a{numChannels}</b>\n");
 
             //if (entity.Channels.Any())
             //    message.Append($"  - {string.Join("\n  - ", entity.Channels.Select(c => c.ChannelName))}\n");

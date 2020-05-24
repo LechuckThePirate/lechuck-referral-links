@@ -22,7 +22,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Comm
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
-        public bool CanHandle(string key) => key == ConfigStateMachineWorkflow.CommandsEnum.SetVendorGotoLinkCmd.ToString();
+        public bool CanHandle(string key) => key == ConfigStateMachineWorkflow.CommandsEnum.SetVendorCustomCmd.ToString();
 
         public async Task<bool> Handle(IUpdateContext context, AppConfiguration entity, IStateMachine<IUpdateContext, AppConfiguration> stateMachine)
         {

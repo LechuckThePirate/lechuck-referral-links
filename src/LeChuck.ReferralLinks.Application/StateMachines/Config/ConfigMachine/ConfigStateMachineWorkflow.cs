@@ -28,8 +28,8 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
             SaveConfigCmd,
             CancelConfigCmd,
             SelectVendorCmd,
-            InputVendorGotoLinkCmd,
-            SetVendorGotoLinkCmd
+            InputVendorCustomCmd,
+            SetVendorCustomCmd
         }
 
         public override string InitialState => $"{StatesEnum.HomeState}";
@@ -59,16 +59,16 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.ConfigMachine
             {
                 AvailableCommands = new Dictionary<string, string>
                 {
-                    {$"{CommandsEnum.InputVendorGotoLinkCmd}", $"{StatesEnum.InputVendorCustomState}"},
-                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.HomeState}"}
+                    {$"{CommandsEnum.InputVendorCustomCmd}", $"{StatesEnum.InputVendorCustomState}"},
+                    {$"{CommandsEnum.BackCmd}", $"{StatesEnum.VendorsState}"}
                 }
             },
             new StepMachineState($"{StatesEnum.InputVendorCustomState}")
             {
-                OnNext = $"{CommandsEnum.SetVendorGotoLinkCmd}",
+                OnNext = $"{CommandsEnum.SetVendorCustomCmd}",
                 AvailableCommands = new Dictionary<string, string>
                 {
-                    {$"{CommandsEnum.SetVendorGotoLinkCmd}", $"{StatesEnum.SelectedVendorState}"},
+                    {$"{CommandsEnum.SetVendorCustomCmd}", $"{StatesEnum.SelectedVendorState}"},
                     {$"{CommandsEnum.BackCmd}", $"{StatesEnum.VendorsState}"}
                 }
             },

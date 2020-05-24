@@ -42,18 +42,18 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.View
             }
 
             var message = GetMessage(vendor);
-            var buttons = GetButtons();
+            var buttons = GetButtons(vendor);
 
             await _bot.SendTextMessageAsync(context.ChatId, message.ToString(), TextModeEnum.Html, buttons);
             return true;
         }
 
-        private static List<BotButton> GetButtons()
+        private static List<BotButton> GetButtons(VendorConfig config)
         {
             var buttons = new List<BotButton>
             {
-                new BotButton("GotoLink",
-                    ConfigStateMachineWorkflow.CommandsEnum.InputVendorGotoLinkCmd.ToString()),
+                new BotButton(config.CustomizerPrompt,
+                    ConfigStateMachineWorkflow.CommandsEnum.InputVendorCustomCmd.ToString()),
                 new BotButton("Atrás", ConfigStateMachineWorkflow.CommandsEnum.BackCmd.ToString())
             };
             return buttons;

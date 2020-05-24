@@ -26,7 +26,7 @@ namespace LeChuck.ReferralLinks.Application.Services
     public class MultiLinkMessageBuilder : IMultiLinkMessageBuilder
     {
         private readonly IHttpClientFactory _clientFactory;
-        private readonly ILinkParserProvider _linkParserProvider;
+        private readonly IVendorProvider _vendorProvider;
         private readonly IUrlShortenerProvider _urlShortenerProvider;
         private readonly ILogger<MultiLinkMessageBuilder> _logger;
         private readonly AppConfiguration _config;
@@ -34,13 +34,13 @@ namespace LeChuck.ReferralLinks.Application.Services
 
         public MultiLinkMessageBuilder(
             IHttpClientFactory clientFactory,
-            ILinkParserProvider linkParserProvider,
+            IVendorProvider vendorProvider,
             IUrlShortenerProvider urlShortenerProvider,
             ILogger<MultiLinkMessageBuilder> logger,
             AppConfiguration config)
         {
             _clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
-            _linkParserProvider = linkParserProvider ?? throw new ArgumentNullException(nameof(linkParserProvider));
+            _vendorProvider = vendorProvider ?? throw new ArgumentNullException(nameof(vendorProvider));
             _urlShortenerProvider = urlShortenerProvider ?? throw new ArgumentNullException(nameof(urlShortenerProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _config = config ?? throw new ArgumentNullException(nameof(config));
@@ -64,7 +64,7 @@ namespace LeChuck.ReferralLinks.Application.Services
             foreach (var ctx in _context.UrlContexts)
             {
                 await GetContent(ctx);
-                ResolveParser(ctx);
+                ResolveVendor(ctx);
                 await GetDeepLink(ctx);
                 await BuildMessage(ctx);
                 if (ctx.Message != null)
@@ -106,18 +106,18 @@ namespace LeChuck.ReferralLinks.Application.Services
             }
         }
 
-        private void ResolveParser(UrlContext ctx)
+        private void ResolveVendor(UrlContext ctx)
         {
-            ctx.Parser = _linkParserProvider.GetParserFor(ctx.Content);
+            ctx.Vendor = _vendorProvider.GetVendorFor(ctx.Content);
             _logger.LogInformation($"Resolved helpers for link {ctx.Number}:\n" +
-                                   $"  Parser: {ctx.Parser?.Name ?? "None"}\n");
+                                   $"  Vendor: {ctx.Vendor?.Name ?? "None"}\n");
         }
 
         private async Task GetDeepLink(UrlContext ctx)
         {
             try
             {
-                if (ctx.Parser == null)
+                if (ctx.Vendor == null)
                 {
                     if (!string.IsNullOrWhiteSpace(_config.DefaultShortener))
                     {
@@ -128,7 +128,7 @@ namespace LeChuck.ReferralLinks.Application.Services
                     return;
                 }
 
-                ctx.DeepLink = await ctx.Parser.GetDeepLink(ctx.OriginalUrl);
+                ctx.DeepLink = await ctx.Vendor.GetDeepLink(ctx.OriginalUrl);
             }
             catch (Exception ex)
             {
@@ -138,9 +138,9 @@ namespace LeChuck.ReferralLinks.Application.Services
 
         private async Task BuildMessage(UrlContext ctx)
         {
-            if (ctx.Parser == null)
+            if (ctx.Vendor == null)
             {
-                _logger.LogWarning($"No parser for link {ctx.Number}");
+                _logger.LogWarning($"No vendor for link {ctx.Number}");
                 return;
             }
 
@@ -152,7 +152,7 @@ namespace LeChuck.ReferralLinks.Application.Services
 
             try
             {
-                ctx.Message = await ctx.Parser.ParseContent(ctx.Content);
+                ctx.Message = await ctx.Vendor.ParseContent(ctx.Content);
                 ctx.Message.Url = ctx.Url;
             }
             catch (Exception ex)

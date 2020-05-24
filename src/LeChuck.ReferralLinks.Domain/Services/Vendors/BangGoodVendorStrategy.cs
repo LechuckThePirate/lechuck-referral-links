@@ -12,19 +12,19 @@ using System.Web;
 
 #endregion
 
-namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
+namespace LeChuck.ReferralLinks.Domain.Services.Vendors
 {
-    public class BangGoodParserStrategy : ILinkParserStrategy
+    public class BangGoodVendorStrategy : IVendorStrategy
     {
-        private readonly ILogger<BangGoodParserStrategy> _logger;
+        private readonly ILogger<BangGoodVendorStrategy> _logger;
 
         private static readonly Regex ObjectParser = new Regex("<script type=\"application\\/ld\\+json\">(.+?(?=};)})",
             RegexOptions.Singleline);
 
-        private VendorConfig _config;
-        private IUrlShortenerStrategy _shortener;
+        private readonly VendorConfig _config;
+        private readonly IUrlShortenerStrategy _shortener;
 
-        public BangGoodParserStrategy(ILogger<BangGoodParserStrategy> logger, AppConfiguration config, IUrlShortenerProvider shortenerProvider)
+        public BangGoodVendorStrategy(ILogger<BangGoodVendorStrategy> logger, AppConfiguration config, IUrlShortenerProvider shortenerProvider)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _config = config.VendorServices.FirstOrDefault(vnd => vnd.Name == this.Name)
@@ -35,20 +35,26 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
 
         public string Name => Constants.Providers.Vendors.BangGood;
 
-        public bool CanParse(string content) => false; // TODO: Fix for single and array prices ObjectParser.IsMatch(content);
+        public bool CanParse(string content) => ObjectParser.IsMatch(content); // TODO: Fix for single and array prices 
         
         public bool CanShorten() => _config.ShortenerEnabled;
 
         public async Task<string> GetDeepLink(string url)
         {
-            var builder = new UriBuilder(_config.AffiliateCustomizer);
-            var query = HttpUtility.ParseQueryString(url);
-            query["ulp"] = url;
-            builder.Query = query.ToString();
-            var newUrl = builder.ToString();
-            if (CanShorten())
-                newUrl = (await _shortener.ShortenUrl(newUrl)) ?? newUrl;
-            return newUrl;
+            var path = new UriBuilder(url).Path;
+            if (!Regex.IsMatch(path, @"^\/[a-z,A-Z,0-9]{5,7}$"))
+            {
+                var builder = new UriBuilder(_config.AffiliateCustomizer);
+                var query = HttpUtility.ParseQueryString(url);
+                query["ulp"] = url;
+                builder.Query = query.ToString();
+                var newUrl = builder.Uri.ToString();
+                if (CanShorten())
+                    newUrl = (await _shortener.ShortenUrl(newUrl)) ?? newUrl;
+                return newUrl;
+            }
+
+            return url;
         }
 
         public async Task<LinkMessage> ParseContent(string content)

@@ -4,7 +4,6 @@ using LeChuck.DependencyInjection.Extensions;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 using LeChuck.ReferralLinks.Domain.Providers;
 using LeChuck.ReferralLinks.Domain.Services;
-using LeChuck.ReferralLinks.Domain.Services.ApiClients;
 using LeChuck.Telegram.Bot.Framework.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,10 +22,10 @@ namespace LeChuck.ReferralLinks.Domain.Extensions
             services.AddSingleton<IAuthorizationService, BotAuthorizationService>();
             services.AddSingleton<IBotAuthorizer, BotAuthorizationService>();
 
-            services.AddInterface<ILinkParserStrategy>(assembly);
+            services.AddInterface<IVendorStrategy>(assembly);
             services.AddInterface<IUrlShortenerStrategy>(assembly);
 
-            services.AddTransient<ILinkParserProvider, LinkParserProvider>();
+            services.AddTransient<IVendorProvider, VendorProvider>();
             services.AddTransient<IUrlShortenerProvider, UrlShortenerProvider>();
 
             services.AddHttpClient();

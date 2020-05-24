@@ -21,6 +21,9 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.View
 
         public async Task<bool> Handle(IUpdateContext context, AppConfiguration entity, IStateMachine<IUpdateContext, AppConfiguration> stateMachine)
         {
+            if (context.CallbackMessageId.HasValue)
+                await _bot.DeleteMessageAsync(context.ChatId, context.CallbackMessageId.Value);
+
             var vendorConfig =
                 stateMachine.GetParameter<VendorConfig>(ConfigStateMachineWorkflow.Params.SelectedVendor);
             await _bot.SendTextMessageAsync(context.ChatId, $"Introduce el {vendorConfig.CustomizerPrompt}");
