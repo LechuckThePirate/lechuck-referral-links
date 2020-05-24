@@ -1,12 +1,15 @@
 ﻿#region using directives
 
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 using LeChuck.ReferralLinks.Domain.Models;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using System.Web;
+
 #endregion
 
 namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
@@ -18,14 +21,35 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
         private static readonly Regex ObjectParser = new Regex("<script type=\"application\\/ld\\+json\">(.+?(?=};)})",
             RegexOptions.Singleline);
 
-        public BangGoodParserStrategy(ILogger<BangGoodParserStrategy> logger)
+        private VendorConfig _config;
+        private IUrlShortenerStrategy _shortener;
+
+        public BangGoodParserStrategy(ILogger<BangGoodParserStrategy> logger, AppConfiguration config, IUrlShortenerProvider shortenerProvider)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _config = config.VendorServices.FirstOrDefault(vnd => vnd.Name == this.Name)
+                      ?? new VendorConfig { Name = this.Name };
+            _shortener = shortenerProvider?.GetShortenerByName(Constants.Providers.Shorteners.BitLy) ??
+                         throw new ArgumentException(nameof(shortenerProvider));
         }
 
         public string Name => Constants.Providers.Vendors.BangGood;
 
         public bool CanParse(string content) => false; // TODO: Fix for single and array prices ObjectParser.IsMatch(content);
+        
+        public bool CanShorten() => _config.ShortenerEnabled;
+
+        public async Task<string> GetDeepLink(string url)
+        {
+            var builder = new UriBuilder(_config.AffiliateCustomizer);
+            var query = HttpUtility.ParseQueryString(url);
+            query["ulp"] = url;
+            builder.Query = query.ToString();
+            var newUrl = builder.ToString();
+            if (CanShorten())
+                newUrl = (await _shortener.ShortenUrl(newUrl)) ?? newUrl;
+            return newUrl;
+        }
 
         public async Task<LinkMessage> ParseContent(string content)
         {

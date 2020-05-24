@@ -19,17 +19,14 @@ namespace LeChuck.ReferralLinks.Domain.Extensions
             var assembly = typeof(ServiceCollectionExtensions).Assembly;
 
             services.AddScoped<IChannelService, ChannelService>();
-            services.AddScoped<IAdmitadApiClient, AdmitadApiClient>();
 
             services.AddSingleton<IAuthorizationService, BotAuthorizationService>();
             services.AddSingleton<IBotAuthorizer, BotAuthorizationService>();
 
             services.AddInterface<ILinkParserStrategy>(assembly);
-            services.AddInterface<IAffiliateStrategy>(assembly);
             services.AddInterface<IUrlShortenerStrategy>(assembly);
 
             services.AddTransient<ILinkParserProvider, LinkParserProvider>();
-            services.AddTransient<IAffiliateProvider, AffiliateProvider>();
             services.AddTransient<IUrlShortenerProvider, UrlShortenerProvider>();
 
             services.AddHttpClient();

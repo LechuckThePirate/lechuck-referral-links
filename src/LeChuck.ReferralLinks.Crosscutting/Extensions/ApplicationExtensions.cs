@@ -80,20 +80,11 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
             var result = new AppConfiguration
             {
                 RootUserId = rootUserId,
-                AffiliateServices = new List<AffiliateConfig>()
-                {
-                    new AffiliateConfig
-                    {
-                        Name = Constants.Providers.Affiliates.Admitad,
-                        ApiEndpoint = Environment.GetEnvironmentVariable(Constants.AdmitadEndpointValueName),
-                        AuthEndpoint = Environment.GetEnvironmentVariable(Constants.AdmitadAuthEndpointValueName)
-                    }
-                },
                 VendorServices = new List<VendorConfig>()
                 {
-                    new VendorConfig { Name = Constants.Providers.Vendors.AliExpress },
-                    new VendorConfig { Name = Constants.Providers.Vendors.BangGood },
-                    new VendorConfig { Name = Constants.Providers.Vendors.Amazon }
+                    new VendorConfig { Name = Constants.Providers.Vendors.AliExpress, CustomizerPrompt = "link afiliado"},
+                    new VendorConfig { Name = Constants.Providers.Vendors.BangGood, CustomizerPrompt = "link afiliado"}, 
+                    new VendorConfig { Name = Constants.Providers.Vendors.Amazon, CustomizerPrompt = "tag afiliado"}
                 }
             };
             return result;

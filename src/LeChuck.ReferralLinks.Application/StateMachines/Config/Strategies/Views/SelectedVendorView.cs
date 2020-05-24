@@ -63,9 +63,9 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.View
         {
             var message = new StringBuilder();
             message.AppendLine($"<b>{vendor.Name}</b>");
-            message.AppendLine(!string.IsNullOrWhiteSpace(vendor.GotoLink)
-                ? $"  - GotoLink: {vendor.GotoLink}"
-                : $"  - GotoLink: {TransportGround.StopSign} <b>No introducido</b>");
+            message.AppendLine(!string.IsNullOrWhiteSpace(vendor.AffiliateCustomizer)
+                ? $"  - {vendor.CustomizerPrompt}: {vendor.AffiliateCustomizer}"
+                : $"  - {vendor.CustomizerPrompt}: {TransportGround.StopSign} <b>No introducido</b>");
 
             message.AppendLine();
             return message;

@@ -11,12 +11,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Commands
 {
-    public class SetVendorGotoLinkCommand : IConfigStrategy
+    public class SetVendorCustomCommand : IConfigStrategy
     {
-        private readonly ILogger<SetVendorGotoLinkCommand> _logger;
+        private readonly ILogger<SetVendorCustomCommand> _logger;
         private readonly AppConfiguration _config;
 
-        public SetVendorGotoLinkCommand(ILogger<SetVendorGotoLinkCommand> logger, AppConfiguration config)
+        public SetVendorCustomCommand(ILogger<SetVendorCustomCommand> logger, AppConfiguration config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _config = config ?? throw new ArgumentNullException(nameof(config));
@@ -32,13 +32,13 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Comm
                 _logger.LogError("No vendor selected");
                 return false;
             }
-            vendor.GotoLink = context.MessageText;
+            vendor.AffiliateCustomizer = context.MessageText;
 
             stateMachine.SetParameter(ConfigStateMachineWorkflow.Params.SelectedVendor, vendor);
             var provider = _config.VendorServices.FirstOrDefault(vnd => vnd.Name == vendor.Name);
             if (provider != null)
             {
-                provider.GotoLink = vendor.GotoLink;
+                provider.AffiliateCustomizer = vendor.AffiliateCustomizer;
             }
 
             return await Task.FromResult(true);

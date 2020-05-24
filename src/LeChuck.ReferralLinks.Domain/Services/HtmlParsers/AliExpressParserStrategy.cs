@@ -1,8 +1,10 @@
 ﻿#region using directives
 
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 using LeChuck.ReferralLinks.Domain.Models;
 using Microsoft.Extensions.Logging;
@@ -15,18 +17,38 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
     public class AliExpressParserStrategy : ILinkParserStrategy
     {
         private readonly ILogger<AliExpressParserStrategy> _logger;
+        private readonly IUrlShortenerStrategy _shortener;
+        private readonly VendorConfig _config;
 
         static readonly Regex PageModuleRegex = new Regex("\"pageModule\":(.+?(?=,\"preSaleModule\"))");
         static readonly Regex PriceModuleRegex = new Regex("\"priceModule\":(.+?(?=,\"quantityModule\"))");
 
-        public AliExpressParserStrategy(ILogger<AliExpressParserStrategy> logger)
+        public AliExpressParserStrategy(ILogger<AliExpressParserStrategy> logger, AppConfiguration config, IUrlShortenerProvider shortenerProvider)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _config = config.VendorServices.FirstOrDefault(vnd => vnd.Name == this.Name)
+                      ?? new VendorConfig {Name = this.Name};
+            _shortener = shortenerProvider?.GetShortenerByName(Constants.Providers.Shorteners.BitLy) ?? 
+                throw new ArgumentException(nameof(shortenerProvider));
         }
 
         public string Name => Constants.Providers.Vendors.AliExpress;
 
         public bool CanParse(string content) => PageModuleRegex.IsMatch(content) && PriceModuleRegex.IsMatch(content);
+
+        public bool CanShorten() => _config.ShortenerEnabled;
+
+        public async Task<string> GetDeepLink(string url)
+        {
+            var builder = new UriBuilder(_config.AffiliateCustomizer);
+            var query = HttpUtility.ParseQueryString(url);
+            query["ulp"] = url;
+            builder.Query = query.ToString();
+            var newUrl = builder.ToString();
+            if (CanShorten())
+                newUrl = (await _shortener.ShortenUrl(newUrl)) ?? newUrl;
+            return newUrl;
+        }
 
         public async Task<LinkMessage> ParseContent(string content)
         {

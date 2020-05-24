@@ -1,8 +1,10 @@
 ﻿#region using directives
 
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using LeChuck.ReferralLinks.Domain.Extensions;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 using LeChuck.ReferralLinks.Domain.Models;
@@ -31,14 +33,36 @@ namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
         private static readonly Regex PriceSavesRegex =
             new Regex("priceBlockSavingsString\">(.+?(?=<))", RegexOptions.Singleline);
 
-        public AmazonParserStrategy(ILogger<AmazonParserStrategy> logger)
+        private VendorConfig _config;
+        private IUrlShortenerStrategy _shortener;
+
+        public AmazonParserStrategy(ILogger<AmazonParserStrategy> logger, AppConfiguration config, IUrlShortenerProvider shortenerProvider)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _config = config.VendorServices.FirstOrDefault(vnd => vnd.Name == this.Name)
+                      ?? throw new ArgumentException(nameof(config));
+            _shortener = shortenerProvider?.GetShortenerByName(Constants.Providers.Shorteners.BitLy);
         }
 
         public string Name => Constants.Providers.Vendors.Amazon;
 
         public bool CanParse(string content) => AnyMatch(content);
+
+        public bool CanShorten() => _config.ShortenerEnabled;
+
+        public async Task<string> GetDeepLink(string url)
+        {
+            var builder = new UriBuilder(url);
+            if (builder.Query.Length == 1) return url;
+
+            var query = HttpUtility.ParseQueryString(url);
+            query["tag"] = _config.AffiliateCustomizer;
+            builder.Query = query.ToString();
+            var newUrl = builder.ToString();
+            if (CanShorten())
+                newUrl = (await _shortener.ShortenUrl(newUrl)) ?? newUrl;
+            return newUrl;
+        }
 
         public async Task<LinkMessage> ParseContent(string content)
         {

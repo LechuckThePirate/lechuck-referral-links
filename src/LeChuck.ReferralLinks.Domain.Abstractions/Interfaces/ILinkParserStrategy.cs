@@ -11,6 +11,8 @@ namespace LeChuck.ReferralLinks.Domain.Interfaces
     {
         public string Name { get; }
         bool CanParse(string content);
+        bool CanShorten();
+        Task<string> GetDeepLink(string url);
         Task<LinkMessage> ParseContent(string content);
     }
 }
