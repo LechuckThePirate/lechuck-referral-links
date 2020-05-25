@@ -4,8 +4,6 @@
   "Description": "An AWS Serverless Application that uses the ASP.NET Core framework running in Amazon Lambda.",
   "Parameters": {
     "BotKey": { "Type": "String"},
-    "AdmitadEndpoint": { "Type": "String" },
-    "AdmitadAuthEndpoint": { "Type": "String" },
     "BitLyToken": { "Type": "String" },
     "RootUserId": { "Type": "String" },
     "BitLyEndpoint": {"Type":"String"}
@@ -31,8 +29,6 @@
             "CONFIG_TABLE": { "Ref" : "ConfigTable"},
             "TIMED_TASKS_TABLE": { "Ref": "TimedTasksTable" },
             "STATE_MACHINE_TABLE": {"Ref": "StateMachineTable" },
-            "ADMITAD_ENDPOINT": {"Ref": "AdmitadEndpoint"},
-            "ADMITAD_AUTHENDPOINT": {"Ref":"AdmitadAuthEndpoint"},
             "ROOT_USER_ID": {"Ref":"RootUserId"},
             "BOT_KEY": { "Ref": "BotKey" },
             "BITLY_TOKEN": {"Ref": "BitLyToken"},
@@ -197,10 +193,6 @@
       "Value": {
         "Fn::Sub": "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
       }
-    },
-    "ConfigTableName": {
-      "Description": "Config Table name",
-      "Value": { "Fn::Sub": "${ConfigTable}" }
-      }
     }
+  }
 }

@@ -26,8 +26,7 @@ namespace LeChuck.ReferralLinks.Application.Services
     public class MultiLinkMessageBuilder : IMultiLinkMessageBuilder
     {
         private readonly IHttpClientFactory _clientFactory;
-        private readonly IAffiliateProvider _affiliateProvider;
-        private readonly ILinkParserProvider _linkParserProvider;
+        private readonly IVendorProvider _vendorProvider;
         private readonly IUrlShortenerProvider _urlShortenerProvider;
         private readonly ILogger<MultiLinkMessageBuilder> _logger;
         private readonly AppConfiguration _config;
@@ -35,15 +34,13 @@ namespace LeChuck.ReferralLinks.Application.Services
 
         public MultiLinkMessageBuilder(
             IHttpClientFactory clientFactory,
-            IAffiliateProvider affiliateProvider,
-            ILinkParserProvider linkParserProvider,
+            IVendorProvider vendorProvider,
             IUrlShortenerProvider urlShortenerProvider,
             ILogger<MultiLinkMessageBuilder> logger,
             AppConfiguration config)
         {
             _clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
-            _affiliateProvider = affiliateProvider ?? throw new ArgumentNullException(nameof(affiliateProvider));
-            _linkParserProvider = linkParserProvider ?? throw new ArgumentNullException(nameof(linkParserProvider));
+            _vendorProvider = vendorProvider ?? throw new ArgumentNullException(nameof(vendorProvider));
             _urlShortenerProvider = urlShortenerProvider ?? throw new ArgumentNullException(nameof(urlShortenerProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _config = config ?? throw new ArgumentNullException(nameof(config));
@@ -67,9 +64,8 @@ namespace LeChuck.ReferralLinks.Application.Services
             foreach (var ctx in _context.UrlContexts)
             {
                 await GetContent(ctx);
-                ResolveHelpers(ctx);
+                ResolveVendor(ctx);
                 await GetDeepLink(ctx);
-                await ShortenUrl(ctx);
                 await BuildMessage(ctx);
                 if (ctx.Message != null)
                 {
@@ -110,35 +106,29 @@ namespace LeChuck.ReferralLinks.Application.Services
             }
         }
 
-        private void ResolveHelpers(UrlContext ctx)
+        private void ResolveVendor(UrlContext ctx)
         {
-            ctx.Parser = _linkParserProvider.GetParserFor(ctx.Content);
-            ctx.Affiliate = _affiliateProvider.GetAffiliateFor(ctx.Parser?.Name);
-            if (ctx.Affiliate != null)
-            {
-                var shortenerName = _config.AffiliateServices
-                    .FirstOrDefault(aff => aff.Name == ctx.Affiliate.Name)?
-                    .ShortenerName ?? _config.DefaultShortener;
-                
-                ctx.Shortener = _urlShortenerProvider.GetShortenerByName(shortenerName);
-            }
-
+            ctx.Vendor = _vendorProvider.GetVendorFor(ctx.Content);
             _logger.LogInformation($"Resolved helpers for link {ctx.Number}:\n" +
-                                   $"  Parser: {ctx.Parser?.Name ?? "None"}\n" +
-                                   $"  Affiliate: {ctx.Affiliate?.Name ?? "None"}");
+                                   $"  Vendor: {ctx.Vendor?.Name ?? "None"}\n");
         }
 
         private async Task GetDeepLink(UrlContext ctx)
         {
-            if (ctx.Affiliate == null || ctx.Parser == null)
-            {
-                _logger.LogWarning($"No affiliate for link {ctx.Number}");
-                return;
-            }
-
             try
             {
-                ctx.DeepLink = await ctx.Affiliate.GetDeepLink(ctx.Parser.Name, ctx.Url);
+                if (ctx.Vendor == null)
+                {
+                    if (!string.IsNullOrWhiteSpace(_config.DefaultShortener))
+                    {
+                        var shortener = _urlShortenerProvider.GetShortenerByName(_config.DefaultShortener);
+                        ctx.DeepLink = await shortener.ShortenUrl(ctx.Url);
+                    }
+
+                    return;
+                }
+
+                ctx.DeepLink = await ctx.Vendor.GetDeepLink(ctx.OriginalUrl);
             }
             catch (Exception ex)
             {
@@ -146,29 +136,11 @@ namespace LeChuck.ReferralLinks.Application.Services
             }
         }
 
-        private async Task ShortenUrl(UrlContext ctx)
-        {
-            if (ctx.Shortener == null)
-            {
-                _logger.LogWarning($"No shortener for link {ctx.Number}");
-                return;
-            }
-
-            try
-            {
-                ctx.ShortenedUrl = await ctx.Shortener.ShortenUrl(ctx.Url);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error shortening url for {ctx.Number}: {ex.Message}\n{ex.StackTrace}");
-            }
-        }
-
         private async Task BuildMessage(UrlContext ctx)
         {
-            if (ctx.Parser == null)
+            if (ctx.Vendor == null)
             {
-                _logger.LogWarning($"No parser for link {ctx.Number}");
+                _logger.LogWarning($"No vendor for link {ctx.Number}");
                 return;
             }
 
@@ -180,7 +152,7 @@ namespace LeChuck.ReferralLinks.Application.Services
 
             try
             {
-                ctx.Message = await ctx.Parser.ParseContent(ctx.Content);
+                ctx.Message = await ctx.Vendor.ParseContent(ctx.Content);
                 ctx.Message.Url = ctx.Url;
             }
             catch (Exception ex)

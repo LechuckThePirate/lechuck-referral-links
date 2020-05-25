@@ -11,36 +11,34 @@ using Microsoft.Extensions.Logging;
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Commands
 {
-    public class SetClientSecretCommand : IConfigStrategy
+    public class SetVendorCustomCommand : IConfigStrategy
     {
-        private readonly ILogger<SetClientSecretCommand> _logger;
+        private readonly ILogger<SetVendorCustomCommand> _logger;
         private readonly AppConfiguration _config;
 
-        public SetClientSecretCommand(ILogger<SetClientSecretCommand> logger, AppConfiguration config)
+        public SetVendorCustomCommand(ILogger<SetVendorCustomCommand> logger, AppConfiguration config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
-        public bool CanHandle(string key) => key == ConfigStateMachineWorkflow.CommandsEnum.SetClientSecretCmd.ToString();
+        public bool CanHandle(string key) => key == ConfigStateMachineWorkflow.CommandsEnum.SetVendorCustomCmd.ToString();
 
         public async Task<bool> Handle(IUpdateContext context, AppConfiguration entity, IStateMachine<IUpdateContext, AppConfiguration> stateMachine)
         {
-            var affiliate =
-                stateMachine.GetParameter<AffiliateConfig>(ConfigStateMachineWorkflow.Params.SelectedAffiliate);
-            if (affiliate == null)
+            var vendor = stateMachine.GetParameter<VendorConfig>(ConfigStateMachineWorkflow.Params.SelectedVendor);
+            if (vendor == null)
             {
-                _logger.LogError("No affiliate selected");
+                _logger.LogError("No vendor selected");
                 return false;
             }
-            affiliate.Credentials ??= new ApiCredentials();
-            affiliate.Credentials.ClientSecret = context.MessageText;
+            vendor.AffiliateCustomizer = context.MessageText;
 
-            stateMachine.SetParameter(ConfigStateMachineWorkflow.Params.SelectedAffiliate, affiliate);
-            var provider = _config.AffiliateServices.FirstOrDefault(aff => aff.Name == affiliate.Name);
+            stateMachine.SetParameter(ConfigStateMachineWorkflow.Params.SelectedVendor, vendor);
+            var provider = _config.VendorServices.FirstOrDefault(vnd => vnd.Name == vendor.Name);
             if (provider != null)
             {
-                provider.Credentials = affiliate.Credentials;
+                provider.AffiliateCustomizer = vendor.AffiliateCustomizer;
             }
 
             return await Task.FromResult(true);

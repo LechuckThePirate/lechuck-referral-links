@@ -11,38 +11,37 @@ using Microsoft.Extensions.Logging;
 
 namespace LeChuck.ReferralLinks.Application.StateMachines.Config.Strategies.Commands
 {
-    public class SetClientIdCommand : IConfigStrategy
+    public class SelectVendorCommand  : IConfigStrategy
     {
-        private readonly ILogger<SetClientIdCommand> _logger;
+        private readonly ILogger<SelectVendorCommand> _logger;
         private readonly AppConfiguration _config;
 
-        public SetClientIdCommand(ILogger<SetClientIdCommand> logger, AppConfiguration config)
+        public SelectVendorCommand(ILogger<SelectVendorCommand> logger, AppConfiguration config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
-        public bool CanHandle(string key) => key == ConfigStateMachineWorkflow.CommandsEnum.SetClientIdCmd.ToString();
+        public bool CanHandle(string key) =>
+            key == ConfigStateMachineWorkflow.CommandsEnum.SelectVendorCmd.ToString();
 
         public async Task<bool> Handle(IUpdateContext context, AppConfiguration entity, IStateMachine<IUpdateContext, AppConfiguration> stateMachine)
         {
-            var affiliate =
-                stateMachine.GetParameter<AffiliateConfig>(ConfigStateMachineWorkflow.Params.SelectedAffiliate);
-            if (affiliate == null)
+            if (context.CallbackButtonData.Length < 2)
             {
-                _logger.LogError("No affiliate selected");
+                _logger.LogError("No data in callback");
                 return false;
             }
-            affiliate.Credentials ??= new ApiCredentials();
-            affiliate.Credentials.ClientId = context.MessageText;
 
-            stateMachine.SetParameter(ConfigStateMachineWorkflow.Params.SelectedAffiliate, affiliate);
-            var provider = _config.AffiliateServices.FirstOrDefault(aff => aff.Name == affiliate.Name);
-            if (provider != null)
+            var selectedVendorName = context.CallbackButtonData[1];
+            var selectedVendor = _config.VendorServices.FirstOrDefault(vnd => vnd.Name == selectedVendorName);
+            if (selectedVendor == null)
             {
-                provider.Credentials = affiliate.Credentials;
+                _logger.LogError($"Vendor {selectedVendorName} not found.");
+                return false;
             }
 
+            stateMachine.SetParameter(ConfigStateMachineWorkflow.Params.SelectedVendor, selectedVendor);
             return await Task.FromResult(true);
         }
     }

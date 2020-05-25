@@ -7,17 +7,9 @@
         public const string TelegramRootUserId = "ROOT_USER_ID";
         public const string BitLyTokenValueName = "BITLY_TOKEN";
         public static string BitLyEndpointValueName = "BITLY_ENDPOINT";
-        public static string AdmitadEndpointValueName = "ADMITAD_ENDPOINT";
-        public static string AdmitadAuthEndpointValueName = "ADMITAD_AUTHENDPOINT";
 
         public class Providers
         {
-            public class Affiliates
-            {
-                public const string Admitad = nameof(Admitad);
-                public const string Amazon = nameof(Amazon);
-            }
-
             public class Shorteners
             {
                 public const string BitLy = nameof(BitLy);

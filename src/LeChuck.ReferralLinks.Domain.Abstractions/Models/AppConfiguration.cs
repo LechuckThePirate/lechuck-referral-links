@@ -14,11 +14,7 @@ namespace LeChuck.ReferralLinks.Domain.Models
         public string RootUserId { get; set; }
         public List<User> Users { get; set; } = new List<User>();
         public List<Channel> Channels { get; set; } = new List<Channel>();
-        public List<AffiliateConfig> AffiliateServices { get; set; } = new List<AffiliateConfig>();
+        public List<VendorConfig> VendorServices { get; set; } = new List<VendorConfig>();
         public string DefaultShortener { get; set; }
-
-        public AffiliateConfig GetAffiliateConfig(string affiliate)
-            => AffiliateServices.FirstOrDefault(a => a.Name == affiliate);
-
     }
 }

@@ -18,12 +18,12 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
     public class SetUrlCommandStrategy : IMultiLinkStrategy
     {
         private readonly IBotService _bot;
-        private readonly ILinkParserProvider _linkParserProvider;
+        private readonly IVendorProvider _vendorProvider;
 
-        public SetUrlCommandStrategy(IBotService bot, ILinkParserProvider linkParserProvider)
+        public SetUrlCommandStrategy(IBotService bot, IVendorProvider vendorProvider)
         {
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
-            _linkParserProvider = linkParserProvider ?? throw new ArgumentNullException(nameof(linkParserProvider));
+            _vendorProvider = vendorProvider ?? throw new ArgumentNullException(nameof(vendorProvider));
         }
 
         public bool CanHandle(string key) => key == ProgramLinkStateMachineWorkflow.CommandsEnum.SetUrlCmd.ToString();
@@ -43,7 +43,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Co
                 ? content.Value
                 : $"https://{content.Value}";
 
-            if (_linkParserProvider.GetParserFor(url) == null)
+            if (_vendorProvider.GetVendorFor(url) == null)
             {
                 await _bot.SendTextMessageAsync(context.ChatId, "Enlace no soportado");
                 return false;

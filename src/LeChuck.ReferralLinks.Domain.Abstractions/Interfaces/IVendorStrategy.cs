@@ -7,10 +7,12 @@ using LeChuck.ReferralLinks.Domain.Models;
 
 namespace LeChuck.ReferralLinks.Domain.Interfaces
 {
-    public interface ILinkParserStrategy
+    public interface IVendorStrategy
     {
         public string Name { get; }
         bool CanParse(string content);
+        bool CanShorten();
+        Task<string> GetDeepLink(string url);
         Task<LinkMessage> ParseContent(string content);
     }
 }

@@ -14,13 +14,10 @@ namespace LeChuck.ReferralLinks.Domain.Providers
     public class UrlShortenerProvider : IUrlShortenerProvider
     {
         private readonly IEnumerable<IUrlShortenerStrategy> _shorteners;
-        private readonly ILogger<IUrlShortenerProvider> _logger;
 
-        public UrlShortenerProvider(IEnumerable<IUrlShortenerStrategy> shorteners,
-            ILogger<IUrlShortenerProvider> logger)
+        public UrlShortenerProvider(IEnumerable<IUrlShortenerStrategy> shorteners)
         {
             _shorteners = shorteners ?? throw new ArgumentNullException(nameof(shorteners));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public IUrlShortenerStrategy GetShortenerByName(string serviceName)

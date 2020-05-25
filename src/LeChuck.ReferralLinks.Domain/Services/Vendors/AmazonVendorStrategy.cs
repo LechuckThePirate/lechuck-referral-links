@@ -1,8 +1,10 @@
 ﻿#region using directives
 
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using LeChuck.ReferralLinks.Domain.Extensions;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 using LeChuck.ReferralLinks.Domain.Models;
@@ -10,35 +12,54 @@ using Microsoft.Extensions.Logging;
 
 #endregion
 
-namespace LeChuck.ReferralLinks.Domain.Services.HtmlParsers
+namespace LeChuck.ReferralLinks.Domain.Services.Vendors
 {
-    public class AmazonParserStrategy : ILinkParserStrategy
+    public class AmazonVendorStrategy : IVendorStrategy
     {
-        private readonly ILogger<AmazonParserStrategy> _logger;
-
         private static readonly Regex TitleRegex =
             new Regex("<h1 id=\"title\".+?(?=productTitle).+?(?=>)>(.+?(?=<\\/span>))", RegexOptions.Singleline);
-
         private static readonly Regex PictureRegex =
             new Regex("<div id=\"imgTagWrapperId\".+?(?=https\\:\\/\\/)(.+?(?=\"))", RegexOptions.Singleline);
-
         private static readonly Regex PriceRegex =
             new Regex("<span id=\"priceblock_(ourprice|dealprice)\".+?(?=>)>(.+?(?=<))");
-
         private static readonly Regex OriginalPriceRegex =
             new Regex("<span class=\"priceBlockStrikePriceString.+?(?=>)>(.+?(?=<))", RegexOptions.Singleline);
-
         private static readonly Regex PriceSavesRegex =
             new Regex("priceBlockSavingsString\">(.+?(?=<))", RegexOptions.Singleline);
 
-        public AmazonParserStrategy(ILogger<AmazonParserStrategy> logger)
+        private readonly VendorConfig _config;
+        private readonly IUrlShortenerStrategy _shortener;
+
+        public AmazonVendorStrategy(AppConfiguration config, IUrlShortenerProvider shortenerProvider)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _config = config.VendorServices.FirstOrDefault(vnd => vnd.Name == this.Name)
+                      ?? throw new ArgumentException(nameof(config));
+            _shortener = shortenerProvider?.GetShortenerByName(Constants.Providers.Shorteners.BitLy);
         }
 
         public string Name => Constants.Providers.Vendors.Amazon;
 
         public bool CanParse(string content) => AnyMatch(content);
+
+        public bool CanShorten() => _config.ShortenerEnabled;
+
+        public async Task<string> GetDeepLink(string url)
+        {
+            var builder = new UriBuilder(url);
+            var path = builder.Path;
+            if (!Regex.IsMatch(path, @"^\/[a-z,A-Z,0-9]{7}$"))
+            {
+                var query = HttpUtility.ParseQueryString(url);
+                query["tag"] = _config.AffiliateCustomizer;
+                builder.Query = query.ToString();
+                var newUrl = builder.Uri.ToString();
+                if (CanShorten())
+                    newUrl = (await _shortener.ShortenUrl(newUrl)) ?? newUrl;
+                return newUrl;
+            }
+
+            return url;
+        }
 
         public async Task<LinkMessage> ParseContent(string content)
         {
