@@ -17,6 +17,7 @@ nupkg/
 *.userosscache
 *.sln.docstates
 **\launchSettings.json
+**\aws-lambda-tools-defaults.json
 
 # Build results
 [Dd]ebug/
