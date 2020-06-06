@@ -49,6 +49,7 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
                 previewLinkMessage = entity.Links.FirstOrDefault(l => l.Number == messageNumber);
                 var viewData = _linkView.GetView(context.ChatId, previewLinkMessage);
                 message.Append(viewData.Message);
+                message.Insert(0, "<a href=\"" + previewLinkMessage?.PictureUrl +"\">&#8205;</a>");
             }
             else
             {
@@ -62,10 +63,13 @@ namespace LeChuck.ReferralLinks.Application.StateMachines.LinkData.Strategies.Vi
                     link.Number.ToString())).ToList();
             buttons.Add(new BotButton("Volver", ProgramLinkStateMachineWorkflow.CommandsEnum.BackCmd.ToString()));
 
+
             if (previewLinkMessage == null)
                 await _bot.SendTextMessageAsync(context.ChatId, message.ToString(), TextModeEnum.Html, buttons);
             else
-                await _bot.SendPhotoAsync(context.ChatId, previewLinkMessage.PictureUrl, message.ToString(), TextModeEnum.Html,
+                //await _bot.SendPhotoAsync(context.ChatId, previewLinkMessage.PictureUrl, message.ToString(), TextModeEnum.Html,
+                //    buttons);
+                await _bot.SendTextMessageAsync(context.ChatId, message.ToString(), TextModeEnum.Html,
                     buttons);
 
             return true;
