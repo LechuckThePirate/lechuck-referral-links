@@ -36,7 +36,7 @@ namespace LeChuck.ReferralLinks.Crosscutting.Extensions
 
             services.AddSingleton(configuration);
 
-            var appConfig = GetConfiguration(services, () => GetDefaultConfig());
+            var appConfig = GetConfiguration(services, GetDefaultConfig);
             services.AddSingleton(appConfig);
 
             services

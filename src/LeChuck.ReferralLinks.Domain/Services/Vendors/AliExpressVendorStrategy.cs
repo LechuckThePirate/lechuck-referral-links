@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using LeChuck.ReferralLinks.Domain.Extensions;
 using LeChuck.ReferralLinks.Domain.Interfaces;
 using LeChuck.ReferralLinks.Domain.Models;
 using Microsoft.Extensions.Logging;
@@ -40,8 +41,11 @@ namespace LeChuck.ReferralLinks.Domain.Services.Vendors
 
         public async Task<string> GetDeepLink(string url)
         {
-            var path = new UriBuilder(url).Path;
-            if (!Regex.IsMatch(path, @"^\/[a-z,A-Z,0-9,-]{5,7}$"))
+            if (url.IsShortUrl())
+                url = url.ExpandUrl(_logger);
+
+            // If it was expanded
+            if (!url.IsShortUrl())
             {
                 var builder = new UriBuilder(_config.AffiliateCustomizer);
                 var query = HttpUtility.ParseQueryString(url);
@@ -52,6 +56,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.Vendors
                     newUrl = (await _shortener.ShortenUrl(newUrl)) ?? newUrl;
                 return newUrl;
             }
+
             return url;
         }
 

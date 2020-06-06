@@ -45,9 +45,13 @@ namespace LeChuck.ReferralLinks.Domain.Services.Vendors
 
         public async Task<string> GetDeepLink(string url)
         {
+            if (url == null) return null;
+
+            if (url.IndexOf("/ref=", StringComparison.InvariantCultureIgnoreCase) != 0)
+                url = url.Substring(0, url.IndexOf("/ref=", StringComparison.InvariantCultureIgnoreCase));
+
             var builder = new UriBuilder(url);
-            var path = builder.Path;
-            if (!Regex.IsMatch(path, @"^\/[a-z,A-Z,0-9]{7}$"))
+            if (!url.IsShortUrl())
             {
                 var query = HttpUtility.ParseQueryString(url);
                 query["tag"] = _config.AffiliateCustomizer;

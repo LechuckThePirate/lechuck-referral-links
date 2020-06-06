@@ -35,7 +35,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.Vendors
 
         public string Name => Constants.Providers.Vendors.BangGood;
 
-        public bool CanParse(string content) => ObjectParser.IsMatch(content); // TODO: Fix for single and array prices 
+        public bool CanParse(string content) => ObjectParser.IsMatch(content);
         
         public bool CanShorten() => _config.ShortenerEnabled;
 
@@ -57,7 +57,7 @@ namespace LeChuck.ReferralLinks.Domain.Services.Vendors
             return url;
         }
 
-        public async Task<LinkMessage> ParseContent(string content)
+        public async Task<LinkMessage> ParseContent(string content)   // TODO: Fix for single and array prices 
         {
             var data = GetObjectFromResponse(ObjectParser, content);
 

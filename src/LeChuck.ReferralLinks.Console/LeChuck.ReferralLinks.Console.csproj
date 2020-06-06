@@ -32,4 +32,8 @@
     <ProjectReference Include="..\LeChuck.ReferralLinks.DataAccess\LeChuck.ReferralLinks.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>
